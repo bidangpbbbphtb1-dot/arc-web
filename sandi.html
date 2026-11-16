@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sandi Lab — Encoder Iseng</title>
+<style>
+  :root{
+    --bg:#0f1117; --panel:#171a23; --panel2:#1e2230; --line:#2a2f40;
+    --ink:#e8eaf0; --sub:#9aa2b8; --accent:#5eead4; --accent2:#818cf8;
+    --warn:#fca5a5;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    background:radial-gradient(1200px 600px at 80% -10%,#1b2030,transparent),var(--bg);
+    color:var(--ink); min-height:100vh; -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:780px; margin:0 auto; padding:22px 16px 60px}
+  header h1{font-size:22px; margin:0 0 2px; letter-spacing:.3px}
+  header p{margin:0 0 18px; color:var(--sub); font-size:13px}
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:16px; margin-bottom:16px}
+  label{display:block; font-size:12px; color:var(--sub); margin:0 0 6px; text-transform:uppercase; letter-spacing:.6px}
+  textarea,input[type=text]{
+    width:100%; background:var(--panel2); border:1px solid var(--line); color:var(--ink);
+    border-radius:12px; padding:12px; font-size:16px; font-family:inherit; resize:vertical;
+  }
+  textarea{min-height:84px}
+  .tabs{display:flex; gap:6px; flex-wrap:wrap; margin:14px 0}
+  .tab{
+    flex:1 1 auto; min-width:92px; text-align:center; padding:10px 8px; border-radius:10px; cursor:pointer;
+    background:var(--panel2); border:1px solid var(--line); color:var(--sub); font-size:13px; user-select:none;
+  }
+  .tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#0b0e14; border-color:transparent; font-weight:600}
+  .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:10px}
+  .shift{display:none; align-items:center; gap:10px; margin-top:12px}
+  .shift.show{display:flex}
+  .shift input[type=range]{flex:1}
+  .chip{background:var(--panel2); border:1px solid var(--line); border-radius:999px; padding:4px 10px; font-size:13px; color:var(--accent)}
+  .out{
+    background:#0b0e14; border:1px solid var(--line); border-radius:12px; padding:14px; min-height:60px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:16px; word-break:break-word; white-space:pre-wrap; line-height:1.5;
+  }
+  .out .muted{color:var(--sub)}
+  .btns{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px}
+  button.act{
+    background:var(--panel2); border:1px solid var(--line); color:var(--ink); border-radius:10px;
+    padding:10px 14px; font-size:14px; cursor:pointer; font-family:inherit;
+  }
+  button.act:hover{border-color:var(--accent)}
+  button.primary{background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#0b0e14; border:none; font-weight:600}
+  .swap{display:flex; align-items:center; gap:8px; margin:12px 0 2px}
+  .swap .mode{font-size:13px; color:var(--sub)}
+  .toggle{
+    background:var(--panel2); border:1px solid var(--line); border-radius:999px; padding:6px 12px; cursor:pointer; font-size:13px; color:var(--ink)
+  }
+  .note{font-size:12px; color:var(--sub); margin-top:10px; line-height:1.6}
+  .foot{text-align:center; color:var(--sub); font-size:12px; margin-top:26px}
+  .k{color:var(--accent2)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🔡 Sandi Lab</h1>
+    <p>Lihat bagaimana komputer "membaca" huruf — ubah teks jadi biner, morse, atau sandi, lalu balikkan lagi.</p>
+  </header>
+
+  <div class="card">
+    <div class="swap">
+      <span class="mode" id="modeLabel">Mode: Teks ➜ Kode</span>
+      <span class="toggle" id="swapBtn">🔁 Balik arah</span>
+    </div>
+    <label id="inLabel" for="input">Teks masukan</label>
+    <textarea id="input" placeholder="Ketik di sini... misal: Putra">Halo Putra</textarea>
+
+    <div class="tabs" id="tabs">
+      <div class="tab active" data-m="biner">Biner</div>
+      <div class="tab" data-m="morse">Morse</div>
+      <div class="tab" data-m="caesar">Caesar</div>
+      <div class="tab" data-m="atbash">Atbash</div>
+      <div class="tab" data-m="hex">Hex</div>
+    </div>
+
+    <div class="shift" id="shiftBox">
+      <span class="chip">Geser: <b id="shiftVal">3</b></span>
+      <input type="range" id="shift" min="1" max="25" value="3">
+    </div>
+
+    <label style="margin-top:14px">Hasil</label>
+    <div class="out" id="output"><span class="muted">Hasil muncul di sini…</span></div>
+
+    <div class="btns">
+      <button class="act primary" id="copyBtn">📋 Salin hasil</button>
+      <button class="act" id="soundBtn">🔊 Dengarkan</button>
+      <button class="act" id="clearBtn">✕ Kosongkan</button>
+    </div>
+    <div class="note" id="explain"></div>
+  </div>
+
+  <div class="foot">Dibuat untuk ngulik — semua jalan di perangkat Bapak, tidak ada data yang dikirim ke mana pun.</div>
+</div>
+
+<script>
+const MORSE={A:".-",B:"-...",C:"-.-.",D:"-..",E:".",F:"..-.",G:"--.",H:"....",I:"..",J:".---",K:"-.-",L:".-..",M:"--",N:"-.",O:"---",P:".--.",Q:"--.-",R:".-.",S:"...",T:"-",U:"..-",V:"...-",W:".--",X:"-..-",Y:"-.--",Z:"--..","0":"-----","1":".----","2":"..---","3":"...--","4":"....-","5":".....","6":"-....","7":"--...","8":"---..","9":"----.",".":".-.-.-",",":"--..--","?":"..--..","!":"-.-.--","/":"-..-.","@":".--.-.","-":"-....-"};
+const MORSE_REV=Object.fromEntries(Object.entries(MORSE).map(([k,v])=>[v,k]));
+
+let mode="biner", reverse=false;
+
+const $=id=>document.getElementById(id);
+const input=$("input"), output=$("output"), tabs=$("tabs"), shiftBox=$("shiftBox"), shift=$("shift"), shiftVal=$("shiftVal"), explain=$("explain"), modeLabel=$("modeLabel"), inLabel=$("inLabel");
+
+const EXPL={
+  biner:"Setiap huruf punya nomor (kode ASCII). Nomor itu ditulis dalam basis 2 (hanya 0 dan 1) — persis cara komputer menyimpannya di dalam. Contoh: huruf <b class='k'>A</b> = 65 = <b class='k'>01000001</b>.",
+  morse:"Sandi dari zaman telegraf: tiap huruf jadi rangkaian titik (pendek) dan garis (panjang). Coba tombol 🔊 untuk mendengar bunyinya.",
+  caesar:"Sandi Caesar: tiap huruf digeser maju beberapa langkah di abjad. Geser 3 membuat <b class='k'>A➜D</b>. Ini salah satu sandi tertua di dunia.",
+  atbash:"Atbash membalik abjad: <b class='k'>A➜Z</b>, <b class='k'>B➜Y</b>, dst. Tidak perlu kunci — balikannya pakai cara yang sama.",
+  hex:"Heksadesimal (basis 16): cara ringkas menulis nomor huruf. <b class='k'>A</b>=65=<b class='k'>41</b>. Banyak dipakai programmer untuk warna & data."
+};
+
+function encode(text){
+  switch(mode){
+    case "biner": return [...text].map(c=>c.charCodeAt(0).toString(2).padStart(8,"0")).join(" ");
+    case "hex":   return [...text].map(c=>c.charCodeAt(0).toString(16).toUpperCase().padStart(2,"0")).join(" ");
+    case "morse": return [...text.toUpperCase()].map(c=>c===" "?"/":(MORSE[c]??"")).join(" ").replace(/\s+/g," ").trim();
+    case "caesar":return caesar(text,+shift.value);
+    case "atbash":return atbash(text);
+  }
+}
+function decode(text){
+  try{
+    switch(mode){
+      case "biner": return text.trim().split(/\s+/).map(b=>String.fromCharCode(parseInt(b,2))).join("");
+      case "hex":   return text.trim().split(/\s+/).map(h=>String.fromCharCode(parseInt(h,16))).join("");
+      case "morse": return text.trim().split(" ").map(code=>code==="/"?" ":(MORSE_REV[code]??"")).join("");
+      case "caesar":return caesar(text,26-(+shift.value));
+      case "atbash":return atbash(text);
+    }
+  }catch(e){return "⚠️ Format tidak dikenali untuk mode ini.";}
+}
+function caesar(t,s){return t.replace(/[a-z]/g,c=>String.fromCharCode((c.charCodeAt(0)-97+s)%26+97)).replace(/[A-Z]/g,c=>String.fromCharCode((c.charCodeAt(0)-65+s)%26+65));}
+function atbash(t){return t.replace(/[a-z]/g,c=>String.fromCharCode(219-c.charCodeAt(0))).replace(/[A-Z]/g,c=>String.fromCharCode(155-c.charCodeAt(0)));}
+
+function run(){
+  const text=input.value;
+  if(!text){output.innerHTML="<span class='muted'>Hasil muncul di sini…</span>";return;}
+  const res = reverse ? decode(text) : encode(text);
+  output.textContent = res || "—";
+  explain.innerHTML = EXPL[mode];
+}
+
+tabs.addEventListener("click",e=>{
+  const t=e.target.closest(".tab"); if(!t)return;
+  [...tabs.children].forEach(x=>x.classList.remove("active"));
+  t.classList.add("active"); mode=t.dataset.m;
+  shiftBox.classList.toggle("show",mode==="caesar");
+  run();
+});
+$("swapBtn").addEventListener("click",()=>{
+  reverse=!reverse;
+  modeLabel.textContent = reverse ? "Mode: Kode ➜ Teks" : "Mode: Teks ➜ Kode";
+  inLabel.textContent = reverse ? "Kode masukan" : "Teks masukan";
+  input.placeholder = reverse ? "Tempel kode di sini…" : "Ketik di sini…";
+  run();
+});
+input.addEventListener("input",run);
+shift.addEventListener("input",()=>{shiftVal.textContent=shift.value;run();});
+$("clearBtn").addEventListener("click",()=>{input.value="";input.focus();run();});
+$("copyBtn").addEventListener("click",async()=>{
+  try{await navigator.clipboard.writeText(output.textContent);flash($("copyBtn"),"✓ Tersalin");}
+  catch(e){flash($("copyBtn"),"Gagal menyalin");}
+});
+function flash(btn,txt){const o=btn.textContent;btn.textContent=txt;setTimeout(()=>btn.textContent=o,1200);}
+
+// --- Suara ---
+let ac;
+function tone(freq,dur,when){
+  const o=ac.createOscillator(),g=ac.createGain();
+  o.type="sine";o.frequency.value=freq;
+  g.gain.setValueAtTime(0,when);
+  g.gain.linearRampToValueAtTime(.35,when+.01);
+  g.gain.setValueAtTime(.35,when+dur-.01);
+  g.gain.linearRampToValueAtTime(0,when+dur);
+  o.connect(g);g.connect(ac.destination);o.start(when);o.stop(when+dur);
+}
+$("soundBtn").addEventListener("click",()=>{
+  ac=ac||new (window.AudioContext||window.webkitAudioContext)();
+  const unit=.09, f=620; let t=ac.currentTime+.05;
+  // Bunyi dari morse: pakai hasil kalau mode morse, kalau tidak, ubah teks ke morse dulu
+  let code;
+  if(mode==="morse" && !reverse){ code=output.textContent; }
+  else { code=[...input.value.toUpperCase()].map(c=>c===" "?"/":(MORSE[c]??"")).join(" "); }
+  for(const ch of code){
+    if(ch==="."){tone(f,unit,t);t+=unit+unit;}
+    else if(ch==="-"){tone(f,unit*3,t);t+=unit*3+unit;}
+    else if(ch===" "){t+=unit*2;}
+    else if(ch==="/"){t+=unit*4;}
+  }
+});
+
+run();
+</script>
+</body>
+</html>

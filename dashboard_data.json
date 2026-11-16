@@ -1,0 +1,127 @@
+{
+    "userLinks": [
+        {
+            "id": "card1",
+            "title": "Web Venra",
+            "desc": "WEB VENRA",
+            "url": "https://venra.ifree.page",
+            "icon": "fas fa-eye"
+        },
+        {
+            "id": "card2",
+            "title": "G_DRIVE",
+            "desc": "G DRIVE WEB",
+            "url": "https://script.google.com/macros/s/AKfycbyFvzvjHikDUv6Zith5UhM9l1QZe6SuxFEWfMYdx4WU_ixekKOt55G2GP2ygu6hGA584Q/exec",
+            "icon": "fas fa-box-archive"
+        },
+        {
+            "id": "card_1791660748634",
+            "title": "CLAUDE",
+            "desc": "AI CLOUD",
+            "url": "https://claude.ai/new",
+            "icon": "fas fa-link"
+        },
+        {
+            "id": "card_1792029643749",
+            "title": "MEJA PDF",
+            "desc": "EDIT PDF",
+            "url": "https://chatql.free.je/",
+            "icon": "fas fa-link"
+        },
+        {
+            "id": "card_1792670607723",
+            "title": "EDIT VIDEO",
+            "desc": "Video Editor",
+            "url": "https://jeca.wuaze.com/",
+            "icon": "fas fa-link"
+        },
+        {
+            "id": "card_1792777737850",
+            "title": "flow.google",
+            "desc": "Link Google.flow",
+            "url": "https://flow.google.com/",
+            "icon": "fas fa-link"
+        },
+        {
+            "id": "card_1792813542585",
+            "title": "netlify",
+            "desc": "Portal informasi",
+            "url": "https://app.netlify.com/",
+            "icon": "fas fa-link"
+        },
+        {
+            "id": "card_1792813595801",
+            "title": "infinityfree",
+            "desc": "Portal informasi",
+            "url": "https://www.infinityfree.com/",
+            "icon": "fas fa-link"
+        },
+        {
+            "id": "card_1792813837384",
+            "title": "github.com",
+            "desc": "Portal informasi",
+            "url": "https://github.com/",
+            "icon": "fas fa-link"
+        },
+        {
+            "id": "card_1794825200000",
+            "title": "SANDI LAB",
+            "desc": "Encoder teks ke biner, morse & sandi",
+            "url": "https://nanami.ifree.page/sandi.html",
+            "icon": "fas fa-code"
+        }
+    ],
+    "playlist": [
+        {
+            "id": "yt_1792249719351",
+            "vid": "o6INQVYRx1A",
+            "title": "UNGU - Sayang | UNGUofficial"
+        },
+        {
+            "id": "yt_1792249872402",
+            "vid": "P4D0mKZKChU",
+            "title": "Sheila On 7 - Mudah Saja (Video Clip)"
+        },
+        {
+            "id": "yt_1792249999355",
+            "vid": "bw14qIXMEys",
+            "title": "NOAH - Sally Sendiri (SIDE/B Cut Version)"
+        },
+        {
+            "id": "yt_1792250083052",
+            "vid": "QkngkxUpFd0",
+            "title": "Ku Katakan Dengan Indah"
+        },
+        {
+            "id": "yt_1792250754903",
+            "vid": "vVdi82IkFcA",
+            "title": "Rony Parulian, Andi Rianto – Sepenuh Hati (Official Music Video)"
+        },
+        {
+            "id": "yt_1792250887663",
+            "vid": "BFBOfNmmcC8",
+            "title": "SamSonS - Di Ujung Jalan (Official Music Video)"
+        },
+        {
+            "id": "yt_1792250932509",
+            "vid": "rmgTaoJuvcI",
+            "title": "Blackout - Selalu Ada (Official Music Video)"
+        },
+        {
+            "id": "yt_1792252060038",
+            "vid": "QgiZVuQUoHo",
+            "title": "for Revenge - Jakarta Hari ini ft. Cynantia Pratita (Live at Konser Sang Derana)"
+        },
+        {
+            "id": "yt_1792252305480",
+            "vid": "8zwz2fVgfVM",
+            "title": "Last Child - DUKA (Official Lyric Video) // SORROW"
+        },
+        {
+            "id": "yt_1792278424967",
+            "vid": "3VC1Xb8HS9U",
+            "title": "MARIO G KLAU - SEMATA KARENAMU (OFFICIAL MUSIC VIDEO)"
+        }
+    ],
+    "ytVolume": 90
+}

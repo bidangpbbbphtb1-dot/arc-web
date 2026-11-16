@@ -1,0 +1,3104 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ARC</title>
+<meta name="description" content="ARC, penyihir kristal penjaga tautan Anda. Putar kartu tarot lalu buka tautan yang Anda butuhkan.">
+<meta name="theme-color" content="#ffffff">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ARC">
+
+<script>
+/* Terapkan tema sebelum halaman dicat supaya tidak berkedip */
+(function () {
+    var t = 'light';
+    try { if (localStorage.getItem('theme') === 'dark') t = 'dark'; } catch (e) {}
+    document.documentElement.setAttribute('data-theme', t);
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute('content', t === 'dark' ? '#06030e' : '#ffffff');
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Caveat:wght@600;700&family=Satisfy&family=Lora:wght@500;600&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+<style>
+/* ============ Token tema ============ */
+:root {
+    --font-display: 'Cinzel', 'Trajan Pro', Georgia, serif;
+    --font-ui: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --cw: 148px;
+    --ch: 252px;
+    --safe-t: env(safe-area-inset-top, 0px);
+    --safe-b: env(safe-area-inset-bottom, 0px);
+    --safe-l: env(safe-area-inset-left, 0px);
+    --safe-r: env(safe-area-inset-right, 0px);
+}
+html[data-theme="light"] {
+    color-scheme: light;
+    --bg: #ffffff;
+    --ink: #0f172a;
+    --muted: rgba(15, 23, 42, .62);
+    --focus: #7c3aed;
+    --clay-bg: #ffffff;
+    --clay-shadow: 30px 30px 60px #e2e8f0, -30px -30px 60px #ffffff;
+    --card-bg: rgba(255, 255, 255, .4);
+    --card-border: rgba(203, 213, 225, .6);
+    --card-shadow: 0 10px 30px rgba(15, 23, 42, .05), inset 0 0 15px rgba(255, 255, 255, .8);
+    --card-on-bg: rgba(255, 255, 255, .72);
+    --card-on-border: #7c3aed;
+    --card-on-shadow: 0 15px 40px rgba(124, 58, 237, .18), inset 0 0 20px rgba(255, 255, 255, .9);
+    --card-title: #0f172a;
+    --card-desc: #4338ca;
+    --art-bg: rgba(241, 245, 249, .5);
+    --art-border: rgba(124, 58, 237, .15);
+    --art-icon: #6d28d9;
+    --frame: rgba(124, 58, 237, .2);
+    --btn-bg: rgba(255, 255, 255, .85);
+    --btn-ink: #4338ca;
+    --btn-border: rgba(226, 232, 240, .9);
+    --btn-shadow: 0 4px 12px rgba(0, 0, 0, .06);
+    --panel: rgba(255, 255, 255, .96);
+    --panel-line: rgba(148, 163, 184, .35);
+    --field-bg: rgba(238, 242, 255, .6);
+    --field-border: #c7d2fe;
+    --item-bg: rgba(99, 102, 241, .1);
+    --item-ink: #4f46e5;
+    --dot: rgba(79, 70, 229, .25);
+    --dot-on: #7c3aed;
+    --primary: #4f46e5;
+    --primary-hover: #4338ca;
+}
+html[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #06030e;
+    --ink: #f8fafc;
+    --muted: rgba(248, 250, 252, .62);
+    --focus: #facc15;
+    --clay-bg: #0b0618;
+    --clay-shadow: 25px 25px 55px #020107, -25px -25px 55px #140b29;
+    --card-bg: rgba(18, 10, 36, .15);
+    --card-border: rgba(234, 179, 8, .2);
+    --card-shadow: 0 10px 30px rgba(0, 0, 0, .5), inset 0 0 15px rgba(234, 179, 8, .1);
+    --card-on-bg: rgba(26, 14, 50, .3);
+    --card-on-border: #facc15;
+    --card-on-shadow: 0 0 30px rgba(250, 204, 21, .25), inset 0 0 20px rgba(234, 179, 8, .15);
+    --card-title: #fef08a;
+    --card-desc: #e2e8f0;
+    --art-bg: rgba(147, 51, 234, .06);
+    --art-border: rgba(234, 179, 8, .15);
+    --art-icon: #facc15;
+    --frame: rgba(234, 179, 8, .2);
+    --btn-bg: rgba(20, 12, 38, .6);
+    --btn-ink: #facc15;
+    --btn-border: rgba(234, 179, 8, .28);
+    --btn-shadow: 0 4px 14px rgba(0, 0, 0, .4);
+    --panel: rgba(18, 10, 36, .94);
+    --panel-line: rgba(234, 179, 8, .2);
+    --field-bg: rgba(46, 16, 101, .35);
+    --field-border: rgba(234, 179, 8, .3);
+    --item-bg: rgba(250, 204, 21, .1);
+    --item-ink: #facc15;
+    --dot: rgba(250, 204, 21, .25);
+    --dot-on: #facc15;
+    --primary: #6d28d9;
+    --primary-hover: #7c3aed;
+}
+
+/* ============ Dasar ============ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { background: var(--bg); scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+html.no-scroll, html.no-scroll body { overflow: hidden; }
+body {
+    font-family: var(--font-display);
+    background: transparent;                /* latar = gambar G.jpeg (.bg-art); warna --bg tetap di <html> sebagai cadangan */
+    color: var(--ink);
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    position: relative;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: pan-y;
+    overscroll-behavior: none;
+    transition: background-color .6s ease, color .6s ease;
+}
+body.is-dragging { cursor: grabbing; }
+/* gambar latar: nebula G.jpeg, tetap di tempat saat halaman bergulir */
+.bg-art {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background: var(--bg) url('G.jpeg') center 45% / cover no-repeat;
+}
+.bg-art::after { content: ''; position: absolute; inset: 0; background: var(--bg-veil); transition: background .6s ease; }
+html[data-theme="light"] { --bg-veil: linear-gradient(rgba(250, 247, 255, .6), rgba(240, 232, 255, .52)); }   /* tema terang: dipudarkan agar tulisan gelap tetap terbaca */
+/* tema gelap: area di belakang penyihir digelapkan; video penyihir memakai blend "screen" sehingga di atas nebula terang ia tampak pudar */
+html[data-theme="dark"] { --bg-veil:
+    radial-gradient(ellipse 50vh 78vh at 50% 56%, rgba(4, 2, 10, .92) 0%, rgba(4, 2, 10, .8) 45%, rgba(4, 2, 10, 0) 100%),
+    linear-gradient(rgba(6, 3, 14, .45), rgba(6, 3, 14, .6)); }
+input { user-select: text; -webkit-user-select: text; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+
+/* ============ Latar ============ */
+.bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.clay { position: absolute; border-radius: 50%; background: var(--clay-bg); box-shadow: var(--clay-shadow); opacity: .3; transition: background .6s, box-shadow .6s; }
+.clay-1 { width: min(480px, 62vmin); aspect-ratio: 1; top: -8vmin; left: -8vmin; }
+.clay-2 { width: min(520px, 66vmin); aspect-ratio: 1; bottom: -12vmin; right: -9vmin; }
+.moon {
+    position: absolute; left: 50%; top: 50%;
+    width: min(760px, 120vmin); height: min(760px, 120vmin);
+    margin: calc(min(760px, 120vmin) / -2) 0 0 calc(min(760px, 120vmin) / -2);
+    opacity: .45;
+    filter: drop-shadow(0 0 15px rgba(234, 179, 8, .4));
+    animation: moonRock 15s ease-in-out infinite;
+}
+@keyframes moonRock { 0%, 100% { transform: rotate(0) scale(1); } 50% { transform: rotate(4deg) scale(1.02); } }
+
+.aura {
+    position: fixed; left: 50%; top: 50%;
+    width: min(660px, 96vmin); aspect-ratio: 1;
+    translate: -50% -50%;
+    z-index: 2; pointer-events: none;
+}
+.aura::before, .aura::after { content: ''; position: absolute; border-radius: 50%; }
+.aura::before { inset: 0; border: 2px dashed rgba(234, 179, 8, .32); animation: spinCW 25s linear infinite; }
+.aura::after  { inset: -6%; border: 2px dotted rgba(250, 204, 21, .24); animation: spinCCW 35s linear infinite; }
+/* Aura "bernapas" selama musik diputar (kelas music-on diatur oleh JS; mati otomatis di mode kurangi gerak) */
+.aura, .moon { --beat-c: rgba(250, 204, 21, .6); }
+html[data-theme="light"] .aura, html[data-theme="light"] .moon { --beat-c: rgba(202, 138, 4, .45); }
+body.music-on .aura { animation: auraBeat 2.6s ease-in-out infinite; }
+body.music-on .moon { animation: moonRock 15s ease-in-out infinite, moonGlow 2.6s ease-in-out infinite; }
+@keyframes auraBeat {
+    0%, 100% { scale: 1; filter: drop-shadow(0 0 0 transparent); }
+    50% { scale: 1.022; filter: drop-shadow(0 0 12px var(--beat-c)); }
+}
+@keyframes moonGlow {
+    0%, 100% { opacity: .45; filter: drop-shadow(0 0 15px rgba(234, 179, 8, .4)); }
+    50% { opacity: .68; filter: drop-shadow(0 0 30px var(--beat-c)); }
+}
+@keyframes spinCW  { to { transform: rotate(360deg); } }
+@keyframes spinCCW { to { transform: rotate(-360deg); } }
+
+/* ============ Penyihir ============ */
+.witch, .witch-zone {
+    --wh: min(122vh, calc(128vw * 16 / 9), 1340px);
+    position: fixed; left: 50%; top: 50%;
+    height: var(--wh); width: calc(var(--wh) * 9 / 16);
+    translate: -50% calc(-50% + 9vh);
+    z-index: 3; pointer-events: none;
+    animation: breathe 6s ease-in-out infinite;
+}
+@supports (height: 100dvh) {
+    .witch, .witch-zone { --wh: min(122dvh, calc(128vw * 16 / 9), 1340px); }
+}
+@keyframes breathe { 0%, 100% { scale: 1; } 50% { scale: 1.03; } }
+
+/* Denyut cahaya saat penyihir disentuh */
+.pulse {
+    position: fixed; left: 50%; top: 50%; width: min(620px, 100vmin); aspect-ratio: 1;
+    translate: -50% calc(-50% - 4vh); z-index: 4; pointer-events: none; border-radius: 50%; opacity: 0;
+    background: radial-gradient(circle, var(--pulse-c) 0%, transparent 62%);
+}
+html[data-theme="light"] .pulse { --pulse-c: rgba(124, 58, 237, .38); }
+html[data-theme="dark"]  .pulse { --pulse-c: rgba(250, 204, 21, .45); }
+.pulse.go { animation: pulse .9s ease-out; }
+@keyframes pulse { from { opacity: .95; transform: scale(.35); } to { opacity: 0; transform: scale(1.25); } }
+
+/* Area sentuh penyihir: kotak yang sama dengan video, berada di bawah kartu (z-index 10) */
+.witch-zone { z-index: 5; }
+.witch-hit {
+    position: absolute; left: 16%; right: 16%; top: 6%; bottom: 22%;
+    pointer-events: auto; cursor: pointer; border-radius: 42% 42% 26% 26% / 30% 30% 16% 16%;
+    -webkit-tap-highlight-color: transparent;
+}
+.witch-hit:focus-visible { outline-offset: -4px; }
+.witch video {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+    opacity: 0; transition: opacity .6s ease;
+}
+.witch video.ready { opacity: 1; }
+/* Blend dipasang di kontainer (bukan di video) agar benar-benar berbaur dengan latar halaman */
+html[data-theme="light"] .witch { mix-blend-mode: multiply; }
+/* 7.mp4 punya bar hitam setinggi 100px (7,8%) di atas dan bawah: dipotong di sini */
+/* brightness memutihkan pola kotak-kotak samar di latar video agar hilang saat di-multiply */
+html[data-theme="light"] .witch video { clip-path: inset(8.2% 0); filter: brightness(1.04) contrast(1.05); }
+html[data-theme="dark"] .witch { mix-blend-mode: screen; }
+html[data-theme="dark"] .witch video {
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 35%, transparent 72%);
+    mask-image: radial-gradient(ellipse at center, #000 35%, transparent 72%);
+}
+
+/* ============ Merek, pager ============ */
+.brand {
+    position: fixed; z-index: 30; left: 50%; top: calc(16px + var(--safe-t));
+    translate: -50% 0; text-align: center; pointer-events: none;
+}
+.brand h1 { font-size: 1.35rem; font-weight: 900; letter-spacing: .34em; padding-left: .34em; color: var(--card-title); }
+.brand p { font-family: var(--font-ui); font-size: .72rem; font-weight: 600; letter-spacing: .06em; color: var(--muted); margin-top: 2px; }
+
+.action-btn {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 1.05rem; color: var(--btn-ink);
+    background: var(--btn-bg); border: 1px solid var(--btn-border); box-shadow: var(--btn-shadow);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    transition: transform .25s, background .4s, color .4s, border-color .4s;
+}
+.action-btn:hover { transform: translateY(-2px) scale(1.06); }
+.action-btn:active { transform: scale(.96); }
+.action-btn.small { width: 34px; height: 34px; font-size: .85rem; }
+.action-btn[hidden] { display: none; }
+
+.pager {
+    position: fixed; z-index: 30; left: 50%; translate: -50% 0;
+    bottom: calc(18px + var(--safe-b));
+    display: flex; align-items: center; gap: 14px;
+    width: max-content; max-width: calc(100vw - 24px);
+}
+.dots { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; justify-content: center; max-width: calc(100vw - 140px); }
+/* lebar titik menyusut mengikuti jumlah kartu supaya tetap satu baris dan tidak menabrak kotak tanya */
+.dot { width: clamp(9px, calc((min(100vw - 140px, 560px) - 26px) / var(--n, 10) - 4px), 22px); height: 22px; display: grid; place-items: center; }
+.dot::before {
+    content: ''; width: 8px; height: 8px; border-radius: 99px; background: var(--dot);
+    transition: width .3s, background .3s;
+}
+.dot[aria-current="true"]::before { width: 22px; background: var(--dot-on); }
+.hint {
+    position: fixed; z-index: 30; left: 50%; translate: -50% 0;
+    bottom: calc(58px + var(--safe-b));
+    width: max-content; max-width: calc(100vw - 32px);
+    font-family: var(--font-ui); font-size: .78rem; font-weight: 600; text-align: center;
+    color: var(--btn-ink); pointer-events: none; transition: opacity .8s;
+    padding: 7px 16px; border-radius: 99px; line-height: 1.35;
+    background: var(--btn-bg); border: 1px solid var(--btn-border); box-shadow: var(--btn-shadow);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.hint.hide { opacity: 0; }
+/* Layar pendek: petunjuk pindah ke bawah judul supaya tidak menimpa kartu */
+@media (max-height: 720px) { .hint { bottom: auto; top: calc(66px + var(--safe-t)); } }
+/* Panel Playlist terbuka di layar lebar: petunjuk pindah ke tengah ruang kosong di kanan panel, supaya tidak tertimpa */
+@media (min-width: 641px) {
+    html:has(#ytPanel:not([hidden]):not(.closed)) .hint {
+        --pr: calc(12px + var(--safe-l) + min(320px, calc(100vw - 24px)));
+        left: calc(var(--pr) + (100vw - var(--pr)) / 2);
+        max-width: calc(100vw - var(--pr) - 32px);
+    }
+}
+@media (min-width: 641px) and (max-width: 1000px) {
+    html:has(#ytPanel:not([hidden]):not(.closed)) .hint { --pr: calc(12px + var(--safe-l) + min(280px, calc(100vw - 24px))); }
+}
+
+/* ============ Karusel 3D ============ */
+.scene {
+    position: absolute; inset: 0; margin: auto;
+    width: var(--cw); height: var(--ch);
+    perspective: 1500px;
+    z-index: 10;
+    /* turun maksimal 24% tinggi layar, tetapi tidak sampai menimpa kotak tanya di bawah */
+    translate: 0 min(24vh, calc(50vh - 100px - var(--ch) * .64 - var(--safe-b)));
+    opacity: 0; transition: opacity .9s ease .2s;
+}
+.scene.ready { opacity: 1; }
+@supports (height: 100dvh) { .scene { translate: 0 min(24dvh, calc(50dvh - 100px - var(--ch) * .64 - var(--safe-b))); } }
+.carousel { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform; }
+.tarot-card { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.card-face {
+    position: relative; width: 100%; height: 100%;
+    border-radius: 16px; padding: 9px;
+    display: flex; flex-direction: column; justify-content: space-between; align-items: center;
+    text-align: center;
+    background: var(--card-bg); border: 1px solid var(--card-border); box-shadow: var(--card-shadow);
+    transition: transform .4s cubic-bezier(.16, 1, .3, 1), background .4s, border-color .4s, box-shadow .4s;
+}
+.tarot-card.active .card-face {
+    transform: scale(1.05);
+    background: var(--card-on-bg); border-color: var(--card-on-border); box-shadow: var(--card-on-shadow);
+}
+.card-frame { position: absolute; inset: 6px; border-radius: 12px; border: 1.5px solid var(--frame); pointer-events: none; }
+.card-corner {
+    width: 100%; padding: 4px 8px 0;
+    display: flex; justify-content: space-between;
+    font-size: .6rem; color: var(--card-title); opacity: .75;
+}
+.card-art {
+    position: relative; overflow: hidden; width: 100%; flex: 1; min-height: 0; margin: 6px 0;
+    border-radius: 9px; display: grid; place-items: center;
+    background: var(--art-bg); border: 1px solid var(--art-border);
+}
+.card-art i { font-size: 2.3rem; color: var(--art-icon); filter: drop-shadow(0 4px 10px rgba(0, 0, 0, .25)); }
+.card-text { width: 100%; padding: 0 4px; }
+.card-title {
+    font-size: .82rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--card-title);
+    overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.card-desc {
+    font-family: var(--font-ui); font-size: .68rem; font-weight: 600; line-height: 1.3; margin-top: 2px; color: var(--card-desc);
+    overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.card-hit { position: absolute; inset: 0; z-index: 1; border-radius: 16px; background: transparent; }
+.card-admin { position: absolute; z-index: 2; top: 34px; right: 14px; display: flex; gap: 6px; }
+.mini {
+    width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+    font-size: .7rem; color: #fff; border: 1px solid rgba(255, 255, 255, .6);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .2); transition: transform .2s;
+}
+.mini:hover { transform: scale(1.12); }
+.mini.edit { background: rgba(79, 70, 229, .92); }
+.mini.del  { background: rgba(225, 29, 72, .92); }
+
+/* ============ Menu penyihir (kaca / glassmorphism, di sisi kanan) ============ */
+html[data-theme="light"] .witch-menu, html[data-theme="light"] .witch-dialog, html[data-theme="light"] .yt-panel {
+    --glass-bg: linear-gradient(145deg, rgba(255, 255, 255, .62), rgba(224, 231, 255, .26));
+    --glass-line: rgba(124, 58, 237, .22);
+    --glass-edge: rgba(255, 255, 255, .85);
+    --glass-shadow: 0 12px 36px rgba(79, 70, 229, .2);
+    --glass-opt: rgba(255, 255, 255, .42);
+    --glass-opt-line: rgba(124, 58, 237, .16);
+}
+html[data-theme="dark"] .witch-menu, html[data-theme="dark"] .witch-dialog, html[data-theme="dark"] .yt-panel {
+    --glass-bg: linear-gradient(145deg, rgba(60, 34, 110, .34), rgba(14, 8, 30, .3));
+    --glass-line: rgba(250, 204, 21, .3);
+    --glass-edge: rgba(255, 255, 255, .16);
+    --glass-shadow: 0 12px 40px rgba(0, 0, 0, .55);
+    --glass-opt: rgba(255, 255, 255, .06);
+    --glass-opt-line: rgba(250, 204, 21, .18);
+}
+.menu-backdrop { position: fixed; inset: 0; z-index: 40; visibility: hidden; }
+.menu-backdrop.show { visibility: visible; }
+.witch-menu {
+    position: fixed; z-index: 41; top: 50%; right: calc(14px + var(--safe-r));
+    translate: 0 -50%;
+    width: min(196px, 50vw);
+    padding: 16px 12px 12px; border-radius: 22px;
+    background: var(--glass-bg); color: var(--ink);
+    border: 1px solid var(--glass-line);
+    backdrop-filter: blur(18px) saturate(170%); -webkit-backdrop-filter: blur(18px) saturate(170%);
+    box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-edge);
+    font-family: var(--font-ui);
+    opacity: 0; visibility: hidden; transform: translateX(16px) scale(.94); transform-origin: 100% 50%;
+    transition: opacity .25s, transform .35s cubic-bezier(.16, 1, .3, 1), visibility 0s .35s;
+}
+.witch-menu.show { opacity: 1; visibility: visible; transform: none; transition: opacity .25s, transform .35s cubic-bezier(.16, 1, .3, 1), visibility 0s; }
+/* ekor balon ucapan mengarah ke penyihir (kiri) */
+.witch-menu::after {
+    content: ''; position: absolute; left: -8px; top: 50%; width: 14px; height: 14px; margin-top: -7px;
+    background: var(--glass-bg); border-left: 1px solid var(--glass-line); border-bottom: 1px solid var(--glass-line);
+    backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    transform: rotate(45deg);
+}
+.witch-say {
+    min-height: 2.5em; margin: 0 4px 12px; text-align: left;
+    font-family: var(--font-display); font-size: .95rem; font-weight: 700; line-height: 1.25; letter-spacing: .06em; color: var(--card-title);
+}
+.witch-say.typing::after { content: '▍'; margin-left: 2px; opacity: .7; animation: caret .7s steps(1) infinite; }
+@keyframes caret { 50% { opacity: 0; } }
+.witch-options { display: flex; flex-direction: column; gap: 8px; }
+.opt {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; border-radius: 14px; text-align: left;
+    font: 700 .78rem/1.25 var(--font-ui); color: var(--item-ink);
+    background: var(--glass-opt); border: 1px solid var(--glass-opt-line);
+    transition: transform .2s, border-color .2s, background .3s;
+}
+.opt[hidden] { display: none; }
+.opt i { width: 1.2em; flex: none; text-align: center; font-size: 1.05rem; }
+.opt:hover { transform: translateX(-3px); border-color: var(--card-on-border); }
+.opt:active { transform: scale(.97); }
+.witch-menu.show .opt { animation: optIn .35s cubic-bezier(.16, 1, .3, 1) both; animation-delay: calc(.6s + var(--i) * .08s); }
+@keyframes optIn { from { opacity: 0; transform: translateX(12px); } }
+.opt.vol { cursor: default; }
+.opt.vol:hover { transform: none; }
+.vol-range { flex: 1; min-width: 0; height: 22px; accent-color: var(--item-ink); cursor: pointer; background: transparent; }
+
+/* ============ Dialog sapaan penyihir (kiri, dekat penyihir) ============ */
+.witch-dialog {
+    --wh: min(122vh, calc(128vw * 16 / 9), 1340px);
+    --dw: min(150px, 40vw);
+    position: fixed; z-index: 12; pointer-events: none; width: var(--dw);
+    left: max(calc(12px + var(--safe-l)), calc(50% - var(--wh) * 9 / 16 * .2 - var(--dw)));
+    top: clamp(calc(78px + var(--safe-t)), calc(50% + 9vh - var(--wh) * .28), 40%);
+    padding: 7px 12px 8px; border-radius: 14px 14px 5px 14px;
+    background: var(--glass-bg); border: 1px solid var(--glass-line);
+    backdrop-filter: blur(18px) saturate(170%); -webkit-backdrop-filter: blur(18px) saturate(170%);
+    box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-edge);
+    opacity: 0; transform: translateY(10px) scale(.92); transform-origin: 100% 70%;
+    transition: opacity .45s ease, transform .5s cubic-bezier(.16, 1, .3, 1);
+}
+@supports (height: 100dvh) { .witch-dialog { --wh: min(122dvh, calc(128vw * 16 / 9), 1340px); } }
+.witch-dialog.show { opacity: 1; transform: none; }
+/* ekor balon mengarah ke penyihir (kanan) */
+.witch-dialog::after {
+    content: ''; position: absolute; right: -6px; top: 62%; width: 10px; height: 10px; margin-top: -5px;
+    background: var(--glass-bg); border-right: 1px solid var(--glass-line); border-top: 1px solid var(--glass-line);
+    backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    transform: rotate(45deg);
+}
+.wd-text {
+    position: relative; overflow-wrap: anywhere;
+    font-family: var(--wd-font); font-size: calc(var(--wd-size) * .88); font-weight: var(--wd-weight); line-height: var(--wd-lh); letter-spacing: var(--wd-ls);
+    color: var(--card-title);
+}
+.wd-ghost { visibility: hidden; }                       /* menahan tinggi kotak agar tidak melompat saat mengetik */
+.wd-live { position: absolute; left: 0; top: 0; right: 0; }
+.wd-live.typing::after { content: '▍'; margin-left: 1px; opacity: .7; animation: caret .7s steps(1) infinite; }
+
+/* ============ Drawer, modal, toast ============ */
+.overlay {
+    position: fixed; inset: 0; z-index: 800; background: rgba(15, 23, 42, .55);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    opacity: 0; visibility: hidden; transition: opacity .3s, visibility 0s .3s;
+}
+.overlay.show { opacity: 1; visibility: visible; transition: opacity .3s, visibility 0s; }
+#modalOverlay { z-index: 900; display: flex; align-items: center; justify-content: center; padding: 16px; }
+
+.side-drawer {
+    position: fixed; z-index: 850; top: 0; left: 0; height: 100vh; height: 100dvh;
+    width: min(300px, 86vw);
+    padding: calc(24px + var(--safe-t)) 20px calc(24px + var(--safe-b)) calc(20px + var(--safe-l));
+    background: var(--panel); color: var(--ink);
+    border-right: 1px solid var(--panel-line);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    font-family: var(--font-ui);
+    transform: translateX(-105%); visibility: hidden;
+    transition: transform .35s cubic-bezier(.16, 1, .3, 1), visibility 0s .35s;
+    display: flex; flex-direction: column;
+}
+.side-drawer.show { transform: none; visibility: visible; transition: transform .35s cubic-bezier(.16, 1, .3, 1), visibility 0s; }
+.drawer-head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 14px; margin-bottom: 14px; border-bottom: 1px solid var(--panel-line); }
+.drawer-head h2 { font-family: var(--font-display); font-size: 1rem; font-weight: 700; letter-spacing: .08em; }
+.drawer-head p { font-size: .72rem; font-weight: 600; color: var(--muted); margin-top: 2px; }
+.drawer-list { display: flex; flex-direction: column; gap: 10px; overflow-y: auto; touch-action: pan-y; overscroll-behavior: contain; padding-right: 2px; }
+.drawer-item {
+    display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 12px;
+    border-radius: 16px; text-align: left; transition: transform .2s, background .2s;
+}
+.drawer-item:hover { transform: translateX(4px); background: var(--item-bg); }
+.drawer-item.current { background: var(--item-bg); }
+.drawer-icon { width: 40px; height: 40px; flex: none; border-radius: 12px; display: grid; place-items: center; font-size: 1.05rem; background: var(--item-bg); color: var(--item-ink); }
+.drawer-item .txt { flex: 1; min-width: 0; }
+.drawer-item .t { font-size: .85rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.drawer-item .d { font-size: .72rem; font-weight: 600; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.drawer-item .chev { font-size: .7rem; opacity: .4; }
+
+.modal-card {
+    width: 100%; max-width: 420px; border-radius: 24px; padding: 24px;
+    background: var(--panel); color: var(--ink); border: 1px solid var(--panel-line);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    font-family: var(--font-ui);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, .3);
+    transform: scale(.92); transition: transform .3s cubic-bezier(.16, 1, .3, 1);
+}
+#modalOverlay.show .modal-card { transform: none; }
+.modal-card h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+.modal-body { font-size: .88rem; margin: 12px 0; line-height: 1.5; }
+.modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+.field { display: block; margin-bottom: 12px; }
+.field span { display: block; font-size: .75rem; font-weight: 700; margin-bottom: 4px; opacity: .85; }
+.field input {
+    width: 100%; padding: 10px 12px; border-radius: 12px; font: 600 .9rem var(--font-ui);
+    color: var(--ink); background: var(--field-bg); border: 1px solid var(--field-border);
+}
+.field input:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+.btn { padding: 9px 16px; border-radius: 12px; font: 700 .8rem var(--font-ui); transition: background .2s, transform .15s; }
+.btn:active { transform: scale(.97); }
+.btn-ghost { background: rgba(148, 163, 184, .22); color: var(--ink); }
+.btn-ghost:hover { background: rgba(148, 163, 184, .38); }
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: var(--primary-hover); }
+.btn-danger { background: #e11d48; color: #fff; }
+.btn-danger:hover { background: #be123c; }
+
+#toastBox {
+    position: fixed; z-index: 999; bottom: calc(122px + var(--safe-b)); left: 50%; translate: -50% 0;
+    width: min(340px, calc(100vw - 32px)); display: flex; flex-direction: column; gap: 10px; pointer-events: none;
+}
+.toast {
+    display: flex; align-items: center; gap: 12px; padding: 13px 16px; border-radius: 16px;
+    font: 600 .85rem var(--font-ui); color: #fff; box-shadow: 0 10px 25px rgba(0, 0, 0, .18);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    animation: toastIn .3s cubic-bezier(.16, 1, .3, 1) both; transition: opacity .3s, transform .3s;
+}
+.toast.out { opacity: 0; transform: translateX(30%); }
+.toast i { font-size: 1.05rem; }
+.toast.success { background: rgba(16, 185, 129, .94); border: 1px solid rgba(52, 211, 153, .6); }
+.toast.error   { background: rgba(225, 29, 72, .94);  border: 1px solid rgba(251, 113, 133, .6); }
+.toast.info    { background: rgba(99, 102, 241, .94); border: 1px solid rgba(165, 180, 252, .6); }
+@keyframes toastIn { from { transform: translateX(40%); opacity: 0; } to { transform: none; opacity: 1; } }
+
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ============ Pemutar YouTube (kiri) ============ */
+.yt-panel {
+    position: fixed; z-index: 32; left: calc(12px + var(--safe-l)); bottom: calc(18px + var(--safe-b));
+    width: min(320px, calc(100vw - 24px));
+    padding: 12px; border-radius: 22px;
+    background: var(--glass-bg); color: var(--ink);
+    border: 1px solid var(--glass-line);
+    backdrop-filter: blur(18px) saturate(170%); -webkit-backdrop-filter: blur(18px) saturate(170%);
+    box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-edge);
+    font-family: var(--font-ui);
+    transition: transform .4s cubic-bezier(.16, 1, .3, 1), opacity .3s;
+}
+.yt-panel.closed { transform: translateX(calc(-100% - 24px)); opacity: 0; pointer-events: none; }
+.yt-panel[hidden], .yt-panel [hidden], .yt-fab[hidden], .yt-dock[hidden], .yt-dock [hidden] { display: none !important; }
+.yt-dock {
+    position: fixed; z-index: 32; left: calc(12px + var(--safe-l)); bottom: calc(18px + var(--safe-b));
+    display: flex; align-items: center; gap: 8px; max-width: calc(100vw - 24px);
+}
+.yt-fab { flex: none; }
+/* Judul lagu yang sedang diputar, tetap tampil saat panel disembunyikan */
+.yt-mini {
+    display: inline-flex; align-items: center; gap: 9px; min-width: 0; max-width: min(280px, calc(100vw - 100px));
+    height: 40px; padding: 0 16px 0 14px; border-radius: 99px;
+    font: 700 .78rem var(--font-ui); color: var(--btn-ink);
+    background: var(--btn-bg); border: 1px solid var(--btn-border); box-shadow: var(--btn-shadow);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    transition: opacity .3s, transform .25s;
+}
+.yt-mini:hover { transform: translateY(-2px); }
+.yt-mini.paused { opacity: .72; }
+.yt-mini .yt-title-mini { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Judul panjang bergeser pelan bolak-balik agar terbaca penuh */
+.yt-title-mini.marq { text-overflow: clip; -webkit-mask-image: linear-gradient(90deg, transparent, #000 14px, #000 calc(100% - 14px), transparent); mask-image: linear-gradient(90deg, transparent, #000 14px, #000 calc(100% - 14px), transparent); }
+.yt-title-mini.marq #ytMiniText { display: inline-block; animation: ytMarq var(--dur, 8s) ease-in-out infinite alternate; }
+.yt-mini.paused .yt-title-mini.marq #ytMiniText { animation-play-state: paused; }
+@keyframes ytMarq { 0%, 18% { transform: translateX(0); } 82%, 100% { transform: translateX(calc(-1 * var(--shift, 0px))); } }
+.yt-eq { flex: none; display: inline-flex; align-items: flex-end; gap: 2px; height: 13px; }
+.yt-eq i { width: 3px; height: 35%; border-radius: 2px; background: currentColor; }
+.yt-mini:not(.paused) .yt-eq i { animation: ytEq .9s ease-in-out infinite; }
+.yt-mini:not(.paused) .yt-eq i:nth-child(2) { animation-delay: .25s; }
+.yt-mini:not(.paused) .yt-eq i:nth-child(3) { animation-delay: .5s; }
+@keyframes ytEq { 50% { height: 100%; } }
+.yt-fab.playing i { animation: ytBeat 1.2s ease-in-out infinite; }
+@keyframes ytBeat { 50% { transform: scale(1.25); } }
+.yt-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.yt-logo { color: #ef4444; font-size: 1.15rem; }
+.yt-title { flex: 1; font-family: var(--font-display); font-size: .85rem; font-weight: 700; letter-spacing: .1em; color: var(--card-title); }
+.yt-frame { aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; background: #000; }
+#ytPlayer { display: block; width: 100%; height: 100%; border: 0; }
+.yt-now { margin: 10px 2px 2px; font-size: .8rem; font-weight: 700; color: var(--card-desc); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.yt-prog { display: flex; align-items: center; gap: 8px; margin: 4px 2px 0; }
+.yt-prog output { flex: none; min-width: 2.7em; font-size: .68rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--card-desc); }
+.yt-prog output:last-child { text-align: right; }
+.yt-seek { --p: 0%; -webkit-appearance: none; appearance: none; flex: 1; min-width: 0; height: 20px; background: transparent; cursor: pointer; }
+.yt-seek::-webkit-slider-runnable-track { height: 4px; border-radius: 99px; background: linear-gradient(90deg, var(--item-ink) var(--p), rgba(127, 127, 127, .35) var(--p)); }
+.yt-seek::-moz-range-track { height: 4px; border-radius: 99px; background: rgba(127, 127, 127, .35); }
+.yt-seek::-moz-range-progress { height: 4px; border-radius: 99px; background: var(--item-ink); }
+.yt-seek::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; margin-top: -4px; border: 0; border-radius: 50%; background: var(--item-ink); transition: transform .15s; }
+.yt-seek::-moz-range-thumb { width: 12px; height: 12px; border: 0; border-radius: 50%; background: var(--item-ink); }
+.yt-seek:hover::-webkit-slider-thumb, .yt-seek:active::-webkit-slider-thumb { transform: scale(1.35); }
+.yt-seek:disabled { cursor: default; opacity: .45; }
+.yt-empty { margin: 8px 2px; font-size: .76rem; font-weight: 600; color: var(--muted); }
+.yt-ctrl { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 8px 0 4px; }
+.yt-toggle { position: relative; opacity: .55; }
+.yt-toggle.on { opacity: 1; background: var(--item-bg); border-color: var(--card-on-border); }
+.yt-toggle[data-mode="one"]::after { content: '1'; position: absolute; right: 7px; bottom: 5px; font: 800 .5rem var(--font-ui); line-height: 1; }
+.yt-list { position: relative; list-style: none; margin-top: 6px; max-height: clamp(96px, 26vh, 220px); overflow-y: auto; touch-action: pan-y; overscroll-behavior: contain; scrollbar-width: none; }
+.yt-list::-webkit-scrollbar { display: none; }
+/* Bayangan pudar di tepi atas/bawah: tanda masih ada lagu yang bisa digulir */
+.yt-list.fade-b { -webkit-mask-image: linear-gradient(#000 calc(100% - 32px), transparent); mask-image: linear-gradient(#000 calc(100% - 32px), transparent); }
+.yt-list.fade-t { -webkit-mask-image: linear-gradient(transparent, #000 32px); mask-image: linear-gradient(transparent, #000 32px); }
+.yt-list.fade-t.fade-b { -webkit-mask-image: linear-gradient(transparent, #000 32px, #000 calc(100% - 32px), transparent); mask-image: linear-gradient(transparent, #000 32px, #000 calc(100% - 32px), transparent); }
+.yt-item {
+    display: flex; align-items: center; gap: 8px; width: 100%; padding: 6px 8px; border-radius: 10px; text-align: left;
+    font-size: .78rem; font-weight: 700; color: var(--ink); transition: background .2s;
+}
+.yt-item:hover { background: var(--item-bg); }
+.yt-item.current { background: var(--item-bg); color: var(--item-ink); }
+.yt-item .n { flex: none; width: 1.4em; text-align: center; opacity: .6; }
+.yt-item .t { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 1000px) { .yt-panel { width: min(280px, calc(100vw - 24px)); } }
+@media (max-height: 560px) { .yt-list { display: none; } }
+
+/* ----- HP: panel naik dari bawah seperti lembar, ketuk area gelap untuk menutup ----- */
+.yt-backdrop { position: fixed; inset: 0; z-index: 31; background: rgba(0, 0, 0, .5); opacity: 0; pointer-events: none; transition: opacity .35s; }
+@media (max-width: 640px) {
+    .yt-backdrop.show { opacity: 1; pointer-events: auto; }
+    .yt-panel { left: 50%; right: auto; width: min(360px, calc(100vw - 24px)); translate: -50% 0; }
+    .yt-panel.closed { transform: translateY(calc(100% + 40px)); }
+    .yt-list { max-height: clamp(72px, 15vh, 132px); }
+}
+/* Layar sentuh: target sentuh lebih besar */
+@media (pointer: coarse) {
+    .yt-panel .action-btn.small { width: 40px; height: 40px; }
+    .yt-seek { height: 30px; }
+    .yt-seek::-webkit-slider-thumb { width: 18px; height: 18px; margin-top: -7px; }
+    .yt-seek::-moz-range-thumb { width: 18px; height: 18px; }
+    .yt-item { padding: 9px 8px; }
+}
+
+/* Menu admin musik (di dalam modal) */
+.ytm-vol { display: flex; align-items: center; gap: 10px; padding: 8px 12px; margin-bottom: 12px; border-radius: 14px; background: var(--item-bg); color: var(--item-ink); }
+.ytm-vol output { min-width: 2.4em; text-align: right; font-weight: 700; font-size: .8rem; }
+.ytm-list { list-style: none; display: flex; flex-direction: column; gap: 8px; max-height: min(40vh, 280px); overflow-y: auto; touch-action: pan-y; overscroll-behavior: contain; }
+.ytm-row { display: flex; align-items: center; gap: 10px; padding: 6px; border-radius: 12px; background: var(--item-bg); }
+.ytm-row img { flex: none; width: 48px; height: 36px; object-fit: cover; border-radius: 8px; background: #000; }
+.ytm-title { flex: 1; min-width: 0; font-size: .8rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ytm-empty { padding: 8px 2px; font-size: .82rem; opacity: .7; }
+
+/* ============ Responsif ============ */
+@media (max-width: 480px), (max-height: 640px) {
+    :root { --cw: 124px; --ch: 212px; }
+    .card-art i { font-size: 1.7rem; }
+    .card-title { font-size: .68rem; }
+    .card-desc { font-size: .6rem; }
+    .brand h1 { font-size: 1.15rem; }
+    .action-btn { width: 40px; height: 40px; }
+}
+@media (max-height: 520px) {
+    :root { --cw: 112px; --ch: 168px; }
+    .card-art i { font-size: 1.4rem; }
+    .card-title { font-size: .6rem; }
+    .card-desc { display: none; }
+    .hint, .brand p { display: none; }
+}
+
+
+/* ============ Halaman panjang: halaman 1 (arc) dan halaman 2 (daftar kartu) ============ */
+.page1 { position: relative; width: 100%; height: 100vh; height: 100dvh; overflow: hidden; --chrome: 1; }
+@supports (overflow: clip) { .page1 { overflow: clip; } }
+.page1 .moon { z-index: 1; }
+/* elemen halaman 1 ikut tergulir bersama halaman (bukan menempel di layar) */
+.page1 .aura, .page1 .pulse, .page1 .witch, .page1 .witch-zone, .page1 .brand, .page1 .hint,
+.page1 .pager, .page1 .witch-dialog { position: absolute; }
+.page1 .brand, .page1 .hint, .page1 .pager, .page1 .scroll-cue { opacity: var(--chrome); }
+.page1 .hint.hide { opacity: 0; }
+.page1.away .brand, .page1.away .hint, .page1.away .pager, .page1.away .scroll-cue { visibility: hidden; pointer-events: none; }
+.scroll-cue { position: absolute; z-index: 30; right: calc(14px + var(--safe-r)); bottom: calc(18px + var(--safe-b)); }
+.scroll-cue i { animation: cueBob 2.2s ease-in-out infinite; }
+@keyframes cueBob { 0%, 100% { transform: translateY(-2px); } 50% { transform: translateY(3px); } }
+
+.page2 {
+    position: relative; min-height: 100vh; min-height: 100dvh;
+    --gg: clamp(16px, 2.2vw, 30px);
+    padding: calc(clamp(56px, 11vh, 110px) + var(--safe-t)) calc(clamp(16px, 4.5vw, 64px) + var(--safe-r)) 0px calc(clamp(16px, 4.5vw, 64px) + var(--safe-l));
+    display: flex; flex-direction: column; gap: clamp(24px, 5vh, 48px);
+}
+.p2-head { position: relative; z-index: 20; opacity: 0; will-change: opacity, transform; }
+.p2-head h2 { font-size: clamp(1.15rem, 2.6vw, 1.7rem); font-weight: 900; letter-spacing: .3em; color: var(--card-title); }
+.p2-head p { font-family: var(--font-ui); font-size: .82rem; font-weight: 600; color: var(--muted); margin-top: 6px; }
+.p2-head .rule { width: 72px; height: 2px; margin-top: 14px; border-radius: 2px; background: linear-gradient(90deg, var(--card-on-border), transparent); }
+.p2-top { position: absolute; z-index: 21; top: calc(18px + var(--safe-t)); right: calc(clamp(16px, 4.5vw, 64px) + var(--safe-r)); }
+.p2-body { position: relative; flex: none; }
+/* ruang gulir tambahan: kartu tetap tertahan di layar sementara halaman 3 naik dari bawah */
+.p2-body::after { content: ''; display: block; height: 190vh; height: 190dvh; }
+.p2-grid {
+    position: sticky; top: 14vh; z-index: 20; min-width: 0;
+    display: grid; grid-template-columns: repeat(auto-fill, var(--cw)); gap: var(--gg);
+    justify-content: start; align-content: start;
+}
+.grid-card {
+    position: relative; z-index: 20; width: var(--cw); height: var(--ch);
+    visibility: hidden; opacity: 0; pointer-events: none;
+    will-change: transform, opacity; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+}
+.grid-card.live { pointer-events: auto; }
+.grid-card .card-hit { cursor: pointer; }
+.grid-card .card-face { --rx: 0deg; --ry: 0deg; }
+.grid-card.live:hover .card-face, .grid-card:focus-within .card-face {
+    transform: perspective(800px) translateY(-6px) rotateX(var(--rx)) rotateY(var(--ry));
+    background: var(--card-on-bg); border-color: var(--card-on-border); box-shadow: var(--card-on-shadow);
+}
+@media (max-width: 720px) { .p2-grid { justify-content: center; } }
+/* kartu miring 3D mengikuti kursor + kilau cahaya */
+.grid-card.tilting .card-face { transition: transform .09s linear, background .4s, border-color .4s, box-shadow .4s; }
+.grid-card .card-face::after {
+    content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .3s;
+    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, .6), rgba(250, 204, 21, .2) 30%, transparent 58%);
+    mix-blend-mode: soft-light;
+}
+.grid-card.tilting .card-face::after { opacity: 1; }
+.page-nav { position: fixed; z-index: 28; left: calc(12px + var(--safe-l)); top: 50%; translate: 0 -50%; display: flex; flex-direction: column; gap: 6px; }
+.page-nav button { position: relative; width: 16px; height: 18px; display: grid; place-items: center; border-radius: 9px; transition: height .35s cubic-bezier(.16, 1, .3, 1); }
+.page-nav button::before {
+    content: ''; width: 7px; height: 7px; border-radius: 50%; box-sizing: border-box;
+    border: 1.5px solid var(--card-on-border); background: transparent; opacity: .7;
+    transition: height .35s cubic-bezier(.16, 1, .3, 1), background .3s, opacity .3s, box-shadow .3s;
+}
+.page-nav button[aria-current="true"] { height: 34px; }
+.page-nav button[aria-current="true"]::before { height: 24px; border-radius: 4px; background: var(--card-on-border); opacity: 1; box-shadow: 0 0 10px var(--card-on-border); }
+.page-nav button:hover::before, .page-nav button:focus-visible::before { opacity: 1; background: var(--card-on-border); }
+.page-nav span {
+    position: absolute; left: 24px; top: 50%; translate: -4px -50%; padding: 4px 10px; border-radius: 8px; white-space: nowrap; pointer-events: none;
+    font: 700 .68rem var(--font-ui); letter-spacing: .08em; color: var(--card-title);
+    background: var(--card-on-bg); border: 1px solid var(--card-border); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    opacity: 0; transition: opacity .2s, translate .25s;
+}
+.page-nav button:hover span, .page-nav button:focus-visible span { opacity: 1; translate: 0 -50%; }
+@media (max-width: 720px) { .page-nav { left: calc(3px + var(--safe-l)); } .page-nav button { width: 12px; } .page-nav span { display: none; } }
+/* debu bintang */
+.dust { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+
+/* ============ Halaman 3: lingkaran sihir, arc, dan kotak tanya ============ */
+html[data-theme="light"] .page3 { --mc: #7c3aed; --mc2: rgba(234, 179, 8, .75); --ray: rgba(167, 139, 250, .5); --ray2: rgba(250, 204, 21, .45); --flash: rgba(255, 233, 160, .9); }
+html[data-theme="dark"] .page3 { --mc: #facc15; --mc2: rgba(250, 204, 21, .7); --ray: rgba(250, 204, 21, .34); --ray2: rgba(192, 132, 252, .3); --flash: rgba(255, 240, 180, .85); }
+.page3 { position: relative; height: 190vh; height: 190dvh; margin-top: -100vh; --m: 0; --wv: 0; --fl: 0; }
+/* tiga lapisan menempel di layar (sticky) selama gulir tambahan; lapisan penyihir memegang mode campur sendiri */
+.p3-layer { position: sticky; top: 0; height: 100vh; height: 100dvh; margin-bottom: -100vh; margin-bottom: -100dvh; overflow: hidden; pointer-events: none; }
+.p3-back { z-index: 2; }
+.p3-wl { z-index: 3; }
+.p3-front { z-index: 36; }
+.p3-front > .p3-up, .p3-front > .ask-bar { pointer-events: auto; }
+.p3-head { position: absolute; z-index: 20; left: 0; right: 0; top: calc(clamp(20px, 3.5vh, 44px) + var(--safe-t)); text-align: center; opacity: var(--wv); pointer-events: none; z-index: 40; }
+.p3-head h2 { font-size: clamp(1.1rem, 2.6vw, 1.6rem); font-weight: 900; letter-spacing: .3em; padding-left: .3em; color: var(--card-title); }
+.p3-head p { font-family: var(--font-ui); font-size: .8rem; font-weight: 600; color: var(--muted); margin-top: 6px; padding: 0 16px; }
+.p3-up { position: absolute; z-index: 21; top: calc(18px + var(--safe-t)); right: calc(clamp(16px, 4.5vw, 64px) + var(--safe-r)); opacity: var(--wv); }
+.page3.idle .p3-head, .page3.idle .p3-up, .page3.idle .ask-bar { visibility: hidden; pointer-events: none; }
+/* sinar yang memancar */
+.p3-rays {
+    position: absolute; z-index: 1; left: 50%; top: 50%; width: 120vmax; height: 120vmax; margin: -60vmax 0 0 -60vmax; pointer-events: none;
+    opacity: calc(var(--m) * (.9 - .7 * var(--wv))); scale: calc(.35 + .65 * var(--m));
+    background: repeating-conic-gradient(from 0deg, var(--ray) 0deg 1.4deg, transparent 1.4deg 10deg);
+    -webkit-mask-image: radial-gradient(circle closest-side, #000 3%, transparent 32%); mask-image: radial-gradient(circle closest-side, #000 3%, transparent 32%);
+    animation: spinCW 150s linear infinite;
+}
+.p3-rays::after { content: ''; position: absolute; inset: 0; background: repeating-conic-gradient(from 4deg, var(--ray2) 0deg .8deg, transparent .8deg 15deg); animation: spinCCW 100s linear infinite; }
+/* lingkaran formasi sihir: tergambar pelan mengikuti gulir */
+.p3-circle {
+    position: absolute; z-index: 2; left: 50%; top: 55%; width: min(86vmin, 860px); translate: -50% -50%; pointer-events: none;
+    opacity: calc(var(--m) * 3 * (1 - var(--wv))); filter: drop-shadow(0 0 calc(5px + var(--lit, 0) * 10px) var(--mc2));   /* garis sihir memudar saat arc muncul; makin terang tiap kartu mendarat */
+}
+.p3-circle .ln { fill: none; stroke: var(--mc); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.p3-circle .dr { stroke-dasharray: 1; stroke-dashoffset: calc(1 - var(--m)); }
+.p3-circle .fd { opacity: calc(var(--m) * var(--m)); }
+.p3-circle .sp { transform-box: fill-box; transform-origin: 50% 50%; }
+.p3-circle .sp1 { animation: spinCW 90s linear infinite; }
+.p3-circle .sp2 { animation: spinCCW 70s linear infinite; }
+.p3-circle .sp3 { animation: spinCW 55s linear infinite; }
+.p3-circle .dot { fill: var(--mc); stroke: none; }
+/* simpul rune: satu per kartu, menyala saat kartu mendarat */
+.p3-circle .rune .rn-dot { fill: var(--mc); stroke: none; opacity: .2; transform-box: fill-box; transform-origin: 50% 50%; transition: opacity .35s, transform .5s cubic-bezier(.16, 1, .3, 1); }
+.p3-circle .rune .rn-ring { fill: none; stroke: var(--mc); stroke-width: 1.5; opacity: 0; transform-box: fill-box; transform-origin: 50% 50%; }
+.p3-circle .rune.lit .rn-dot { opacity: 1; transform: scale(1.8); filter: drop-shadow(0 0 3px var(--mc2)); }
+.p3-circle .rune.lit .rn-ring { animation: runePing .9s ease-out; }
+@keyframes runePing { from { opacity: .9; transform: scale(1); } to { opacity: 0; transform: scale(5.5); } }
+/* kilatan saat arc muncul */
+.p3-flash {
+    position: absolute; z-index: 2; left: 50%; top: 52%; width: min(80vmin, 700px); aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; pointer-events: none;
+    background: radial-gradient(circle, var(--flash) 0%, var(--ray2) 32%, transparent 68%);
+    opacity: var(--fl); scale: calc(.55 + .75 * var(--fl));
+}
+.p3-witch { --h3: min(110vh, calc(125vw * 16 / 9)); position: absolute; z-index: 3; left: 50%; bottom: -7vh; translate: -50% 0; height: var(--h3); width: calc(var(--h3) * 9 / 16); pointer-events: none; }
+@supports (height: 100dvh) { .p3-witch { --h3: min(110dvh, calc(125vw * 16 / 9)); bottom: -7dvh; } }
+.p3-fig { width: 100%; height: 100%; transform-origin: 50% 100%; animation: welcomeSway 8s ease-in-out infinite; }
+@keyframes welcomeSway { 0%, 100% { transform: rotate(-.5deg) translateY(0); } 50% { transform: rotate(.5deg) translateY(-6px); } }
+.p3-fig video { display: block; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .6s ease; }
+.p3-fig video.ready { opacity: var(--wv); }
+html[data-theme="light"] .p3-wl { mix-blend-mode: multiply; }
+html[data-theme="light"] .p3-fig video { clip-path: inset(8.2% 0); filter: brightness(1.04) contrast(1.05); }
+html[data-theme="dark"] .p3-wl { mix-blend-mode: screen; }
+html[data-theme="dark"] .p3-fig video {
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 35%, transparent 72%);
+    mask-image: radial-gradient(ellipse at center, #000 35%, transparent 72%);
+}
+/* kotak tanya kini berada di halaman 3 */
+.page3 .ask-bar { position: absolute; z-index: 31; bottom: calc(40px + var(--safe-b)); opacity: var(--wv); }
+/* balon jawaban penyihir */
+html[data-theme="light"] .p3-dialog { --glass-bg: linear-gradient(145deg, rgba(255, 255, 255, .78), rgba(224, 231, 255, .5)); --glass-line: rgba(124, 58, 237, .25); --glass-edge: rgba(255, 255, 255, .85); --glass-shadow: 0 12px 36px rgba(79, 70, 229, .22); }
+html[data-theme="dark"] .p3-dialog { --glass-bg: linear-gradient(145deg, rgba(60, 34, 110, .55), rgba(14, 8, 30, .5)); --glass-line: rgba(250, 204, 21, .3); --glass-edge: rgba(255, 255, 255, .16); --glass-shadow: 0 12px 40px rgba(0, 0, 0, .55); }
+/* Balon di dekat penyihir seperti di halaman 1: sebelah kiri kepala, ekor menunjuk ke penyihir */
+.p3-dialog {
+    --h3: min(110vh, calc(125vw * 16 / 9)); --dw: min(300px, 64vw);
+    position: absolute; z-index: 36; width: var(--dw);
+    left: max(calc(12px + var(--safe-l)), calc(50% - var(--h3) * 9 / 16 * .2 - var(--dw)));
+    top: clamp(calc(168px + var(--safe-t)), calc(107vh - var(--h3) * .78), 50%);
+    padding: 10px 14px 11px; border-radius: 16px 16px 5px 16px;
+    background: var(--glass-bg); border: 1px solid var(--glass-line);
+    backdrop-filter: blur(18px) saturate(170%); -webkit-backdrop-filter: blur(18px) saturate(170%);
+    box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-edge);
+    opacity: 0; transform: translateY(10px) scale(.92); transform-origin: 100% 70%; pointer-events: none; cursor: pointer;
+    transition: opacity .45s ease, transform .5s cubic-bezier(.16, 1, .3, 1);
+}
+@supports (height: 100dvh) { .p3-dialog { --h3: min(110dvh, calc(125vw * 16 / 9)); top: clamp(calc(168px + var(--safe-t)), calc(107dvh - var(--h3) * .78), 50%); } }
+.p3-dialog.show { opacity: 1; transform: none; pointer-events: auto; }
+.p3-dialog::after {
+    content: ''; position: absolute; right: -6px; top: 26px; width: 10px; height: 10px; margin-top: -5px;
+    background: var(--glass-bg); border-right: 1px solid var(--glass-line); border-top: 1px solid var(--glass-line);
+    backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    transform: rotate(45deg);
+}
+/* bentuk tulisan jawaban: dipilih lewat tombol "Aa" di kotak tanya */
+html { --wd-font: 'Lora', Georgia, 'Times New Roman', serif; --wd-size: 1.02rem; --wd-weight: 600; --wd-lh: 1.5; --wd-ls: 0; }
+html[data-wfont="hand"] { --wd-font: 'Caveat', 'Satisfy', 'Segoe Script', cursive; --wd-size: 1.32rem; --wd-weight: 700; --wd-lh: 1.22; --wd-ls: 0; }
+html[data-wfont="sans"] { --wd-font: var(--font-ui); --wd-size: .98rem; --wd-weight: 600; --wd-lh: 1.5; --wd-ls: 0; }
+html[data-wfont="clear"] { --wd-font: 'Atkinson Hyperlegible', Verdana, Tahoma, sans-serif; --wd-size: 1.06rem; --wd-weight: 700; --wd-lh: 1.55; --wd-ls: .015em; }
+.p3-dialog .wd-text {
+    font-family: var(--wd-font); font-size: var(--wd-size); font-weight: var(--wd-weight); line-height: var(--wd-lh); letter-spacing: var(--wd-ls);
+    max-height: min(240px, 34vh); overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; padding-right: 2px;
+    user-select: text; -webkit-user-select: text; color: var(--card-title); text-shadow: none;
+}
+@supports (height: 100dvh) { .p3-dialog .wd-text { max-height: min(240px, 34dvh); } }
+html[data-theme="light"] .p3-dialog.err .wd-text { color: #be123c; }
+html[data-theme="dark"] .p3-dialog.err .wd-text { color: #fda4af; }
+/* latar balon lebih pekat agar tulisan jelas di atas garis lingkaran sihir */
+html[data-theme="light"] .p3-dialog { --glass-bg: linear-gradient(145deg, rgba(255, 255, 255, .94), rgba(238, 242, 255, .88)); }
+html[data-theme="dark"] .p3-dialog { --glass-bg: linear-gradient(145deg, rgba(48, 26, 92, .9), rgba(16, 9, 34, .88)); }
+/* pemilih bentuk tulisan */
+.font-pop {
+    position: absolute; left: 0; bottom: calc(100% + 10px); width: min(250px, calc(100vw - 24px)); padding: 6px; border-radius: 16px;
+    display: flex; flex-direction: column; gap: 3px;
+    background: var(--panel); color: var(--ink); border: 1px solid var(--panel-line); box-shadow: var(--btn-shadow);
+    backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+}
+.font-pop[hidden] { display: none; }
+.font-opt { display: flex; align-items: center; gap: 12px; padding: 7px 10px; border-radius: 11px; text-align: left; border: 1.5px solid transparent; color: var(--ink); transition: background .2s, border-color .2s; }
+.font-opt:hover { background: var(--item-bg); }
+.font-opt[aria-checked="true"] { border-color: var(--focus); background: var(--item-bg); }
+.font-opt .fx { width: 38px; flex: none; text-align: center; font-size: 1.35rem; line-height: 1; }
+.font-opt .fl { font: 700 .76rem var(--font-ui); }
+.font-opt .fl small { display: block; font-weight: 500; font-size: .66rem; color: var(--muted); margin-top: 1px; }
+.font-opt[data-f="hand"] .fx { font-family: 'Caveat', 'Segoe Script', cursive; font-weight: 700; font-size: 1.6rem; }
+.font-opt[data-f="serif"] .fx { font-family: 'Lora', Georgia, serif; font-weight: 600; }
+.font-opt[data-f="sans"] .fx { font-family: var(--font-ui); font-weight: 700; }
+.font-opt[data-f="clear"] .fx { font-family: 'Atkinson Hyperlegible', Verdana, sans-serif; font-weight: 700; }
+
+/* ============ Kabut asap tertiup angin (digambar di kanvas oleh JS) ============ */
+.fog-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.fog-canvas.front { position: fixed; z-index: 6; opacity: .85; }         /* lapisan tipis yang lewat di depan penyihir */
+html[data-theme="dark"] .fog-canvas { mix-blend-mode: screen; }
+
+/* ============ Obrolan AI ============ */
+.chat-panel {
+    position: fixed; z-index: 860; top: 0; right: 0; height: 100vh; height: 100dvh;
+    width: min(420px, 100vw);
+    padding: calc(18px + var(--safe-t)) calc(16px + var(--safe-r)) calc(14px + var(--safe-b)) 16px;
+    background: var(--panel); color: var(--ink);
+    border-left: 1px solid var(--panel-line);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    font-family: var(--font-ui);
+    display: flex; flex-direction: column;
+    transform: translateX(105%); visibility: hidden;
+    transition: transform .35s cubic-bezier(.16, 1, .3, 1), visibility 0s .35s;
+    user-select: text; -webkit-user-select: text;
+}
+.chat-panel.show { transform: none; visibility: visible; transition: transform .35s cubic-bezier(.16, 1, .3, 1), visibility 0s; }
+.chat-head-btns { display: flex; gap: 8px; }
+.chat-log {
+    flex: 1; min-height: 0; overflow-y: auto; touch-action: pan-y; overscroll-behavior: contain;
+    display: flex; flex-direction: column; gap: 10px; padding: 2px 2px 10px;
+}
+.chat-msg {
+    max-width: 88%; padding: 10px 13px; border-radius: 16px;
+    font-size: .88rem; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere;
+    animation: chatIn .25s cubic-bezier(.16, 1, .3, 1) both;
+}
+@keyframes chatIn { from { opacity: 0; transform: translateY(8px); } }
+.chat-msg.user { align-self: flex-end; background: var(--primary); color: #fff; border-bottom-right-radius: 5px; }
+.chat-msg.model { align-self: flex-start; background: var(--item-bg); color: var(--ink); border: 1px solid var(--panel-line); border-bottom-left-radius: 5px; }
+.chat-msg.error { align-self: flex-start; background: rgba(225, 29, 72, .12); color: var(--ink); border: 1px solid rgba(225, 29, 72, .45); border-bottom-left-radius: 5px; }
+.chat-msg strong { font-weight: 800; }
+.chat-msg code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .82em; padding: 1px 5px; border-radius: 6px; background: rgba(127, 127, 127, .2); }
+.chat-msg pre { margin: 6px 0; padding: 10px; border-radius: 10px; overflow-x: auto; white-space: pre; background: rgba(0, 0, 0, .35); color: #f8fafc; touch-action: pan-x pan-y; }
+.chat-msg pre code { background: none; padding: 0; font-size: .8rem; }
+.chat-msg ul { margin: 4px 0; padding-left: 1.2em; white-space: normal; }
+.chat-typing { display: inline-flex; gap: 5px; padding: 14px 16px; }
+.chat-typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--item-ink); opacity: .35; animation: chatDot 1s ease-in-out infinite; }
+.chat-typing i:nth-child(2) { animation-delay: .15s; }
+.chat-typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes chatDot { 40% { opacity: 1; transform: translateY(-3px); } }
+.chat-compose { display: flex; align-items: flex-end; gap: 8px; padding-top: 10px; border-top: 1px solid var(--panel-line); }
+.chat-compose textarea {
+    flex: 1; min-width: 0; resize: none; max-height: 140px; padding: 11px 14px; border-radius: 18px;
+    font: 500 16px/1.4 var(--font-ui); color: var(--ink);
+    background: var(--field-bg); border: 1px solid var(--field-border); outline: none;
+    touch-action: pan-y;
+}
+.chat-compose textarea:focus { border-color: var(--focus); }
+.chat-compose .action-btn { flex: none; }
+.chat-compose .action-btn:disabled { opacity: .45; pointer-events: none; }
+.chat-note { font-size: .68rem; color: var(--muted); text-align: center; margin-top: 8px; }
+@media (max-width: 520px) { .chat-panel { width: 100vw; border-left: 0; } }
+
+/* ============ Kotak tanya di bawah kartu + ucapan AI penyihir ============ */
+.ask-bar {
+    position: fixed; z-index: 31; left: 50%; translate: -50% 0;
+    bottom: calc(66px + var(--safe-b));
+    width: min(420px, calc(100vw - 24px));
+    display: flex; align-items: center; gap: 6px; padding: 4px 5px; border-radius: 99px;
+    background: var(--btn-bg); border: 1px solid var(--btn-border); box-shadow: var(--btn-shadow);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    transition: border-color .25s, background .4s;
+}
+.ask-bar:focus-within { border-color: var(--focus); }
+/* keyboard layar HP terbuka: kotak tanya naik ke atas keyboard */
+html.kb-open .ask-bar { bottom: calc(var(--kb, 0px) + 8px); }
+.ask-input {
+    flex: 1; min-width: 0; height: 36px; padding: 0 6px; border: 0; outline: 0; background: transparent;
+    font: 600 16px var(--font-ui); color: var(--ink);
+    user-select: text; -webkit-user-select: text; touch-action: manipulation;
+}
+.ask-input::placeholder { color: var(--muted); }
+.ask-bar .action-btn { width: 36px; height: 36px; font-size: .85rem; flex: none; }
+.ask-bar .action-btn:disabled { opacity: .45; pointer-events: none; }
+
+/* Dialog penyihir saat menjawab dengan AI: lebih lebar, bisa digulir, bertahan sampai disentuh */
+.witch-dialog.ai { --dw: min(290px, 62vw); pointer-events: auto; cursor: pointer; z-index: 36; }
+.witch-dialog.ai .wd-text {
+    font-family: 'Caveat', 'Satisfy', 'Segoe Script', cursive; font-size: 1.22rem; font-weight: 700; line-height: 1.22;
+    max-height: var(--ai-max, 180px);
+    overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; padding-right: 2px;
+    user-select: text; -webkit-user-select: text;
+}
+html[data-theme="light"] .witch-dialog.ai.err .wd-text { color: #be123c; }
+html[data-theme="dark"] .witch-dialog.ai.err .wd-text { color: #fda4af; }
+
+/* ============ Kurangi gerak ============ */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; transition-delay: 0s !important; }
+}
+</style>
+</head>
+<body>
+<div class="bg-art" aria-hidden="true"></div>
+
+<!-- Latar -->
+<div class="bg" aria-hidden="true">
+    <div class="clay clay-1"></div>
+    <div class="clay clay-2"></div>
+</div>
+<canvas class="dust" id="dust" aria-hidden="true"></canvas>
+<nav class="page-nav" id="pageNav" aria-label="Halaman" data-nodrag>
+    <button type="button" data-p="0" aria-label="Halaman 1: Kartu" aria-current="true"><span>KARTU</span></button>
+    <button type="button" data-p="1" aria-label="Halaman 2: Daftar tautan" aria-current="false"><span>DAFTAR TAUTAN</span></button>
+    <button type="button" data-p="2" aria-label="Halaman 3: Tanya penyihir" aria-current="false"><span>TANYA PENYIHIR</span></button>
+</nav>
+<div class="page1" id="page1">
+    <svg class="moon" aria-hidden="true" viewBox="0 0 100 100">
+        <defs>
+            <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#facc15" stop-opacity=".95"/>
+                <stop offset="50%" stop-color="#d4af37" stop-opacity=".6"/>
+                <stop offset="100%" stop-color="#eab308" stop-opacity=".95"/>
+            </linearGradient>
+        </defs>
+        <path d="M50,5 A45,45 0 0,0 5,50 A45,45 0 0,0 50,95 A35,35 0 0,1 50,5 Z"
+              fill="none" stroke="url(#goldGradient)" stroke-width="1.2" transform="rotate(-25 50 50)"/>
+    </svg>
+<div class="aura" aria-hidden="true"></div>
+<div class="pulse" id="pulse" aria-hidden="true"></div>
+
+<!-- Penyihir -->
+<div class="witch" aria-hidden="true">
+    <video id="witchVideo" autoplay muted loop playsinline preload="auto" disablepictureinpicture disableremoteplayback></video>
+</div>
+
+<header class="brand">
+    <h1>ARC</h1>
+    <p>THE WEB</p>
+</header>
+
+<!-- Area sentuh penyihir -->
+<div class="witch-zone">
+    <button class="witch-hit" id="witchBtn" type="button" aria-label="Sentuh penyihir untuk membuka menu" aria-haspopup="dialog" aria-expanded="false" aria-controls="witchMenu"></button>
+</div>
+
+<!-- Karusel -->
+<main class="scene" id="scene" aria-label="Kartu tautan">
+    <div class="carousel" id="carousel"></div>
+</main>
+
+<p class="hint" id="hint"></p>
+<nav class="pager" aria-label="Navigasi kartu" data-nodrag>
+    <div class="dots" id="dots"></div>
+</nav>
+
+<!-- Dialog sapaan penyihir -->
+<div class="witch-dialog" id="witchDialog" aria-hidden="true" data-nodrag>
+    <p class="wd-text"><span class="wd-ghost" id="wdGhost"></span><span class="wd-live" id="wdLive"></span></p>
+</div>
+
+
+    <button class="action-btn scroll-cue" id="scrollCue" type="button" aria-label="Gulir ke bawah untuk melihat semua tautan" data-nodrag><i class="fas fa-chevron-down" aria-hidden="true"></i></button>
+</div>
+
+<!-- Halaman 2: daftar kartu + arc menyambut -->
+<section class="page2" id="page2" aria-label="Semua tautan" data-nodrag>
+    <button class="action-btn p2-top" id="p2Top" type="button" aria-label="Kembali ke atas"><i class="fas fa-chevron-up" aria-hidden="true"></i></button>
+    <header class="p2-head" id="p2Head">
+        <h2>DAFTAR TAUTAN</h2>
+        <p>Pilih kartu untuk membuka tujuan Anda</p>
+        <div class="rule" aria-hidden="true"></div>
+    </header>
+    <div class="p2-body">
+        <div class="p2-grid" id="p2Grid"></div>
+    </div>
+</section>
+
+<!-- Halaman 3: lingkaran sihir, arc, dan kotak tanya -->
+<section class="page3 idle" id="page3" aria-label="Tanya sang penyihir" data-nodrag>
+    <div class="p3-layer p3-back">
+    <div class="p3-rays" aria-hidden="true"></div>
+    <svg class="p3-circle" viewBox="-200 -200 400 400" aria-hidden="true">
+            <circle class="ln dr" r="194" pathLength="1"/>
+            <circle class="ln dr" r="176" pathLength="1"/>
+            <g class="sp sp2 fd"><g class="ln" stroke-width="1"><line x1="0.0" y1="-162.0" x2="0.0" y2="-170.0"/><line x1="14.1" y1="-161.4" x2="14.8" y2="-169.4"/><line x1="28.1" y1="-159.5" x2="29.5" y2="-167.4"/><line x1="41.9" y1="-156.5" x2="44.0" y2="-164.2"/><line x1="55.4" y1="-152.2" x2="58.1" y2="-159.7"/><line x1="68.5" y1="-146.8" x2="71.8" y2="-154.1"/><line x1="81.0" y1="-140.3" x2="85.0" y2="-147.2"/><line x1="92.9" y1="-132.7" x2="97.5" y2="-139.3"/><line x1="104.1" y1="-124.1" x2="109.3" y2="-130.2"/><line x1="114.6" y1="-114.6" x2="120.2" y2="-120.2"/><line x1="124.1" y1="-104.1" x2="130.2" y2="-109.3"/><line x1="132.7" y1="-92.9" x2="139.3" y2="-97.5"/><line x1="140.3" y1="-81.0" x2="147.2" y2="-85.0"/><line x1="146.8" y1="-68.5" x2="154.1" y2="-71.8"/><line x1="152.2" y1="-55.4" x2="159.7" y2="-58.1"/><line x1="156.5" y1="-41.9" x2="164.2" y2="-44.0"/><line x1="159.5" y1="-28.1" x2="167.4" y2="-29.5"/><line x1="161.4" y1="-14.1" x2="169.4" y2="-14.8"/><line x1="162.0" y1="-0.0" x2="170.0" y2="-0.0"/><line x1="161.4" y1="14.1" x2="169.4" y2="14.8"/><line x1="159.5" y1="28.1" x2="167.4" y2="29.5"/><line x1="156.5" y1="41.9" x2="164.2" y2="44.0"/><line x1="152.2" y1="55.4" x2="159.7" y2="58.1"/><line x1="146.8" y1="68.5" x2="154.1" y2="71.8"/><line x1="140.3" y1="81.0" x2="147.2" y2="85.0"/><line x1="132.7" y1="92.9" x2="139.3" y2="97.5"/><line x1="124.1" y1="104.1" x2="130.2" y2="109.3"/><line x1="114.6" y1="114.6" x2="120.2" y2="120.2"/><line x1="104.1" y1="124.1" x2="109.3" y2="130.2"/><line x1="92.9" y1="132.7" x2="97.5" y2="139.3"/><line x1="81.0" y1="140.3" x2="85.0" y2="147.2"/><line x1="68.5" y1="146.8" x2="71.8" y2="154.1"/><line x1="55.4" y1="152.2" x2="58.1" y2="159.7"/><line x1="41.9" y1="156.5" x2="44.0" y2="164.2"/><line x1="28.1" y1="159.5" x2="29.5" y2="167.4"/><line x1="14.1" y1="161.4" x2="14.8" y2="169.4"/><line x1="0.0" y1="162.0" x2="0.0" y2="170.0"/><line x1="-14.1" y1="161.4" x2="-14.8" y2="169.4"/><line x1="-28.1" y1="159.5" x2="-29.5" y2="167.4"/><line x1="-41.9" y1="156.5" x2="-44.0" y2="164.2"/><line x1="-55.4" y1="152.2" x2="-58.1" y2="159.7"/><line x1="-68.5" y1="146.8" x2="-71.8" y2="154.1"/><line x1="-81.0" y1="140.3" x2="-85.0" y2="147.2"/><line x1="-92.9" y1="132.7" x2="-97.5" y2="139.3"/><line x1="-104.1" y1="124.1" x2="-109.3" y2="130.2"/><line x1="-114.6" y1="114.6" x2="-120.2" y2="120.2"/><line x1="-124.1" y1="104.1" x2="-130.2" y2="109.3"/><line x1="-132.7" y1="92.9" x2="-139.3" y2="97.5"/><line x1="-140.3" y1="81.0" x2="-147.2" y2="85.0"/><line x1="-146.8" y1="68.5" x2="-154.1" y2="71.8"/><line x1="-152.2" y1="55.4" x2="-159.7" y2="58.1"/><line x1="-156.5" y1="41.9" x2="-164.2" y2="44.0"/><line x1="-159.5" y1="28.1" x2="-167.4" y2="29.5"/><line x1="-161.4" y1="14.1" x2="-169.4" y2="14.8"/><line x1="-162.0" y1="0.0" x2="-170.0" y2="0.0"/><line x1="-161.4" y1="-14.1" x2="-169.4" y2="-14.8"/><line x1="-159.5" y1="-28.1" x2="-167.4" y2="-29.5"/><line x1="-156.5" y1="-41.9" x2="-164.2" y2="-44.0"/><line x1="-152.2" y1="-55.4" x2="-159.7" y2="-58.1"/><line x1="-146.8" y1="-68.5" x2="-154.1" y2="-71.8"/><line x1="-140.3" y1="-81.0" x2="-147.2" y2="-85.0"/><line x1="-132.7" y1="-92.9" x2="-139.3" y2="-97.5"/><line x1="-124.1" y1="-104.1" x2="-130.2" y2="-109.3"/><line x1="-114.6" y1="-114.6" x2="-120.2" y2="-120.2"/><line x1="-104.1" y1="-124.1" x2="-109.3" y2="-130.2"/><line x1="-92.9" y1="-132.7" x2="-97.5" y2="-139.3"/><line x1="-81.0" y1="-140.3" x2="-85.0" y2="-147.2"/><line x1="-68.5" y1="-146.8" x2="-71.8" y2="-154.1"/><line x1="-55.4" y1="-152.2" x2="-58.1" y2="-159.7"/><line x1="-41.9" y1="-156.5" x2="-44.0" y2="-164.2"/><line x1="-28.1" y1="-159.5" x2="-29.5" y2="-167.4"/><line x1="-14.1" y1="-161.4" x2="-14.8" y2="-169.4"/></g></g>
+            <g class="sp sp1"><polygon class="ln dr" points="0.0,-150.0 129.9,75.0 -129.9,75.0" pathLength="1"/><polygon class="ln dr" points="0.0,150.0 129.9,-75.0 -129.9,-75.0" pathLength="1"/><g class="fd"><circle class="ln" cx="0.0" cy="-150.0" r="8"/><circle class="ln" cx="129.9" cy="75.0" r="8"/><circle class="ln" cx="-129.9" cy="75.0" r="8"/><circle class="ln" cx="0.0" cy="150.0" r="8"/><circle class="ln" cx="129.9" cy="-75.0" r="8"/><circle class="ln" cx="-129.9" cy="-75.0" r="8"/></g></g>
+            <circle class="ln dr" r="150" pathLength="1"/>
+            <g class="sp sp3 fd"><circle class="dot" cx="0.0" cy="-120.0" r="2.4"/><circle class="dot" cx="60.0" cy="-103.9" r="2.4"/><circle class="dot" cx="103.9" cy="-60.0" r="2.4"/><circle class="dot" cx="120.0" cy="-0.0" r="2.4"/><circle class="dot" cx="103.9" cy="60.0" r="2.4"/><circle class="dot" cx="60.0" cy="103.9" r="2.4"/><circle class="dot" cx="0.0" cy="120.0" r="2.4"/><circle class="dot" cx="-60.0" cy="103.9" r="2.4"/><circle class="dot" cx="-103.9" cy="60.0" r="2.4"/><circle class="dot" cx="-120.0" cy="0.0" r="2.4"/><circle class="dot" cx="-103.9" cy="-60.0" r="2.4"/><circle class="dot" cx="-60.0" cy="-103.9" r="2.4"/><circle class="ln" r="120" stroke-dasharray="2 7"/></g>
+            <circle class="ln dr" r="92" pathLength="1"/>
+            <circle class="ln dr" r="56" pathLength="1"/>
+        </svg>
+    <div class="p3-flash" aria-hidden="true"></div>
+    </div>
+    <div class="p3-layer p3-wl">
+    <div class="p3-witch" aria-hidden="true"><div class="p3-fig" id="p3Fig"><video id="welcomeVideo" muted loop playsinline preload="none" disablepictureinpicture disableremoteplayback></video></div></div>
+    </div>
+    <div class="p3-layer p3-front">
+    <button class="action-btn p3-up" id="p3Up" type="button" aria-label="Kembali ke daftar tautan"><i class="fas fa-chevron-up" aria-hidden="true"></i></button>
+    <header class="p3-head"><h2>TANYA PENYIHIR</h2><p>Tulis pertanyaan Anda, sang penyihir akan menjawab dari kristalnya</p></header>
+    <div class="p3-dialog" id="p3Dialog" aria-hidden="true"><p class="wd-text"><span class="wd-ghost" id="p3Ghost"></span><span class="wd-live" id="p3Live"></span></p></div>
+    <div class="ask-bar" id="askBar" data-nodrag>
+    <button class="action-btn" id="askHistory" type="button" aria-label="Buka riwayat obrolan"><i class="fas fa-clock-rotate-left" aria-hidden="true"></i></button>
+    <button class="action-btn" id="askFont" type="button" aria-label="Pilih bentuk tulisan jawaban" aria-haspopup="true" aria-expanded="false"><i class="fas fa-font" aria-hidden="true"></i></button>
+    <div class="font-pop" id="fontPop" role="radiogroup" aria-label="Bentuk tulisan jawaban" hidden>
+        <button class="font-opt" type="button" role="radio" data-f="hand" aria-checked="false"><span class="fx">Aa</span><span class="fl">Tulisan tangan<small>Gaya lama penyihir</small></span></button>
+        <button class="font-opt" type="button" role="radio" data-f="serif" aria-checked="true"><span class="fx">Aa</span><span class="fl">Klasik<small>Bawaan, nyaman dibaca panjang</small></span></button>
+        <button class="font-opt" type="button" role="radio" data-f="sans" aria-checked="false"><span class="fx">Aa</span><span class="fl">Modern<small>Bersih dan ringkas</small></span></button>
+        <button class="font-opt" type="button" role="radio" data-f="clear" aria-checked="false"><span class="fx">Aa</span><span class="fl">Sangat jelas<small>Huruf dibuat mudah dibedakan</small></span></button>
+    </div>
+    <input class="ask-input" id="askInput" type="text" maxlength="500" placeholder="Tanya sang penyihir..." autocomplete="off" enterkeyhint="send" aria-label="Tanya sang penyihir">
+    <button class="action-btn" id="askSend" type="button" aria-label="Kirim pertanyaan"><i class="fas fa-paper-plane" aria-hidden="true"></i></button>
+</div>
+    </div>
+</section>
+
+<!-- Menu penyihir -->
+<div class="menu-backdrop" id="witchBackdrop" data-nodrag></div>
+<section class="witch-menu" id="witchMenu" role="dialog" aria-label="Pilih menu anda" data-nodrag inert>
+    <p class="witch-say" id="witchSay" aria-hidden="true"></p>
+    <div class="witch-options">
+        <button class="opt" id="optLinks" type="button" style="--i:0"><i class="fas fa-link" aria-hidden="true"></i><span>Daftar Tautan</span></button>
+        <button class="opt" id="optChat" type="button" style="--i:1"><i class="fas fa-wand-sparkles" aria-hidden="true"></i><span>Tanya Penyihir</span></button>
+        <button class="opt" id="optTheme" type="button" style="--i:2"><i class="fas fa-moon" aria-hidden="true"></i><span>Mode Gelap</span></button>
+        <button class="opt" id="optFs" type="button" style="--i:3" hidden><i class="fas fa-expand" aria-hidden="true"></i><span>Layar Penuh</span></button>
+        <button class="opt" id="optMusic" type="button" style="--i:4"><i class="fas fa-volume-high" aria-hidden="true"></i><span>Musik: Nyala</span></button>
+        <button class="opt" id="optTrack" type="button" style="--i:5" hidden><i class="fas fa-music" aria-hidden="true"></i><span>Ganti Lagu</span></button>
+        <button class="opt" id="optInstall" type="button" style="--i:6" hidden><i class="fas fa-download" aria-hidden="true"></i><span>Pasang Aplikasi</span></button>
+        <div class="opt vol" style="--i:7"><i class="fas fa-volume-high" id="volIcon" aria-hidden="true"></i><input class="vol-range" id="optVol" type="range" min="0" max="100" step="5" value="50" aria-label="Volume musik"></div>
+    </div>
+</section>
+
+<!-- Pemutar YouTube (kiri) -->
+<div class="yt-backdrop" id="ytBackdrop" data-nodrag aria-hidden="true"></div>
+<aside class="yt-panel" id="ytPanel" aria-label="Pemutar musik YouTube" data-nodrag hidden>
+    <div class="yt-head">
+        <i class="fab fa-youtube yt-logo" aria-hidden="true"></i>
+        <span class="yt-title">PLAYLIST</span>
+        <button class="action-btn small" id="ytManage" type="button" aria-label="Kelola lagu (admin)" hidden><i class="fas fa-gear" aria-hidden="true"></i></button>
+        <button class="action-btn small" id="ytClose" type="button" aria-label="Sembunyikan pemutar"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+    </div>
+    <div class="yt-frame" id="ytFrame" hidden><div id="ytPlayer"></div></div>
+    <p class="yt-now" id="ytNow" hidden></p>
+    <div class="yt-prog" id="ytProg" hidden>
+        <output id="ytTimeCur">0:00</output>
+        <input class="yt-seek" id="ytSeek" type="range" min="0" max="1000" step="5" value="0" disabled aria-label="Posisi lagu">
+        <output id="ytTimeDur">--:--</output>
+    </div>
+    <p class="yt-empty" id="ytEmpty" hidden></p>
+    <div class="yt-ctrl" id="ytCtrl" hidden>
+        <button class="action-btn small yt-toggle" id="ytShuffle" type="button" aria-label="Acak lagu" aria-pressed="false"><i class="fas fa-shuffle" aria-hidden="true"></i></button>
+        <button class="action-btn small" id="ytPrev" type="button" aria-label="Lagu sebelumnya"><i class="fas fa-backward-step" aria-hidden="true"></i></button>
+        <button class="action-btn" id="ytPlay" type="button" aria-label="Putar"><i class="fas fa-play" aria-hidden="true"></i></button>
+        <button class="action-btn small" id="ytNext" type="button" aria-label="Lagu berikutnya"><i class="fas fa-forward-step" aria-hidden="true"></i></button>
+        <button class="action-btn small yt-toggle" id="ytRepeat" type="button" aria-label="Ulangi semua lagu" data-mode="all"><i class="fas fa-repeat" aria-hidden="true"></i></button>
+    </div>
+    <ul class="yt-list" id="ytList" hidden></ul>
+</aside>
+<div class="yt-dock" id="ytDock" data-nodrag hidden>
+    <button class="action-btn yt-fab" id="ytFab" type="button" aria-label="Buka pemutar musik"><i class="fas fa-music" aria-hidden="true"></i></button>
+    <button class="yt-mini" id="ytMini" type="button" aria-label="Buka pemutar musik" hidden><span class="yt-eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="yt-title-mini" id="ytMiniTitle"><span id="ytMiniText"></span></span></button>
+</div>
+
+<!-- Musik latar -->
+<audio id="bgm" src="M.mp4" loop preload="auto"></audio>
+
+<!-- Obrolan AI (Gemini) -->
+<div class="overlay" id="chatOverlay" data-nodrag></div>
+<aside class="chat-panel" id="chatPanel" role="dialog" aria-label="Obrolan dengan ARC" data-nodrag inert>
+    <div class="drawer-head">
+        <div>
+            <h2 id="chatTitle">RIWAYAT</h2>
+            <p id="chatSub">Bertanyalah pada sang penyihir</p>
+        </div>
+        <div class="chat-head-btns">
+            <button class="action-btn small" id="chatClear" type="button" aria-label="Hapus percakapan"><i class="fas fa-trash-can" aria-hidden="true"></i></button>
+            <button class="action-btn small" id="chatClose" type="button" aria-label="Tutup obrolan"><i class="fas fa-xmark" aria-hidden="true"></i></button>
+        </div>
+    </div>
+    <div class="chat-log" id="chatLog" role="log" aria-live="polite"></div>
+    <div class="chat-compose">
+        <textarea id="chatInput" rows="1" maxlength="2000" placeholder="Tulis pesan..." aria-label="Pesan untuk ARC" enterkeyhint="send"></textarea>
+        <button class="action-btn" id="chatSend" type="button" aria-label="Kirim pesan"><i class="fas fa-paper-plane" aria-hidden="true"></i></button>
+    </div>
+    <p class="chat-note" id="chatNote"></p>
+</aside>
+
+<!-- Modal -->
+<div class="overlay" id="modalOverlay" data-nodrag>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <h3 id="modalTitle"></h3>
+        <div class="modal-body" id="modalBody"></div>
+        <div class="modal-footer" id="modalFooter"></div>
+    </div>
+</div>
+
+<div id="toastBox" role="status" aria-live="polite"></div>
+<noscript><p class="hint" style="opacity:1">Aktifkan JavaScript untuk membuka kartu tautan.</p></noscript>
+
+<script>
+(() => {
+'use strict';
+
+/* ============ Konfigurasi ============ */
+const STORAGE_KEY = 'custom_dashboard_data';
+const VIDEOS = { light: '7.mp4', dark: '6.mp4' };
+const DEFAULT_LINKS = [
+    { id: 'card1', title: 'Web Venra', desc: 'WEB VENRA II', url: 'https://venra.ifree.page', icon: 'fas fa-eye' },
+    { id: 'card2', title: 'G_DRIVE',  desc: 'DRIVE G',      url: 'https://drive.google.com', icon: 'fas fa-box-archive' }
+];
+
+const ROMAN = ['0', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
+const AUTO_SPEED = 0.2;      // derajat per frame (60fps)
+const DRAG_FACTOR = 0.4;     // derajat per piksel
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const canHover = matchMedia('(hover: hover)').matches;
+
+/* ============ Util ============ */
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const safeIcon = (s) => (typeof s === 'string' && /^[a-z0-9\- ]{2,60}$/i.test(s)) ? s : 'fas fa-link';
+function normalizeUrl(raw) {
+    let v = String(raw || '').trim();
+    if (!v) return null;
+    if (!/^[a-z][a-z0-9+.\-]*:/i.test(v)) v = 'https://' + v;
+    try { const u = new URL(v); return /^https?:$/.test(u.protocol) ? u.href : null; } catch { return null; }
+}
+const store = {
+    get(k, s = localStorage) { try { return s.getItem(k); } catch { return null; } },
+    set(k, v, s = localStorage) { try { s.setItem(k, v); } catch {} }
+};
+
+/* ============ Elemen ============ */
+const scene = $('scene'), carousel = $('carousel'), dotsEl = $('dots'), hint = $('hint');
+const video = $('witchVideo');
+const witchBtn = $('witchBtn'), witchMenu = $('witchMenu'), witchSay = $('witchSay'), witchBackdrop = $('witchBackdrop');
+const optLinks = $('optLinks'), optTheme = $('optTheme'), optFs = $('optFs'), optMusic = $('optMusic');
+const optTrack = $('optTrack'), dlg = $('witchDialog'), dlgGhost = $('wdGhost'), dlgLive = $('wdLive');
+const bgm = $('bgm'), pulse = $('pulse'), optVol = $('optVol'), volIcon = $('volIcon');
+const modalOverlay = $('modalOverlay'), modalTitle = $('modalTitle'), modalBody = $('modalBody'), modalFooter = $('modalFooter');
+const toastBox = $('toastBox');
+const page1 = $('page1'), page2 = $('page2'), p2Grid = $('p2Grid'), p2Head = $('p2Head');
+const page3 = $('page3'), p3Fig = $('p3Fig'), wvideo = $('welcomeVideo'), p3Circle = page3.querySelector('.p3-circle');
+
+/* ============ State ============ */
+let userLinks = DEFAULT_LINKS.map((l) => ({ ...l }));
+let cardsData = [], cardEls = [];
+let total = 0, stepAngle = 90, radius = 260, activeIndex = -1;
+let currentRotation = 0, targetRotation = 0;
+let pauseUntil = 0, lastFrame = 0;
+let isAdmin = store.get('isAdmin', sessionStorage) === 'true';
+let modalOpen = false, menuOpen = false, chatOpen = false, lastFocus = null;
+
+function setAdmin(v) {
+    isAdmin = v;
+    store.set('isAdmin', v ? 'true' : 'false', sessionStorage);
+    if (typeof ADMIN_CONFIG !== 'undefined' && ADMIN_CONFIG) ADMIN_CONFIG.isAdminLoggedIn = v;
+}
+const pause = (ms = 3500) => { pauseUntil = performance.now() + ms; };
+function lockScroll() { document.documentElement.classList.toggle('no-scroll', modalOpen || menuOpen || chatOpen); }
+
+/* ============ Toast ============ */
+function showToast(message, type = 'info') {
+    const t = document.createElement('div');
+    t.className = 'toast ' + type;
+    const i = document.createElement('i');
+    i.className = 'fas ' + ({ success: 'fa-circle-check', error: 'fa-triangle-exclamation' }[type] || 'fa-circle-info');
+    i.setAttribute('aria-hidden', 'true');
+    const s = document.createElement('span');
+    s.textContent = message;
+    t.append(i, s);
+    toastBox.appendChild(t);
+    while (toastBox.children.length > 3) toastBox.firstElementChild.remove();
+    setTimeout(() => { t.classList.add('out'); setTimeout(() => t.remove(), 300); }, 3200);
+}
+
+/* ============ Modal ============ */
+function showModal({ title, bodyHtml, buttons, onOpen }) {
+    lastFocus = document.activeElement;
+    modalTitle.textContent = title;
+    modalBody.innerHTML = bodyHtml;
+    modalFooter.textContent = '';
+    buttons.forEach((b) => {
+        const el = document.createElement('button');
+        el.type = 'button';
+        el.className = 'btn ' + (b.kind || 'btn-ghost');
+        el.textContent = b.text;
+        el.addEventListener('click', async () => {
+            const keepOpen = b.onClick ? await b.onClick() : undefined;
+            if (keepOpen !== false) closeModal();
+        });
+        modalFooter.appendChild(el);
+    });
+    modalOpen = true;
+    lockScroll();
+    modalOverlay.classList.add('show');
+    if (onOpen) onOpen();
+    const first = modalBody.querySelector('input') || modalFooter.lastElementChild;
+    setTimeout(() => first && first.focus({ preventScroll: true }), 60);
+}
+function closeModal() {
+    if (!modalOpen) return;
+    modalOpen = false;
+    lockScroll();
+    modalOverlay.classList.remove('show');
+    const f = lastFocus;
+    lastFocus = null;
+    if (f && f.isConnected && typeof f.focus === 'function') f.focus({ preventScroll: true });
+}
+let downOnOverlay = false;
+modalOverlay.addEventListener('pointerdown', (e) => { downOnOverlay = e.target === modalOverlay; });
+modalOverlay.addEventListener('click', (e) => { if (downOnOverlay && e.target === modalOverlay) closeModal(); });
+modalOverlay.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
+        e.preventDefault();
+        modalFooter.lastElementChild && modalFooter.lastElementChild.click();
+        return;
+    }
+    if (e.key !== 'Tab') return;
+    const f = [...modalOverlay.querySelectorAll('input, button')].filter((x) => !x.disabled);
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+    else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
+});
+
+/* ============ Tema & video ============ */
+const currentTheme = () => document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+function applyTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    store.set('theme', t);
+    const m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute('content', t === 'dark' ? '#06030e' : '#ffffff');
+}
+let witchTries = 0, witchTimer = 0;
+function witchRetry() {                                  // coba muat ulang bila video belum tampil (jaringan lambat, aplikasi baru dibuka)
+    if (video.classList.contains('ready') || witchTries >= 4) return;
+    witchTries++;
+    video.load();
+    const p = video.play();
+    if (p && p.catch) p.catch(() => {});
+}
+function loadWitch(theme) {
+    video.muted = true;
+    video.src = VIDEOS[theme];
+    video.load();
+    const p = video.play();
+    if (p && p.catch) p.catch(() => {});
+    witchTries = 0;
+    clearTimeout(witchTimer);
+    witchTimer = setTimeout(witchRetry, 8000);           // pengawas: belum siap dalam 8 detik = coba lagi
+    syncWelcome();
+}
+/* Arc menyambut di halaman 2: memakai video penyihir; ganti dengan video "berdiri menyambut" bila ada (mis. 'welcome-light.mp4') */
+const WELCOME_VIDEOS = { light: VIDEOS.light, dark: VIDEOS.dark };
+let p2Near = false;
+function syncWelcome() {
+    if (!p2Near) { if (!wvideo.paused) wvideo.pause(); return; }
+    const want = WELCOME_VIDEOS[currentTheme()];
+    if (wvideo.getAttribute('src') !== want) { wvideo.classList.remove('ready'); wvideo.muted = true; wvideo.src = want; wvideo.load(); }
+    if (!reduced) { const p = wvideo.play(); if (p && p.catch) p.catch(() => {}); }
+}
+wvideo.addEventListener('loadeddata', () => { wvideo.classList.add('ready'); if (reduced) wvideo.pause(); });
+video.addEventListener('loadeddata', () => {
+    clearTimeout(witchTimer);
+    witchTries = 0;
+    video.classList.add('ready');
+    if (reduced) video.pause();
+});
+video.addEventListener('error', () => {
+    console.warn('Video penyihir gagal dimuat:', video.currentSrc);
+    setTimeout(witchRetry, 1500 * (witchTries + 1));
+});
+video.addEventListener('stalled', () => { clearTimeout(witchTimer); witchTimer = setTimeout(witchRetry, 4000); });
+document.addEventListener('visibilitychange', () => {    // kembali ke aplikasi: lanjutkan video yang terhenti
+    if (document.hidden) return;
+    if (!video.classList.contains('ready')) { witchTries = 0; witchRetry(); }
+    else if (video.paused && !reduced) { const p = video.play(); if (p && p.catch) p.catch(() => {}); }
+});
+let themeBusy = false;
+function toggleTheme() {
+    if (themeBusy) return;
+    themeBusy = true;
+    const next = currentTheme() === 'dark' ? 'light' : 'dark';
+    video.classList.remove('ready');                 // pudar dulu, baru ganti tema dan video
+    setTimeout(() => {
+        applyTheme(next);
+        loadWitch(next);
+        showToast(next === 'dark' ? 'Mode gelap aktif' : 'Mode terang aktif', 'info');
+        themeBusy = false;
+    }, reduced ? 0 : 320);
+}
+
+/* ============ Layar penuh ============ */
+const fsRoot = document.documentElement;
+const fsRequest = fsRoot.requestFullscreen || fsRoot.webkitRequestFullscreen;
+const fsExit = document.exitFullscreen || document.webkitExitFullscreen;
+const fsActive = () => document.fullscreenElement || document.webkitFullscreenElement;
+if (fsRequest && fsExit) optFs.hidden = false;       // iPhone tidak mendukung: pilihan disembunyikan
+async function toggleFullscreen() {
+    try {
+        if (!fsActive()) await fsRequest.call(fsRoot);
+        else await fsExit.call(document);
+    } catch { showToast('Layar penuh tidak didukung di browser ini', 'error'); }
+}
+
+/* ============ Musik latar ============ */
+const MUSIC_KEY = 'music';
+let musicWanted = store.get(MUSIC_KEY) !== 'off';    // bawaan: menyala
+let musicStarted = false;
+/* Daftar lagu latar. Untuk menambah lagu, taruh berkasnya di folder yang sama lalu tambahkan baris di sini;
+   pilihan "Ganti Lagu" muncul otomatis saat lagunya lebih dari satu. */
+const TRACKS = [
+    { title: 'Musik utama', src: 'M.mp4' }
+];
+let trackIdx = parseInt(store.get('track'), 10);
+if (!(trackIdx >= 0 && trackIdx < TRACKS.length)) trackIdx = 0;
+if (!bgm.src.endsWith(TRACKS[trackIdx].src)) bgm.src = TRACKS[trackIdx].src;
+bgm.loop = TRACKS.length === 1;                       // satu lagu: ulang terus; banyak lagu: lanjut ke berikutnya
+if (TRACKS.length > 1) optTrack.hidden = false;
+function nextTrack() {
+    trackIdx = (trackIdx + 1) % TRACKS.length;
+    store.set('track', String(trackIdx));
+    bgm.src = TRACKS[trackIdx].src;
+    if (musicWanted && musicStarted) tryPlay();
+    showToast('Lagu: ' + TRACKS[trackIdx].title, 'info');
+}
+bgm.addEventListener('ended', () => { if (TRACKS.length > 1) nextTrack(); });
+
+let vol = parseInt(store.get('volume'), 10);          // 0-100
+if (!(vol >= 0 && vol <= 100)) vol = 50;
+bgm.volume = vol / 100;
+optVol.value = vol;
+function setVolIcon() { volIcon.className = 'fas ' + (vol === 0 ? 'fa-volume-xmark' : vol < 40 ? 'fa-volume-low' : 'fa-volume-high'); }
+setVolIcon();
+optVol.addEventListener('input', () => {
+    vol = +optVol.value;
+    bgm.volume = vol / 100;
+    store.set('volume', String(vol));
+    setVolIcon();
+});
+optVol.addEventListener('change', () => sfx('pick'));
+
+/* ============ Efek suara (dibuat langsung oleh browser, tanpa berkas) ============ */
+let actx = null;
+function audioCtx() {
+    if (!actx) { const C = window.AudioContext || window.webkitAudioContext; if (!C) return null; actx = new C(); }
+    if (actx.state === 'suspended') actx.resume();
+    return actx;
+}
+function tone(c, freq, at, dur, type, peak) {
+    const o = c.createOscillator(), g = c.createGain();
+    o.type = type; o.frequency.value = freq;
+    g.gain.setValueAtTime(0.0001, at);
+    g.gain.linearRampToValueAtTime(peak, at + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+    o.connect(g); g.connect(c.destination);
+    o.start(at); o.stop(at + dur + 0.05);
+}
+function sfx(kind) {
+    if (!musicWanted || vol === 0) return;         // ikut pengaturan musik dan volume
+    const c = audioCtx();
+    if (!c) return;
+    const t = c.currentTime, g = 0.18 * vol / 50;
+    if (kind === 'open')       [659, 880, 1319].forEach((f, i) => tone(c, f, t + i * 0.07, 0.38, 'sine', g));
+    else if (kind === 'close') [880, 587].forEach((f, i) => tone(c, f, t + i * 0.07, 0.25, 'sine', g));
+    else if (kind === 'pick')  tone(c, 1047, t, 0.14, 'triangle', g);
+}
+function pulseWitch() {
+    if (reduced) return;
+    pulse.classList.remove('go');
+    void pulse.offsetWidth;                         // mulai ulang animasi
+    pulse.classList.add('go');
+}
+function tryPlay() {
+    if (ytPlaying) return Promise.resolve(true);      // YouTube sedang main: musik latar tidak ikut menyala
+    const p = bgm.play();
+    return p && p.then ? p.then(() => { musicStarted = true; return true; }, () => false) : Promise.resolve(true);
+}
+/* Browser memblokir suara otomatis: mulai pada sentuhan/klik/tombol pertama */
+const UNLOCK_EVENTS = ['pointerup', 'click', 'keydown', 'touchend'];
+function unlockMusic(e) {
+    if (e && e.target && e.target.closest && e.target.closest('.yt-panel, .yt-dock')) return;
+    if (!musicWanted || musicStarted) return;
+    tryPlay().then((ok) => { if (ok) UNLOCK_EVENTS.forEach((ev) => window.removeEventListener(ev, unlockMusic, true)); });
+}
+UNLOCK_EVENTS.forEach((ev) => window.addEventListener(ev, unlockMusic, true));
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) bgm.pause();
+    else if (musicWanted && musicStarted) tryPlay();
+});
+function toggleMusic() {
+    if (musicWanted) {
+        musicWanted = false;
+        bgm.pause();
+        ytPause();
+        store.set(MUSIC_KEY, 'off');
+        showToast('Musik latar dimatikan', 'info');
+    } else {
+        musicWanted = true;
+        store.set(MUSIC_KEY, 'on');
+        tryPlay().then((ok) => showToast(ok ? 'Musik latar dinyalakan' : 'Musik tidak bisa diputar', ok ? 'info' : 'error'));
+    }
+}
+
+/* ============ Playlist YouTube (panel kiri) ============ */
+const YT_MAX = 50;
+const YT_ID = /^[\w-]{11}$/;
+let playlist = [];                 // [{ id, vid, title }]
+let ytVolume = 50;                 // 0-100, diatur admin, berlaku untuk semua pengunjung
+let ytIndex = 0, ytPlayer = null, ytReady = false, ytApi = 'idle';
+let ytPlaying = false, ytUserStarted = false, ytPendingPlay = false, ytErrors = 0, ytOpen = true;
+/* Pilihan pengunjung diingat di browsernya sendiri */
+let ytShuffle = store.get('ytShuffle') === '1';
+let ytRepeat = ['all', 'one', 'off'].includes(store.get('ytRepeat')) ? store.get('ytRepeat') : 'all';
+let ytHistory = [], ytBag = null, ytBagLen = -1;      // riwayat & undian untuk mode acak
+let ytScrolled = -1, ytMiniKey = '';   // lagu terakhir yang daftarnya digulirkan; penanda ukur judul kapsul
+const ytTitles = {};               // judul otomatis dari YouTube bila admin tidak mengisi judul
+
+function ytId(raw) {
+    const v = String(raw || '').trim();
+    if (YT_ID.test(v)) return v;
+    let u;
+    try { u = new URL(/^[a-z][a-z0-9+.\-]*:/i.test(v) ? v : 'https://' + v); } catch { return null; }
+    const h = u.hostname.replace(/^(www|m|music)\./, '');
+    let id = null;
+    if (h === 'youtu.be') id = u.pathname.split('/')[1];
+    else if (h === 'youtube.com' || h === 'youtube-nocookie.com') {
+        if (u.pathname === '/watch') id = u.searchParams.get('v');
+        else { const m = u.pathname.match(/^\/(?:embed|shorts|live|v)\/([\w-]{11})/); if (m) id = m[1]; }
+    }
+    return id && YT_ID.test(id) ? id : null;
+}
+const ytName = (t, i) => (t && (t.title || ytTitles[t.vid])) || 'Lagu ' + (i + 1);
+const cleanTracks = (arr) => arr
+    .filter((t) => t && typeof t.vid === 'string' && YT_ID.test(t.vid))
+    .slice(0, YT_MAX)
+    .map((t, i) => ({
+        id: typeof t.id === 'string' && t.id ? t.id : 'yt_' + Date.now() + '_' + i,
+        vid: t.vid, title: typeof t.title === 'string' ? t.title.slice(0, 80) : ''
+    }));
+function loadYt(o) {
+    if (!o) return;
+    if (Array.isArray(o.playlist)) playlist = cleanTracks(o.playlist);
+    const k = playlist.findIndex((t) => t.vid === store.get('ytTrack'));      // lanjut dari lagu terakhir
+    if (k >= 0) ytIndex = k;
+    const v = Number(o.ytVolume);
+    if (Number.isFinite(v) && v >= 0 && v <= 100) ytVolume = Math.round(v);
+}
+/* Aura penyihir menyala selama ada musik (YouTube atau musik latar) */
+function updateAura() {
+    document.body.classList.toggle('music-on', ytPlaying || (musicWanted && !bgm.paused && !bgm.ended));
+}
+['play', 'pause', 'ended'].forEach((ev) => bgm.addEventListener(ev, updateAura));
+function ytApplyVolume() { if (ytReady) { try { ytPlayer.setVolume(ytVolume); } catch {} } }
+
+function ytLoadApi() {
+    if (ytApi !== 'idle') return;
+    ytApi = 'loading';
+    window.onYouTubeIframeAPIReady = () => { ytApi = 'ready'; ytMakePlayer(); };
+    const s = document.createElement('script');
+    s.src = 'https://www.youtube.com/iframe_api';
+    s.async = true;
+    s.onerror = () => { ytApi = 'failed'; showToast('Pemutar YouTube gagal dimuat', 'error'); };
+    document.head.appendChild(s);
+}
+function ytMakePlayer() {
+    if (ytPlayer || ytApi !== 'ready' || !playlist.length) return;
+    const vars = { playsinline: 1, rel: 0, modestbranding: 1 };
+    if (/^https?:$/.test(location.protocol)) vars.origin = location.origin;
+    ytPlayer = new YT.Player('ytPlayer', {
+        width: '100%', height: '100%', videoId: playlist[ytIndex].vid, playerVars: vars,
+        events: { onReady: ytOnReady, onStateChange: ytOnState, onError: ytOnError }
+    });
+}
+function ytOnReady() {
+    ytReady = true;
+    ytApplyVolume();
+    const p = ytPendingPlay;
+    ytPendingPlay = false;
+    ytLoad(ytIndex, p);
+    ytRender();
+}
+function ytOnState(e) {
+    const S = YT.PlayerState;
+    try {
+        const d = ytPlayer.getVideoData();
+        if (d && d.video_id && d.title) ytTitles[d.video_id] = d.title;
+    } catch {}
+    if (e.data === S.PLAYING) { ytPlaying = true; ytErrors = 0; bgm.pause(); ytApplyVolume(); }
+    else if (e.data === S.PAUSED) ytPlaying = false;
+    else if (e.data === S.ENDED) { ytPlaying = false; ytStep(1, true, true); return; }
+    ytRender();
+    ytUpdateProg();
+}
+function ytOnError() {
+    ytPlaying = false;
+    if (!ytUserStarted) { ytRender(); return; }
+    showToast('Tidak bisa diputar di sini: ' + ytName(playlist[ytIndex], ytIndex), 'error');
+    ytErrors++;
+    if (playlist.length > 1 && ytErrors < playlist.length) setTimeout(() => ytStep(1, true), 1200);
+    else { ytErrors = 0; ytUserStarted = false; }
+    ytRender();
+}
+function ytLoad(i, play, noHist) {
+    if (!playlist.length) return;
+    const to = ((i % playlist.length) + playlist.length) % playlist.length;
+    if (ytShuffle && !noHist && to !== ytIndex) { ytHistory.push(ytIndex); if (ytHistory.length > 50) ytHistory.shift(); }
+    ytIndex = to;
+    if (ytBag) ytBag = ytBag.filter((x) => x !== ytIndex);
+    store.set('ytTrack', playlist[ytIndex].vid);
+    if (play) ytUserStarted = true;
+    ytRender();
+    if (!ytReady) { ytPendingPlay = !!play; ytLoadApi(); ytMakePlayer(); return; }
+    try {
+        if (play) ytPlayer.loadVideoById(playlist[ytIndex].vid);
+        else ytPlayer.cueVideoById(playlist[ytIndex].vid);
+    } catch {}
+}
+function ytRefillBag() { ytBag = playlist.map((_, i) => i).filter((i) => i !== ytIndex); }
+function ytNextIndex(auto) {          // -1 = berhenti (hanya saat lagu selesai sendiri dan ulang mati)
+    const n = playlist.length;
+    if (auto && ytRepeat === 'one') return ytIndex;
+    if (!ytShuffle) {
+        if (ytIndex + 1 < n) return ytIndex + 1;
+        return (auto && ytRepeat === 'off') ? -1 : 0;
+    }
+    if (!ytBag) ytRefillBag();
+    ytBag = ytBag.filter((i) => i < n && i !== ytIndex);
+    if (!ytBag.length) {
+        if (auto && ytRepeat === 'off') return -1;
+        ytRefillBag();
+        if (!ytBag.length) return ytIndex;
+    }
+    return ytBag.splice(Math.floor(Math.random() * ytBag.length), 1)[0];
+}
+function ytStep(d, play = true, auto = false) {
+    if (!playlist.length) return;
+    if (d < 0) {
+        if (ytShuffle && ytHistory.length) ytLoad(ytHistory.pop(), play, true);
+        else ytLoad(ytIndex - 1, play);
+        return;
+    }
+    const nx = ytNextIndex(auto);
+    if (nx < 0) { ytLoad(ytShuffle ? ytIndex : 0, false); return; }
+    ytLoad(nx, play);
+}
+function ytToggle() {
+    if (!playlist.length) return;
+    ytUserStarted = true;
+    if (!ytReady) { ytPendingPlay = true; ytLoadApi(); ytMakePlayer(); showToast('Pemutar sedang disiapkan...', 'info'); return; }
+    if (ytPlaying) ytPlayer.pauseVideo(); else ytPlayer.playVideo();
+}
+function ytPause() { if (ytReady && ytPlaying) { try { ytPlayer.pauseVideo(); } catch {} } }
+
+function ytRender() {
+    const has = playlist.length > 0, show = has || isAdmin;
+    $('ytPanel').hidden = !show;
+    $('ytBackdrop').classList.toggle('show', ytOpen && show);
+    $('ytDock').hidden = !show || ytOpen;
+    const mini = $('ytMini');
+    mini.hidden = !has || !ytUserStarted;
+    mini.classList.toggle('paused', !ytPlaying);
+    const nm = has ? ytName(playlist[ytIndex], ytIndex) : '';
+    $('ytMiniText').textContent = nm;
+    mini.title = nm;
+    const miniKey = nm + ((!$('ytDock').hidden && !mini.hidden) ? '|1' : '|0');
+    if (miniKey !== ytMiniKey) { ytMiniKey = miniKey; ytMarquee(); }
+    $('ytFrame').hidden = !has;
+    $('ytCtrl').hidden = !has;
+    $('ytList').hidden = !has;
+    $('ytNow').hidden = !has;
+    $('ytProg').hidden = !has;
+    $('ytEmpty').hidden = has;
+    $('ytEmpty').textContent = isAdmin ? 'Belum ada lagu. Tekan ikon pengaturan untuk menambah.' : '';
+    $('ytManage').hidden = !isAdmin;
+    $('ytNow').textContent = has ? ytName(playlist[ytIndex], ytIndex) : '';
+    $('ytPlay').querySelector('i').className = 'fas ' + (ytPlaying ? 'fa-pause' : 'fa-play');
+    $('ytPlay').setAttribute('aria-label', ytPlaying ? 'Jeda' : 'Putar');
+    $('ytFab').classList.toggle('playing', ytPlaying);
+    updateAura();
+    const sh = $('ytShuffle'), rp = $('ytRepeat');
+    sh.classList.toggle('on', ytShuffle);
+    sh.setAttribute('aria-pressed', String(ytShuffle));
+    sh.title = 'Acak: ' + (ytShuffle ? 'nyala' : 'mati');
+    rp.classList.toggle('on', ytRepeat !== 'off');
+    rp.dataset.mode = ytRepeat;
+    const rpName = { all: 'Ulangi semua lagu', one: 'Ulangi satu lagu', off: 'Tidak mengulang' }[ytRepeat];
+    rp.setAttribute('aria-label', rpName);
+    rp.title = rpName;
+    const list = $('ytList'), st = list.scrollTop;
+    list.textContent = '';
+    playlist.forEach((t, i) => {
+        const li = document.createElement('li');
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'yt-item' + (i === ytIndex ? ' current' : '');
+        if (i === ytIndex) b.setAttribute('aria-current', 'true');
+        const n = document.createElement('span'); n.className = 'n'; n.textContent = String(i + 1);
+        const s = document.createElement('span'); s.className = 't'; s.textContent = ytName(t, i);
+        b.append(n, s);
+        b.addEventListener('click', () => ytLoad(i, true));
+        li.appendChild(b);
+        list.appendChild(li);
+    });
+    list.scrollTop = st;
+    if (has && ytScrolled !== ytIndex && list.clientHeight > 0) {      // daftar ikut turun ke lagu yang diputar
+        const cur = list.children[ytIndex];
+        if (cur) { list.scrollTop = Math.max(0, cur.offsetTop - (list.clientHeight - cur.offsetHeight) / 2); ytScrolled = ytIndex; }
+    }
+    ytFade();
+    requestAnimationFrame(ytFade);
+}
+/* ----- Bilah progres: posisi lagu, durasi, dan geser untuk maju/mundur ----- */
+let ytSeeking = false;
+function fmtTime(sec) {
+    const t = Math.max(0, Math.floor(sec || 0)), h = Math.floor(t / 3600), m = Math.floor((t % 3600) / 60), x = t % 60;
+    return (h ? h + ':' + String(m).padStart(2, '0') : String(m)) + ':' + String(x).padStart(2, '0');
+}
+function ytUpdateProg() {
+    const seek = $('ytSeek');
+    let dur = 0, cur = 0;
+    if (ytReady) { try { dur = ytPlayer.getDuration() || 0; cur = ytPlayer.getCurrentTime() || 0; } catch {} }
+    seek.disabled = !(dur > 0);
+    $('ytTimeDur').textContent = dur > 0 ? fmtTime(dur) : '--:--';
+    if (ytSeeking) return;                                   // jangan melawan jari yang sedang menggeser
+    const ratio = dur > 0 ? Math.min(1, cur / dur) : 0;
+    seek.value = String(Math.round(ratio * 1000));
+    seek.style.setProperty('--p', (ratio * 100) + '%');
+    $('ytTimeCur').textContent = fmtTime(cur);
+    seek.setAttribute('aria-valuetext', dur > 0 ? fmtTime(cur) + ' dari ' + fmtTime(dur) : 'durasi belum diketahui');
+}
+(() => {
+    const seek = $('ytSeek');
+    seek.addEventListener('input', () => {
+        ytSeeking = true;
+        let dur = 0;
+        try { dur = ytReady ? ytPlayer.getDuration() || 0 : 0; } catch {}
+        seek.style.setProperty('--p', (seek.value / 10) + '%');
+        $('ytTimeCur').textContent = fmtTime(dur * seek.value / 1000);
+    });
+    seek.addEventListener('change', () => {
+        try {
+            const dur = ytReady ? ytPlayer.getDuration() || 0 : 0;
+            if (dur > 0) { ytUserStarted = true; ytPlayer.seekTo(dur * seek.value / 1000, true); }
+        } catch {}
+        ytSeeking = false;
+        ytUpdateProg();
+    });
+    seek.addEventListener('blur', () => { ytSeeking = false; });
+    setInterval(() => { if (ytReady && ytOpen && !document.hidden) ytUpdateProg(); }, 500);
+})();
+function ytMarquee() {
+    const box = $('ytMiniTitle');
+    box.classList.remove('marq');
+    const over = box.scrollWidth - box.clientWidth;      // lebar teks yang tersembunyi; hanya terukur saat kapsul tampil
+    if (over > 4 && !reduced) {
+        box.style.setProperty('--shift', over + 'px');
+        box.style.setProperty('--dur', Math.max(5, over / 14 + 3) + 's');
+        box.classList.add('marq');
+    }
+}
+function ytFade() {
+    const l = $('ytList');
+    l.classList.toggle('fade-t', l.scrollTop > 2);
+    l.classList.toggle('fade-b', l.scrollTop + l.clientHeight < l.scrollHeight - 2);
+}
+$('ytList').addEventListener('scroll', ytFade, { passive: true });
+window.addEventListener('resize', () => { ytFade(); ytMarquee(); });
+function ytSync() {
+    if (ytBagLen !== playlist.length) { ytBagLen = playlist.length; ytBag = null; ytHistory = []; }
+    ytRender();
+    if (playlist.length) {
+        if (ytIndex >= playlist.length) ytIndex = 0;
+        ytLoadApi();
+        ytMakePlayer();
+    }
+}
+function ytSetOpen(open, save = true) {
+    ytOpen = open;
+    if (save && innerWidth >= 760) store.set('ytOpen', open ? '1' : '0');      // di HP tidak disimpan: selalu mulai tertutup
+    $('ytPanel').classList.toggle('closed', !open);
+    $('ytPanel').inert = !open;
+    ytRender();
+}
+$('ytClose').addEventListener('click', () => ytSetOpen(false));
+$('ytFab').addEventListener('click', () => ytSetOpen(true));
+$('ytBackdrop').addEventListener('click', () => ytSetOpen(false));
+$('ytMini').addEventListener('click', () => ytSetOpen(true));
+$('ytShuffle').addEventListener('click', () => {
+    ytShuffle = !ytShuffle;
+    store.set('ytShuffle', ytShuffle ? '1' : '0');
+    ytBag = null; ytHistory = [];
+    ytRender();
+    showToast('Acak: ' + (ytShuffle ? 'nyala' : 'mati'), 'info');
+});
+$('ytRepeat').addEventListener('click', () => {
+    ytRepeat = { all: 'one', one: 'off', off: 'all' }[ytRepeat];
+    store.set('ytRepeat', ytRepeat);
+    ytRender();
+    showToast({ all: 'Ulangi semua lagu', one: 'Ulangi satu lagu', off: 'Tidak mengulang' }[ytRepeat], 'info');
+});
+$('ytPlay').addEventListener('click', ytToggle);
+$('ytPrev').addEventListener('click', () => ytStep(-1, true));
+$('ytNext').addEventListener('click', () => ytStep(1, true));
+$('ytManage').addEventListener('click', () => openMusicManager());
+
+/* ----- Judul otomatis: dicari sekali oleh admin, lalu disimpan permanen ----- */
+async function ytFetchTitle(vid) {
+    const u = encodeURIComponent('https://www.youtube.com/watch?v=' + vid);
+    for (const api of ['https://noembed.com/embed?url=', 'https://www.youtube.com/oembed?format=json&url=']) {
+        const ctl = new AbortController();
+        const to = setTimeout(() => ctl.abort(), 4000);
+        try {
+            const r = await fetch(api + u, { signal: ctl.signal });
+            if (!r.ok) continue;
+            const j = await r.json();
+            if (j && typeof j.title === 'string' && j.title.trim()) return j.title.trim().slice(0, 80);
+        } catch {} finally { clearTimeout(to); }
+    }
+    return '';
+}
+async function ytFillTitles() {
+    const miss = playlist.filter((t) => !t.title);
+    let n = 0;
+    await Promise.all(miss.map(async (t) => {
+        const title = await ytFetchTitle(t.vid);
+        if (title && !t.title) { t.title = title; n++; }
+    }));
+    if (n) { ytRender(); saveState(); }
+    return n;
+}
+
+/* ----- Menu admin: ganti, hapus, tambah lagu, atur volume ----- */
+function ytVolIcon(v) { return 'fas ' + (v === 0 ? 'fa-volume-xmark' : v < 40 ? 'fa-volume-low' : 'fa-volume-high'); }
+function openMusicManager() {
+    if (isAdmin && playlist.some((t) => !t.title)) {
+        ytFillTitles().then((n) => { if (n && modalOpen && $('mVol')) openMusicManager(); });
+    }
+    const rows = playlist.map((t, i) => `
+        <li class="ytm-row" data-i="${i}">
+            <img src="https://i.ytimg.com/vi/${esc(t.vid)}/default.jpg" alt="" loading="lazy" width="48" height="36">
+            <span class="ytm-title">${esc(ytName(t, i))}</span>
+            <button type="button" class="mini edit" data-a="edit" aria-label="Ganti ${esc(ytName(t, i))}"><i class="fas fa-pencil" aria-hidden="true"></i></button>
+            <button type="button" class="mini del" data-a="del" aria-label="Hapus ${esc(ytName(t, i))}"><i class="fas fa-trash-can" aria-hidden="true"></i></button>
+        </li>`).join('');
+    showModal({
+        title: 'Kelola musik',
+        bodyHtml: `
+            <div class="ytm-vol">
+                <i id="mVolIcon" class="${ytVolIcon(ytVolume)}" aria-hidden="true"></i>
+                <input class="vol-range" id="mVol" type="range" min="0" max="100" step="5" value="${ytVolume}" aria-label="Volume lagu">
+                <output id="mVolNum">${ytVolume}</output>
+            </div>
+            <ul class="ytm-list">${rows || '<li class="ytm-empty">Belum ada lagu. Tekan "Tambah lagu".</li>'}</ul>`,
+        onOpen: () => {
+            const vr = $('mVol');
+            vr.addEventListener('input', () => {
+                ytVolume = +vr.value;
+                ytApplyVolume();
+                $('mVolNum').textContent = String(ytVolume);
+                $('mVolIcon').className = ytVolIcon(ytVolume);
+            });
+            vr.addEventListener('change', () => saveState());
+            modalBody.querySelectorAll('.ytm-row').forEach((li) => {
+                const i = +li.dataset.i;
+                li.querySelector('[data-a="edit"]').addEventListener('click', () => ytTrackModal(i));
+                li.querySelector('[data-a="del"]').addEventListener('click', () => ytDeleteModal(i));
+            });
+        },
+        buttons: [
+            { text: 'Tambah lagu', kind: 'btn-primary', onClick: () => {
+                if (playlist.length >= YT_MAX) { showToast('Maksimal ' + YT_MAX + ' lagu', 'error'); return false; }
+                ytTrackModal(-1); return false;
+            } },
+            { text: 'Selesai' }
+        ]
+    });
+}
+function ytTrackModal(i) {
+    const isNew = i < 0, t = isNew ? null : playlist[i];
+    showModal({
+        title: isNew ? 'Tambah lagu' : 'Ganti lagu',
+        bodyHtml: field('fYtUrl', 'Tautan YouTube', 'text', 'inputmode="url" autocomplete="off" placeholder="https://www.youtube.com/watch?v=..."')
+            + field('fYtTitle', 'Judul (boleh dikosongkan)', 'text', 'maxlength="80" autocomplete="off"'),
+        onOpen: () => { if (t) { $('fYtUrl').value = 'https://youtu.be/' + t.vid; $('fYtTitle').value = t.title; } },
+        buttons: [
+            { text: 'Batal', onClick: () => { openMusicManager(); return false; } },
+            { text: isNew ? 'Tambah' : 'Simpan', kind: 'btn-primary', onClick: () => {
+                const vid = ytId($('fYtUrl').value);
+                if (!vid) { showToast('Tautan YouTube tidak valid', 'error'); return false; }
+                const title = $('fYtTitle').value.trim();
+                if (isNew) {
+                    playlist.push({ id: 'yt_' + Date.now(), vid, title });
+                    if (playlist.length === 1) ytLoad(0, false);
+                } else {
+                    const changed = t.vid !== vid;
+                    t.vid = vid; t.title = title;
+                    if (changed && i === ytIndex) ytLoad(ytIndex, ytPlaying);
+                }
+                ytSync(); saveState(); openMusicManager();
+                return false;
+            } }
+        ]
+    });
+}
+function ytDeleteModal(i) {
+    const t = playlist[i];
+    if (!t) return;
+    showModal({
+        title: 'Hapus lagu',
+        bodyHtml: `<p>Hapus <strong>"${esc(ytName(t, i))}"</strong> dari daftar lagu?</p>`,
+        buttons: [
+            { text: 'Batal', onClick: () => { openMusicManager(); return false; } },
+            { text: 'Hapus', kind: 'btn-danger', onClick: () => {
+                const wasCurrent = i === ytIndex, wasPlaying = ytPlaying;
+                playlist.splice(i, 1);
+                if (i < ytIndex) ytIndex--;
+                if (!playlist.length) {
+                    ytIndex = 0; ytPlaying = false;
+                    if (ytReady) { try { ytPlayer.stopVideo(); } catch {} }
+                } else if (wasCurrent) {
+                    if (ytIndex >= playlist.length) ytIndex = 0;
+                    ytLoad(ytIndex, wasPlaying);
+                }
+                ytSync(); saveState(); openMusicManager();
+                return false;
+            } }
+        ]
+    });
+}
+
+/* ============ Penyihir & menunya ============ */
+const SAY = 'Pilih menu anda';
+let typeTimer = 0;
+function setOpt(btn, icon, label) {
+    btn.querySelector('i').className = 'fas ' + icon;
+    btn.querySelector('span').textContent = label;
+}
+function refreshMenuLabels() {
+    const dark = currentTheme() === 'dark';
+    setOpt(optTheme, dark ? 'fa-sun' : 'fa-moon', dark ? 'Mode Terang' : 'Mode Gelap');
+    const full = !!fsActive();
+    setOpt(optFs, full ? 'fa-compress' : 'fa-expand', full ? 'Keluar Layar Penuh' : 'Layar Penuh');
+    setOpt(optTrack, 'fa-music', 'Lagu: ' + TRACKS[trackIdx].title);
+    setOpt(optMusic, musicWanted ? 'fa-volume-high' : 'fa-volume-xmark', musicWanted ? 'Musik: Nyala' : 'Musik: Mati');
+}
+/* Sapaan penyihir: kotak dialog di kiri yang berganti terus secara otomatis */
+const waktu = () => { const h = new Date().getHours(); return h < 11 ? 'pagi' : h < 15 ? 'siang' : h < 18 ? 'sore' : 'malam'; };
+const GREETS = [
+    () => `selamat ${waktu()}...!`,
+    () => 'hallo...',
+    () => 'mau ke mana hari ini?',
+    () => isAdmin ? 'selamat datang, admin...' : 'silahkan Login...',
+    () => 'pilih kartu anda...'
+];
+let greetIdx = -1, gTimers = [], gType = 0;
+const later = (fn, ms) => { gTimers.push(setTimeout(fn, ms)); };
+function stopGreets() {
+    gTimers.forEach(clearTimeout); gTimers = [];
+    clearInterval(gType);
+    dlg.classList.remove('show');
+}
+function nextGreet() {
+    let i;
+    do { i = Math.floor(Math.random() * GREETS.length); } while (i === greetIdx);
+    greetIdx = i;
+    const text = GREETS[i]();
+    dlgGhost.textContent = text;
+    dlgLive.textContent = '';
+    dlg.classList.add('show');
+    const done = () => {
+        dlgLive.classList.remove('typing');
+        later(() => { dlg.classList.remove('show'); later(nextGreet, 1800); }, 2400 + text.length * 50);
+    };
+    if (reduced) { dlgLive.textContent = text; done(); return; }
+    dlgLive.classList.add('typing');
+    later(() => {
+        let n = 0;
+        gType = setInterval(() => {
+            dlgLive.textContent = text.slice(0, ++n);
+            if (n >= text.length) { clearInterval(gType); done(); }
+        }, 42);
+    }, 350);
+}
+function startGreets() { stopGreets(); later(nextGreet, 600); }
+document.addEventListener('visibilitychange', () => { if (document.hidden) stopGreets(); else startGreets(); });
+function typeSay() {
+    clearInterval(typeTimer);
+    if (reduced) { witchSay.textContent = SAY; return; }
+    witchSay.textContent = '';
+    witchSay.classList.add('typing');
+    let n = 0;
+    typeTimer = setInterval(() => {
+        witchSay.textContent = SAY.slice(0, ++n);
+        if (n >= SAY.length) { clearInterval(typeTimer); witchSay.classList.remove('typing'); }
+    }, 45);
+}
+function setMenu(open, quiet = false) {
+    if (open === menuOpen) return;
+    menuOpen = open;
+    lockScroll();
+    if (!quiet) sfx(open ? 'open' : 'close');
+    witchMenu.inert = !open;
+    witchMenu.classList.toggle('show', open);
+    witchBackdrop.classList.toggle('show', open);
+    witchBtn.setAttribute('aria-expanded', String(open));
+    if (open) {
+        refreshMenuLabels();
+        typeSay();
+        dismissHint();
+        optLinks.focus({ preventScroll: true });
+    } else {
+        clearInterval(typeTimer);
+        witchSay.classList.remove('typing');
+        witchBtn.focus({ preventScroll: true });
+    }
+}
+witchBtn.addEventListener('click', () => {
+    if (justDragged) { justDragged = false; return; }   // lepas dari seretan, bukan sentuhan
+    pulseWitch();
+    setMenu(!menuOpen);
+});
+witchBackdrop.addEventListener('click', () => setMenu(false));
+const choose = (fn) => () => { sfx('pick'); pulseWitch(); setMenu(false, true); fn(); };
+optLinks.addEventListener('click', choose(() => smoothScrollTo(page2.offsetTop)));       // daftar tautan = halaman 2
+optTheme.addEventListener('click', choose(toggleTheme));
+optFs.addEventListener('click', choose(toggleFullscreen));
+optMusic.addEventListener('click', choose(toggleMusic));
+optTrack.addEventListener('click', choose(nextTrack));
+
+/* ============ Obrolan AI (Gemini lewat chat.php) ============ */
+const chatPanel = $('chatPanel'), chatOverlay = $('chatOverlay'), chatLog = $('chatLog');
+const chatInput = $('chatInput'), chatSend = $('chatSend'), optChat = $('optChat');
+/* Satu AI (Gemini) untuk mode terang maupun gelap */
+const CHAT_AI = {
+    gemini: { name: 'Gemini', maker: 'Google', key: 'arc_chat_v1', hello: 'Salam, pengelana. Aku ARC, penjaga portal ini. Tanyakan apa saja, dan kristalku akan menjawab.' }
+};
+const chatProv = () => 'gemini';
+let chatHist = [], chatBusy = false, chatCur = chatProv();
+chatHist = loadChat(chatCur);
+function loadChat(prov) {
+    try {
+        const saved = JSON.parse(store.get(CHAT_AI[prov].key) || '[]');
+        return Array.isArray(saved) ? saved.filter((m) => m && (m.r === 'user' || m.r === 'model') && typeof m.t === 'string').slice(-40) : [];
+    } catch { return []; }
+}
+const saveChat = () => store.set(CHAT_AI[chatCur].key, JSON.stringify(chatHist.slice(-40)));
+
+/* Penyaji markdown ringan: semua teks di-escape dulu, jadi aman dari HTML liar */
+function mdToHtml(src) {
+    const blocks = [];
+    let t = esc(src).replace(/```[\w-]*\n?([\s\S]*?)```/g, (_, c) => { blocks.push(c.replace(/\n$/, '')); return '\uE000' + (blocks.length - 1) + '\uE001'; });
+    t = t.replace(/`([^`\n]+)`/g, '<code>$1</code>')
+         .replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>')
+         .replace(/^[ \t]*[-*•] +(.+)$/gm, '<li>$1</li>')
+         .replace(/(?:<li>.*<\/li>\n?)+/g, (m) => '<ul>' + m.replace(/\n/g, '') + '</ul>')
+         .replace(/<\/ul>\n/g, '</ul>');
+    return t.replace(/\uE000(\d+)\uE001/g, (_, i) => '<pre><code>' + blocks[+i] + '</code></pre>');
+}
+function addBubble(kind, text) {
+    const d = document.createElement('div');
+    d.className = 'chat-msg ' + kind;
+    if (kind === 'model') d.innerHTML = mdToHtml(text); else d.textContent = text;
+    chatLog.appendChild(d);
+    chatLog.scrollTop = chatLog.scrollHeight;
+    return d;
+}
+function addTyping() {
+    const d = document.createElement('div');
+    d.className = 'chat-msg model chat-typing';
+    d.setAttribute('aria-label', 'ARC sedang menulis');
+    d.innerHTML = '<i></i><i></i><i></i>';
+    chatLog.appendChild(d);
+    chatLog.scrollTop = chatLog.scrollHeight;
+    return d;
+}
+function renderChat() {
+    chatCur = chatProv();
+    chatHist = loadChat(chatCur);
+    const ai = CHAT_AI[chatCur];
+    $('chatTitle').textContent = 'RIWAYAT';
+    $('chatSub').textContent = 'Bertanyalah pada sang penyihir';
+    $('chatNote').textContent = 'Dijawab oleh ' + ai.name + ' (' + ai.maker + '). Jawaban bisa keliru, periksa kembali hal penting.';
+    chatLog.textContent = '';
+    addBubble('model', ai.hello);
+    chatHist.forEach((m) => addBubble(m.r, m.t));
+}
+function autosize() {
+    chatInput.style.height = 'auto';
+    chatInput.style.height = Math.min(chatInput.scrollHeight, 140) + 'px';
+}
+function setChat(open) {
+    if (open === chatOpen) return;
+    chatOpen = open;
+    lockScroll();
+    chatPanel.inert = !open;
+    chatPanel.classList.toggle('show', open);
+    chatOverlay.classList.toggle('show', open);
+    if (open) {
+        renderChat();
+        setTimeout(() => chatInput.focus({ preventScroll: true }), 120);
+    } else {
+        chatInput.blur();
+        witchBtn.focus({ preventScroll: true });
+    }
+}
+/* Inti pemanggilan AI: dipakai kotak tanya di bawah kartu (brief) dan panel riwayat (jawaban penuh) */
+async function askAI(text, brief) {
+    chatHist.push({ r: 'user', t: text });
+    const ctl = new AbortController();
+    const timer = setTimeout(() => ctl.abort(), 50000);
+    try {
+        const res = await fetch('tanya.php', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: ctl.signal,
+            body: JSON.stringify({ brief: !!brief, messages: chatHist.slice(-16).map((m) => ({ role: m.r, text: m.t })) })
+        });
+        const raw = await res.text();
+        let data = null;
+        try { data = JSON.parse(raw); } catch {}
+        if (!data) {
+            const peek = raw.replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' ').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 140);
+            throw new Error('Server membalas bukan JSON (HTTP ' + res.status + '): ' + (peek || 'balasan kosong'));
+        }
+        if (!res.ok || data.status !== 'success' || !data.reply) throw new Error(data.message || 'Sang penyihir tidak menjawab.');
+        chatHist.push({ r: 'model', t: data.reply });
+        saveChat();
+        return data.reply;
+    } catch (err) {
+        chatHist.pop();                                  // pesan gagal tidak ikut riwayat
+        throw new Error(err.name === 'AbortError' ? 'Waktu habis. Coba kirim lagi.' : (err.message || 'Gagal terhubung ke server.'));
+    } finally {
+        clearTimeout(timer);
+    }
+}
+async function sendChat() {                              // panel riwayat
+    if (chatBusy) return;
+    const text = chatInput.value.trim();
+    if (!text) return;
+    chatInput.value = ''; autosize();
+    addBubble('user', text);
+    chatBusy = true; chatSend.disabled = true;
+    const typing = addTyping();
+    try {
+        const reply = await askAI(text, false);
+        typing.remove();
+        addBubble('model', reply);
+    } catch (err) {
+        typing.remove();
+        chatInput.value = text; autosize();              // kembalikan ke kotak tulis agar bisa dikirim ulang
+        addBubble('error', err.message);
+    } finally {
+        chatBusy = false; chatSend.disabled = false;
+        chatInput.focus({ preventScroll: true });
+    }
+}
+
+/* ---- Penyihir berbicara dengan AI (dialog di dekat penyihir) ---- */
+const askInput = $('askInput'), askSend = $('askSend');
+const adlg = $('p3Dialog'), aGhost = $('p3Ghost'), aLive = $('p3Live'), wdText = adlg.querySelector('.wd-text');
+let aiTimers = [], aiTyper = 0;
+function resetWitchSpeech() {
+    aiTimers.forEach(clearTimeout); aiTimers = [];
+    clearInterval(aiTyper);
+}
+function closeWitchSpeech() {
+    if (!adlg.classList.contains('show')) return;
+    resetWitchSpeech();
+    adlg.classList.remove('show');
+    adlg.setAttribute('aria-hidden', 'true'); adlg.removeAttribute('role');
+    aLive.classList.remove('typing');
+}
+/* Jawaban penyihir tampil di balon halaman 3 */
+function witchSpeak(text, { wait = false, error = false } = {}) {
+    resetWitchSpeech();
+    adlg.classList.toggle('err', error);
+    adlg.setAttribute('aria-hidden', 'false'); adlg.setAttribute('role', 'status');
+    aGhost.textContent = text;
+    aLive.textContent = '';
+    wdText.scrollTop = 0;
+    adlg.classList.add('show');
+    const finish = () => {
+        aLive.classList.remove('typing');
+        aiTimers.push(setTimeout(closeWitchSpeech, Math.max(15000, text.length * 110)));
+    };
+    if (wait) { aLive.textContent = text; aLive.classList.add('typing'); return; }
+    if (reduced) { aLive.textContent = text; finish(); return; }
+    aLive.classList.add('typing');
+    const step = Math.max(1, Math.ceil(text.length / 150));
+    let n = 0;
+    aiTyper = setInterval(() => {
+        n = Math.min(text.length, n + step);
+        aLive.textContent = text.slice(0, n);
+        wdText.scrollTop = (wdText.scrollHeight - wdText.clientHeight) * (n / text.length);   // gulir mengikuti ketikan
+        if (n >= text.length) { clearInterval(aiTyper); finish(); }
+    }, 30);
+}
+adlg.addEventListener('click', closeWitchSpeech);        // sentuh balon untuk menutup
+
+/* Pemilih bentuk tulisan jawaban */
+const askFont = $('askFont'), fontPop = $('fontPop'), WFONTS = ['hand', 'serif', 'sans', 'clear'];
+function setWFont(v, save) {
+    if (!WFONTS.includes(v)) v = 'serif';
+    document.documentElement.dataset.wfont = v;
+    fontPop.querySelectorAll('.font-opt').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.f === v)));
+    if (save) store.set('wfont2', v);
+}
+function toggleFontPop(open) {
+    fontPop.hidden = !open;
+    askFont.setAttribute('aria-expanded', String(open));
+}
+setWFont(store.get('wfont2') || 'serif', false);   // kunci baru 'wfont2': pilihan lama diabaikan, bawaan = Klasik
+askFont.addEventListener('click', () => toggleFontPop(fontPop.hidden));
+fontPop.querySelectorAll('.font-opt').forEach((b) => b.addEventListener('click', () => {
+    setWFont(b.dataset.f, true);
+    if (!adlg.classList.contains('show')) witchSpeak('Beginilah tulisan jawabanku. Apakah sudah terlihat jelas?');   // contoh agar langsung terlihat
+}));
+document.addEventListener('pointerdown', (e) => { if (!fontPop.hidden && !e.target.closest('#fontPop, #askFont')) toggleFontPop(false); });
+fontPop.addEventListener('keydown', (e) => { if (e.key === 'Escape') { toggleFontPop(false); askFont.focus(); } });
+
+async function askWitch() {
+    if (chatBusy) return;
+    const text = askInput.value.trim();
+    if (!text) return;
+    askInput.value = '';
+    chatBusy = true; askSend.disabled = true;
+    dismissHint();
+    witchSpeak('sedang menerawang kristal...', { wait: true });
+    try {
+        witchSpeak(await askAI(text, true));
+    } catch (err) {
+        askInput.value = text;                           // bisa langsung dikirim ulang
+        witchSpeak(err.message, { error: true });
+    } finally {
+        chatBusy = false; askSend.disabled = false;
+    }
+}
+if (window.visualViewport) {                             // angkat kotak tanya di atas keyboard layar
+    const vv = window.visualViewport;
+    const syncKb = () => {
+        const kb = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+        document.documentElement.style.setProperty('--kb', kb + 'px');
+        document.documentElement.classList.toggle('kb-open', kb > 120);
+    };
+    vv.addEventListener('resize', syncKb); vv.addEventListener('scroll', syncKb);
+}
+askSend.addEventListener('click', askWitch);
+askInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); askWitch(); }
+    else if (e.key === 'Escape') { askInput.blur(); closeWitchSpeech(); }
+});
+askInput.addEventListener('focus', () => pause(30000));  // karusel berhenti berputar saat mengetik
+askInput.addEventListener('input', () => pause(15000));
+$('askHistory').addEventListener('click', () => setChat(true));
+optChat.addEventListener('click', choose(() => smoothScrollTo(scrollMax(), 0, () => setTimeout(() => askInput.focus({ preventScroll: true }), 900))));   // tanya penyihir = halaman 3
+$('chatClose').addEventListener('click', () => setChat(false));
+chatOverlay.addEventListener('click', () => setChat(false));
+$('chatClear').addEventListener('click', () => {
+    if (chatBusy) return;
+    chatHist = []; saveChat(); renderChat();
+    showToast('Percakapan dihapus', 'info');
+});
+chatSend.addEventListener('click', sendChat);
+chatInput.addEventListener('input', autosize);
+chatInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); sendChat(); }
+});
+chatPanel.addEventListener('keydown', (e) => {          // fokus tetap di dalam panel
+    if (e.key !== 'Tab') return;
+    const f = [...chatPanel.querySelectorAll('button, textarea')].filter((x) => !x.disabled);
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+    else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
+});
+
+/* ============ Pasang sebagai aplikasi ============ */
+let installEvt = null;
+const optInstall = $('optInstall');
+window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); installEvt = e; optInstall.hidden = false; });
+window.addEventListener('appinstalled', () => { installEvt = null; optInstall.hidden = true; showToast('Aplikasi terpasang', 'success'); });
+optInstall.addEventListener('click', choose(async () => {
+    if (!installEvt) return;
+    installEvt.prompt();
+    try { await installEvt.userChoice; } catch {}
+    installEvt = null; optInstall.hidden = true;
+}));
+let swError = '', swUsed = '';
+async function registerSW() {
+    /* Coba berurutan: sw.js, lalu jalur cadangan (sw.php, sw.js dengan tambahan versi) bila hosting menolak */
+    for (const url of ['sw.js', 'sw.php', 'sw.js?v=2']) {
+        try { await navigator.serviceWorker.register(url, { scope: './' }); swUsed = url; swError = ''; return; }
+        catch (e) { swError += (swError ? ' | ' : '') + url + ': ' + String((e && e.message) || e).slice(0, 140); }
+    }
+}
+if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+    window.addEventListener('load', registerSW);
+}
+
+/* Pemeriksa pemasangan aplikasi: buka alamat web Anda dengan tambahan ?cek=pwa */
+async function pwaCheck() {
+    const rows = [];
+    const add = (ok, text) => rows.push((ok === null ? 'ℹ️ ' : ok ? '✅ ' : '❌ ') + text);
+    add(location.protocol === 'https:', 'Alamat memakai HTTPS');
+    const link = document.querySelector('link[rel="manifest"]');
+    add(!!link, 'Halaman ini memuat tag manifest' + (link ? '' : ' (index.html di server mungkin masih versi lama)'));
+    if (link) {
+        try {
+            const r = await fetch(link.href, { cache: 'no-store' });
+            const ct = r.headers.get('content-type') || '-';
+            let j = null;
+            try { j = await r.json(); } catch (e) {}
+            add(r.ok && !!j, 'manifest.json → ' + r.status + ' ' + ct + (j ? ': ' + (j.name || '?') : ' (isinya bukan JSON, kemungkinan halaman pengaman hosting)'));
+            if (!j) throw new Error('manifest tidak valid');
+            const sizes = (j.icons || []).map((i) => i.sizes);
+            add(sizes.includes('192x192') && sizes.includes('512x512'), 'Ada ikon 192 dan 512');
+            for (const ic of (j.icons || [])) {
+                const u = new URL(ic.src, link.href);
+                const a = await fetch(u, { cache: 'no-store' });
+                add(a.ok && /image\/png/.test(a.headers.get('content-type') || ''), ic.src + ' → ' + a.status + ' ' + (a.headers.get('content-type') || '-'));
+                const b = await fetch(u, { cache: 'no-store', credentials: 'omit' });     // tanpa cookie, seperti pemeriksa internal Chrome
+                add(b.ok && /image\/png/.test(b.headers.get('content-type') || ''), ic.src + ' tanpa cookie → ' + b.status + ' ' + (b.headers.get('content-type') || '-'));
+            }
+        } catch (e) { add(false, 'manifest gagal dibaca: ' + e.message); }
+    }
+    try {
+        const r = await fetch('sw.js', { cache: 'no-store' });
+        add(r.ok && /javascript/.test(r.headers.get('content-type') || ''), 'sw.js → ' + r.status + ' ' + (r.headers.get('content-type') || '-'));
+    } catch (e) { add(false, 'sw.js gagal dibaca: ' + e.message); }
+    try {
+        const r = await fetch('sw.php', { cache: 'no-store' });
+        add(r.ok && /javascript/.test(r.headers.get('content-type') || ''), 'sw.php (cadangan) → ' + r.status + ' ' + (r.headers.get('content-type') || '-'));
+    } catch (e) { add(false, 'sw.php gagal dibaca: ' + e.message); }
+    if ('serviceWorker' in navigator) {
+        const reg = await navigator.serviceWorker.getRegistration();
+        add(!!reg, 'Service worker terdaftar' + (swUsed ? ' lewat ' + swUsed : '') + (swError ? ' (galat: ' + swError + ')' : ''));
+        add(!!(reg && reg.active), 'Service worker aktif');
+        add(!!navigator.serviceWorker.controller, 'Halaman dikendalikan service worker (muat ulang sekali bila ❌)');
+    } else add(false, 'Browser tidak mendukung service worker');
+    const wv = $('witchVideo');
+    add(wv.readyState >= 2 && !wv.error, 'Video penyihir ' + (wv.currentSrc ? wv.currentSrc.split('/').pop() : '-') + ': siap ' + wv.readyState + '/4' + (wv.error ? ', galat kode ' + wv.error.code : '') + (wv.paused ? ', terjeda' : ', berputar'));
+    try {
+        const vr = await fetch(wv.currentSrc || '6.mp4', { headers: { Range: 'bytes=0-1' }, cache: 'no-store' });
+        const vct = vr.headers.get('content-type') || '-';
+        add((vr.status === 206 || vr.status === 200) && /video|octet/.test(vct), 'Berkas video → ' + vr.status + ' ' + vct);
+    } catch (e) { add(false, 'Berkas video gagal diambil: ' + e.message); }
+    add(null, 'Berjalan sebagai aplikasi: ' + (matchMedia('(display-mode: standalone)').matches ? 'ya' : 'belum (masih di browser)'));
+    const uad = navigator.userAgentData;
+    add(null, 'Perangkat: ' + (uad ? uad.brands.map((b) => b.brand + ' ' + b.version).join(', ') + (uad.mobile ? ' (HP)' : ' (bukan HP)') : navigator.userAgent.slice(0, 100)));
+    add(navigator.cookieEnabled, 'Cookie diizinkan di browser; cookie pengaman hosting: ' + (/__test=/.test(document.cookie) ? 'ada' : 'tidak terbaca'));
+    const cn = navigator.connection;
+    if (cn) add(cn.saveData ? false : null, 'Jaringan: ' + (cn.effectiveType || '?') + (cn.saveData ? ', mode hemat data AKTIF' : ''));
+    add(installEvt ? true : null, installEvt ? 'Chrome mengizinkan pemasangan' : 'Chrome belum mengirim izin pemasangan (belum tentu masalah; coba menu Chrome → Instal aplikasi)');
+    const box = document.createElement('div');
+    box.setAttribute('data-nodrag', '');
+    box.style.cssText = 'position:fixed;inset:12px;z-index:99999;overflow:auto;background:#0b0618;color:#fde68a;border:1px solid #facc15;border-radius:14px;padding:14px;font:13px/1.6 system-ui,sans-serif;white-space:pre-wrap;user-select:text';
+    box.textContent = 'Pemeriksa pemasangan ARC\n\n' + rows.join('\n');
+    const x = document.createElement('button');
+    x.textContent = 'Tutup';
+    x.style.cssText = 'display:block;margin:14px 0 0;padding:9px 16px;border-radius:99px;border:1px solid #facc15;background:transparent;color:#facc15;font:inherit';
+    x.addEventListener('click', () => box.remove());
+    box.appendChild(x);
+    document.body.appendChild(box);
+}
+if (/[?&]cek=pwa\b/.test(location.search)) window.addEventListener('load', () => setTimeout(pwaCheck, 2000));
+['fullscreenchange', 'webkitfullscreenchange'].forEach((ev) => document.addEventListener(ev, () => { if (menuOpen) refreshMenuLabels(); }));
+
+/* ============ Data ============ */
+async function fetchJson(url, ms = 3000) {
+    const ctl = new AbortController();
+    const to = setTimeout(() => ctl.abort(), ms);
+    try {
+        const res = await fetch(url, { cache: 'no-store', signal: ctl.signal });
+        if (!res.ok) return null;
+        return await res.json();
+    } catch { return null; } finally { clearTimeout(to); }
+}
+const cleanLinks = (arr) => arr
+    .filter((l) => l && typeof l.title === 'string' && typeof l.url === 'string')
+    .map((l, i) => ({
+        id: typeof l.id === 'string' && l.id ? l.id : 'card_' + Date.now() + '_' + i,
+        title: l.title, desc: typeof l.desc === 'string' ? l.desc : '', url: l.url, icon: safeIcon(l.icon)
+    }));
+async function loadData() {
+    const server = await fetchJson('dashboard_data.json');
+    if (server && Array.isArray(server.userLinks)) { userLinks = cleanLinks(server.userLinks); loadYt(server); return; }
+    const saved = store.get(STORAGE_KEY);
+    if (saved) {
+        try { const p = JSON.parse(saved); if (Array.isArray(p.userLinks)) userLinks = cleanLinks(p.userLinks); loadYt(p); } catch {}
+    }
+}
+async function saveState() {
+    const state = { userLinks, playlist, ytVolume };
+    const local = () => store.set(STORAGE_KEY, JSON.stringify(state));
+    try {
+        const res = await fetch('save.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(state) });
+        if (res.status === 401 || res.status === 403) {
+            setAdmin(false); refresh();
+            showToast('Sesi admin berakhir, silakan login lagi', 'error');
+            return;
+        }
+        local();
+        showToast(res.ok ? 'Data tersimpan permanen di server' : 'Tersimpan di browser ini (server menolak data)', res.ok ? 'success' : 'info');
+    } catch {
+        local();
+        showToast('Tersimpan di browser ini (server tidak terjangkau)', 'info');
+    }
+}
+function updateCardsData() {
+    cardsData = [...userLinks];
+    ytSync();
+    if (isAdmin) {
+        cardsData.push({ id: 'card_add', title: 'Tambah Tautan', desc: 'Buat kartu menu tautan baru', action: 'add_link', icon: 'fas fa-plus-circle' });
+        cardsData.push({ id: 'card_music', title: 'Kelola Musik', desc: 'Ganti, hapus & volume lagu', action: 'manage_music', icon: 'fab fa-youtube' });
+        cardsData.push({ id: 'card_pass', title: 'Ganti Sandi', desc: 'Ubah kata sandi admin', action: 'change_password', icon: 'fas fa-key' });
+        cardsData.push({ id: 'card_admin', title: 'Admin Logout', desc: 'Keluar dari mode admin', action: 'login', icon: 'fas fa-unlock-keyhole' });
+    } else {
+        cardsData.push({ id: 'card_admin', title: 'Admin Login', desc: 'AKSES ADMIN', action: 'login', icon: 'fas fa-key' });
+    }
+}
+function refresh(focusId) {
+    updateCardsData();
+    buildCards();
+    if (focusId) { const i = cardsData.findIndex((c) => c.id === focusId); if (i >= 0) rotateToIndex(i); }
+}
+
+/* ============ Karusel ============ */
+const nearestIndex = (rot) => {
+    const n = (((-rot) % 360) + 360) % 360;
+    return Math.round(n / stepAngle) % total;
+};
+function cardMarkup(item, i, adminHtml) {
+    return `
+            <div class="card-face">
+                <div class="card-frame" aria-hidden="true"></div>
+                <div class="card-corner" aria-hidden="true"><span>✦</span><span>${ROMAN[i % ROMAN.length]}</span><span>✦</span></div>
+                <div class="card-art" aria-hidden="true"><i class="${safeIcon(item.icon)}"></i></div>
+                <div class="card-text" aria-hidden="true">
+                    <div class="card-title">${esc(item.title)}</div>
+                    <div class="card-desc">${esc(item.desc)}</div>
+                </div>
+                <div class="card-corner" aria-hidden="true"><span>✦</span><span>✦</span></div>
+                <button type="button" class="card-hit" aria-label="${esc(item.title)}. ${esc(item.desc)}"></button>
+                ${adminHtml}
+            </div>`;
+}
+function buildCards() {
+    carousel.textContent = '';
+    dotsEl.textContent = '';
+    p2Grid.textContent = '';
+    gridEls = []; lastP = 1;
+    cardEls = [];
+    total = cardsData.length;
+    dotsEl.style.setProperty('--n', total);
+    stepAngle = 360 / total;
+    const cw = scene.offsetWidth || 176;
+    const minR = Math.max(172, Math.min(300, innerWidth * 0.34));      // lebih lebar: kartu tidak berhimpitan
+    const gap = innerWidth <= 480 ? 56 : 84;
+    radius = total > 2 ? Math.max(minR, (cw + gap) / (2 * Math.tan(Math.PI / total))) : minR;
+
+    cardsData.forEach((item, i) => {
+        const el = document.createElement('div');
+        el.className = 'tarot-card';
+        el._base = `rotateY(${i * stepAngle}deg) translateZ(${radius}px)`;   // posisi dasar di lingkaran (skala diatur di render)
+        el.style.transform = el._base;
+        const adminHtml = (isAdmin && !item.action) ? `
+            <div class="card-admin">
+                <button type="button" class="mini edit" data-act="edit" aria-label="Edit ${esc(item.title)}"><i class="fas fa-pencil" aria-hidden="true"></i></button>
+                <button type="button" class="mini del" data-act="del" aria-label="Hapus ${esc(item.title)}"><i class="fas fa-trash-can" aria-hidden="true"></i></button>
+            </div>` : '';
+        el.innerHTML = cardMarkup(item, i, adminHtml);
+        const hit = el.querySelector('.card-hit');
+        hit.addEventListener('click', () => {
+            if (justDragged) { justDragged = false; return; }
+            pause();
+            if (i === nearestIndex(currentRotation)) openItem(item);
+            else rotateToIndex(i);
+        });
+        hit.addEventListener('focus', () => {
+            if (hit.matches(':focus-visible') && i !== nearestIndex(targetRotation)) rotateToIndex(i);
+        });
+        el.querySelectorAll('[data-act]').forEach((b) => b.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (b.dataset.act === 'edit') openEditLinkModal(item.id); else confirmDeleteCard(item.id);
+        }));
+        carousel.appendChild(el);
+        cardEls.push(el);
+
+        const g = document.createElement('div');                 // salinan kartu untuk halaman 2
+        g.className = 'grid-card';
+        g.innerHTML = cardMarkup(item, i, adminHtml);
+        g.querySelector('.card-hit').addEventListener('click', () => { pause(); openItem(item); });
+        g.querySelectorAll('[data-act]').forEach((b) => b.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (b.dataset.act === 'edit') openEditLinkModal(item.id); else confirmDeleteCard(item.id);
+        }));
+        if (!reduced) attachTilt(g);
+        p2Grid.appendChild(g);
+        gridEls.push(g);
+
+        const d = document.createElement('button');
+        d.type = 'button';
+        d.className = 'dot';
+        d.setAttribute('aria-label', `Kartu ${i + 1}: ${item.title}`);
+        d.addEventListener('click', () => rotateToIndex(i));
+        dotsEl.appendChild(d);
+    });
+    activeIndex = -1;
+    buildRunes();
+    layoutPages();
+    render();
+}
+/* Indikator halaman di tepi layar */
+const pageNavBtns = [...document.querySelectorAll('#pageNav button')];
+let curPage = -1;
+function updatePageNav(sy, vh) {
+    const idx = sy < page2.offsetTop - vh * 0.5 ? 0 : (sy < page3.offsetTop - vh * 0.5 ? 1 : 2);
+    if (idx === curPage) return;
+    curPage = idx;
+    pageNavBtns.forEach((b, i) => b.setAttribute('aria-current', String(i === idx)));
+}
+pageNavBtns.forEach((b) => b.addEventListener('click', () => {
+    const n = +b.dataset.p;
+    smoothScrollTo(n === 0 ? 0 : n === 1 ? page2.offsetTop : scrollMax());
+}));
+/* Kartu miring 3D mengikuti kursor (hanya mouse/pena; layar sentuh tetap menggulir) */
+function attachTilt(g) {
+    const face = () => g.querySelector('.card-face');
+    g.addEventListener('pointermove', (e) => {
+        if (e.pointerType === 'touch' || !g.classList.contains('live')) return;
+        const r = g.getBoundingClientRect(), f = face();
+        if (!f || !r.width) return;
+        const x = clamp01((e.clientX - r.left) / r.width), y = clamp01((e.clientY - r.top) / r.height);
+        f.style.setProperty('--ry', ((x - 0.5) * 18).toFixed(2) + 'deg');
+        f.style.setProperty('--rx', ((0.5 - y) * 16).toFixed(2) + 'deg');
+        f.style.setProperty('--mx', (x * 100).toFixed(1) + '%');
+        f.style.setProperty('--my', (y * 100).toFixed(1) + '%');
+        g.classList.add('tilting');
+    });
+    g.addEventListener('pointerleave', () => {
+        const f = face();
+        g.classList.remove('tilting');
+        if (f) { f.style.setProperty('--rx', '0deg'); f.style.setProperty('--ry', '0deg'); }
+    });
+}
+/* Simpul rune di cincin lingkaran sihir: satu per kartu, menyala saat kartunya mendarat */
+const RUNE_R = 176;                       // jari-jari cincin (satuan viewBox -200..200)
+let runeEls = [], litCount = -1;
+function buildRunes() {
+    const old = p3Circle.querySelector('.runes');
+    if (old) old.remove();
+    runeEls = []; litCount = -1;
+    const NS = 'http://www.w3.org/2000/svg', n = cardsData.length;
+    const g = document.createElementNS(NS, 'g');
+    g.setAttribute('class', 'runes');
+    for (let i = 0; i < n; i++) {
+        const th = -Math.PI / 2 + i * 2 * Math.PI / n, cx = (Math.cos(th) * RUNE_R).toFixed(1), cy = (Math.sin(th) * RUNE_R).toFixed(1);
+        const r = document.createElementNS(NS, 'g');
+        r.setAttribute('class', 'rune');
+        r.innerHTML = '<circle class="rn-ring" r="4" cx="' + cx + '" cy="' + cy + '"/><circle class="rn-dot" r="3.2" cx="' + cx + '" cy="' + cy + '"/>';
+        g.appendChild(r);
+        runeEls.push(r);
+    }
+    p3Circle.appendChild(g);
+    page3.style.setProperty('--lit', '0');
+}
+function updateRunes() {
+    let c = 0;
+    for (let i = 0; i < runeEls.length; i++) {
+        const on = (fall[i] || 0) >= 0.9;
+        if (on) c++;
+        if (on !== runeEls[i].classList.contains('lit')) runeEls[i].classList.toggle('lit', on);
+    }
+    if (c !== litCount) { litCount = c; page3.style.setProperty('--lit', runeEls.length ? (c / runeEls.length).toFixed(2) : '0'); }
+}
+/* Kartu membesar perlahan saat mendekati depan penyihir, mengecil saat menjauh ke belakang */
+const SCALE_BACK = 0.78, SCALE_FRONT = 1.22;
+function render() {
+    carousel.style.transform = `translateZ(${-radius}px) rotateY(${currentRotation}deg)`;
+    for (let i = 0; i < cardEls.length; i++) {
+        const c = Math.cos((i * stepAngle + currentRotation) * Math.PI / 180);   // 1 = tepat di depan
+        const t = (c + 1) / 2;
+        const fl = flight[i] || 0;                                              // >0: kartu sedang pindah ke halaman 2
+        cardEls[i].style.opacity = ((0.1 + 0.9 * Math.pow(t, 1.6)) * (1 - Math.min(1, fl * 10))).toFixed(3);   // kartu belakang memudar
+        cardEls[i].style.visibility = fl >= 0.1 ? 'hidden' : '';
+        cardEls[i].style.pointerEvents = (c > -0.2 && fl < 0.02) ? 'auto' : 'none';
+        const sc = SCALE_BACK + (SCALE_FRONT - SCALE_BACK) * (t * t * (3 - 2 * t));   // smoothstep: halus di kedua ujung
+        cardEls[i].style.transform = `${cardEls[i]._base} scale(${sc.toFixed(3)})`;
+    }
+    const a = nearestIndex(currentRotation);
+    if (a !== activeIndex) {
+        activeIndex = a;
+        cardEls.forEach((el, i) => el.classList.toggle('active', i === a));
+        [...dotsEl.children].forEach((d, i) => d.setAttribute('aria-current', String(i === a)));
+    }
+}
+function rotateToIndex(i) {
+    const target = -i * stepAngle;
+    const delta = ((((target - targetRotation) % 360) + 540) % 360) - 180;
+    targetRotation += delta;
+    pause();
+}
+function stepBy(dir) {            // dir +1 = kartu berikutnya
+    targetRotation = Math.round(targetRotation / stepAngle) * stepAngle - dir * stepAngle;
+    pause();
+}
+
+function autoRotateOn(now) {
+    return !reduced && !document.hidden && pointers.size === 0 && !modalOpen && !menuOpen && !chatOpen
+        && now > pauseUntil && !(canHover && carousel.matches(':hover')) && (window.scrollY || 0) < 2;
+}
+function tick(now) {
+    const dt = Math.min(48, now - (lastFrame || now)) / 16.667;
+    lastFrame = now;
+    if (autoRotateOn(now)) targetRotation += AUTO_SPEED * dt;
+    const k = pointers.size ? 0.25 : 0.1;
+    currentRotation += (targetRotation - currentRotation) * (1 - Math.pow(1 - k, dt));
+    computeScroll(dt);
+    computeFlight();
+    render();
+    if (P > 0 || lastP > 0) { placeFlyers(); updateRunes(); }
+    lastP = P;
+    requestAnimationFrame(tick);
+}
+
+/* ============ Halaman 2: kartu pindah satu per satu saat digulir ============ */
+const FLY_START = 0.03, FLY_DUR = 0.46;
+let P = 0, lastP = 1, flight = [], fall = [], gridEls = [], chromeV = -1, headV = -1, P3 = 0, p3Key = -1;
+const clamp01 = (v) => v < 0 ? 0 : v > 1 ? 1 : v;
+const smooth = (v) => { v = clamp01(v); return v * v * (3 - 2 * v); };
+function computeScroll(dt) {
+    const sy = window.scrollY || 0, vh = innerHeight || 1;
+    updatePageNav(sy, vh);
+    const maxScroll = Math.max(0, document.documentElement.scrollHeight - vh);
+    const range = Math.max(1, Math.min(vh, maxScroll));
+    const target = maxScroll < 2 ? 0 : clamp01(sy / range);
+    if (reduced) P = target;
+    else { P += (target - P) * (1 - Math.pow(1 - 0.085, dt)); if (Math.abs(target - P) < 0.0005) P = target; }   // meluncur pelan mengikuti gulir
+    const chrome = clamp01(1 - sy / (vh * 0.3)), cq = Math.round(chrome * 100);
+    if (cq !== chromeV) {
+        chromeV = cq;
+        page1.style.setProperty('--chrome', chrome.toFixed(2));
+        page1.classList.toggle('away', chrome < 0.04);
+    }
+    const hv = smooth((P - 0.12) / 0.5), hq = Math.round(hv * 100);
+    if (hq !== headV) {
+        headV = hq;
+        p2Head.style.opacity = hv.toFixed(2);
+        p2Head.style.transform = 'translateY(' + ((1 - hv) * 26).toFixed(1) + 'px)';
+    }
+    /* Halaman 3: lingkaran sihir tergambar, sinar memancar, lalu arc muncul */
+    /* 0: halaman 3 baru mulai terlihat, 1: ujung halaman. Urutan: lingkaran tergambar > kartu masuk satu per satu > arc muncul */
+    const q = clamp01((sy + vh - page3.offsetTop) / Math.max(1, page3.offsetHeight));
+    if (reduced) P3 = q;
+    else { P3 += (q - P3) * (1 - Math.pow(1 - 0.06, dt)); if (Math.abs(q - P3) < 0.0005) P3 = q; }
+    /* halaman 3 naik dari bawah (P3 0 sampai ±0.53): lingkaran langsung terlihat & tergambar, kartu turun menyusul, arc muncul setelah kartu mendarat */
+    const m = smooth(P3 / 0.5), wv = smooth((P3 - 0.76) / 0.12), fl = Math.sin(Math.PI * clamp01((P3 - 0.7) / 0.18));
+    const key = Math.round(m * 100) * 1000000 + Math.round(wv * 100) * 1000 + Math.round(fl * 100);
+    if (key !== p3Key) {
+        p3Key = key;
+        const st = page3.style;
+        st.setProperty('--m', m.toFixed(3)); st.setProperty('--wv', wv.toFixed(3)); st.setProperty('--fl', fl.toFixed(3));
+        p3Fig.style.translate = '0 ' + ((1 - wv) * 60).toFixed(1) + 'px';
+        page3.classList.toggle('idle', wv < 0.05);
+    }
+}
+function computeFlight() {
+    const n = gridEls.length;
+    flight.length = n;
+    const stag = n > 1 ? (1 - FLY_START - FLY_DUR) / (n - 1) : 0;
+    for (let i = 0; i < n; i++) flight[i] = smooth((P - (FLY_START + i * stag)) / FLY_DUR);
+    /* kartu jatuh ke lingkaran sihir satu per satu (berurutan), selesai sebelum arc muncul */
+    fall.length = n;
+    const dur = Math.min(0.3, Math.max(0.14, 0.3 - n * 0.012));
+    const F0 = 0.05, F1 = 0.62;                               // kartu turun bersama naiknya halaman 3, selesai sebelum arc muncul
+    const fs = n > 1 ? Math.max(0, (F1 - F0 - dur) / (n - 1)) : 0;
+    for (let i = 0; i < n; i++) fall[i] = clamp01((P3 - (F0 + i * fs)) / dur);
+}
+function placeFlyers() {
+    const n = gridEls.length;
+    let gr = null, cr = null;
+    for (let i = 0; i < n; i++) {
+        const g = gridEls[i], e = flight[i] || 0, f = fall[i] || 0;
+        if (f > 0) {
+            if (f >= 1) {                                    // sudah masuk ke dalam lingkaran
+                if (g._st !== 4) { g._st = 4; g.style.visibility = 'hidden'; g.style.opacity = '0'; g.classList.remove('live'); }
+                continue;
+            }
+            if (!gr) gr = p2Grid.getBoundingClientRect();
+            if (!cr) cr = p3Circle.getBoundingClientRect();
+            g._st = 3; g.classList.remove('live'); g.style.visibility = 'visible';
+            const gw = g.offsetWidth, gh = g.offsetHeight;
+            const sx = gr.left + g.offsetLeft + gw / 2, sy = gr.top + g.offsetTop + gh / 2;
+            const th = -Math.PI / 2 + i * 2 * Math.PI / n;                // tujuan: simpul rune milik kartu ini
+            const tx = cr.left + cr.width * (0.5 + Math.cos(th) * RUNE_R / 400), ty = cr.top + cr.height * (0.5 + Math.sin(th) * RUNE_R / 400);
+            const dx = (tx - sx) * smooth(f), dy = (ty - sy) * Math.pow(f, 1.8);     // turun makin cepat, menyamping lebih halus
+            const k = 1;                                                   // ukuran kartu tetap saat masuk ke lingkaran sihir
+            const spin = (i % 2 ? 1 : -1) * 220 * f * f;
+            g.style.transform = 'translate3d(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px,0) rotate(' + spin.toFixed(1) + 'deg) scale(' + k.toFixed(3) + ')';
+            g.style.opacity = f < 0.7 ? '1' : (1 - (f - 0.7) / 0.3).toFixed(3);
+            continue;
+        }
+        if (e <= 0) {
+            if (g._st !== 0) { g._st = 0; g.style.visibility = 'hidden'; g.style.opacity = '0'; g.style.transform = ''; g.classList.remove('live'); }
+            continue;
+        }
+        if (e >= 1) {
+            if (g._st !== 2) { g._st = 2; g.style.visibility = 'visible'; g.style.opacity = '1'; g.style.transform = ''; g.classList.add('live'); }
+            continue;
+        }
+        if (!gr) gr = p2Grid.getBoundingClientRect();
+        g._st = 1;
+        g.classList.remove('live');
+        g.style.visibility = 'visible';
+        const rr = cardEls[i].getBoundingClientRect();            // posisi kartu di cincin saat ini (layar)
+        const gw = g.offsetWidth, gh = g.offsetHeight;
+        const sx = gr.left + g.offsetLeft + gw / 2, sy = gr.top + g.offsetTop + gh / 2;   // tujuan di halaman 2
+        const cx0 = rr.left + rr.width / 2, cy0 = rr.top + rr.height / 2;
+        const k0 = rr.height / gh;
+        const cx = cx0 + (sx - cx0) * e, cy = cy0 + (sy - cy0) * e, k = k0 + (1 - k0) * e;
+        const a = ((i * stepAngle + currentRotation) % 360 + 540) % 360 - 180;
+        const tt = (Math.cos(a * Math.PI / 180) + 1) / 2;
+        const ringOp = 0.1 + 0.9 * Math.pow(tt, 1.6);
+        g.style.transform = 'translate3d(' + (cx - sx).toFixed(1) + 'px,' + (cy - sy).toFixed(1) + 'px,0) perspective(1400px) rotateY(' + (a * (1 - e)).toFixed(2) + 'deg) scale(' + k.toFixed(4) + ')';
+        g.style.opacity = (Math.min(1, e * 10) * (ringOp + (1 - ringOp) * e)).toFixed(3);
+    }
+}
+function layoutPages() {
+    const vh = innerHeight || 1, gh = p2Grid.offsetHeight;
+    const top = Math.min(vh * 0.14, vh - gh - 24);           // kartu menempel; bila terlalu tinggi, sampai dasar kartu menempel di dasar layar
+    p2Grid.style.top = top.toFixed(0) + 'px';
+    page3.style.marginTop = '-' + Math.round(gh + top + vh * 0.9) + 'px';
+}
+if ('ResizeObserver' in window) new ResizeObserver(layoutPages).observe(p2Grid);
+addEventListener('resize', layoutPages);
+addEventListener('load', layoutPages);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(layoutPages);
+let scrollAnim = 0;
+const scrollMax = () => Math.max(0, document.documentElement.scrollHeight - innerHeight);
+function smoothScrollTo(y, ms, done) {
+    cancelAnimationFrame(scrollAnim);
+    const from = window.scrollY || 0, dist = y - from;
+    ms = ms || Math.min(4800, Math.max(1800, 900 + Math.abs(dist) * 0.8));
+    if (reduced || Math.abs(dist) < 2) { scrollTo(0, y); if (done) done(); return; }
+    const t0 = performance.now();
+    const ease = (t) => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const step = (now) => {
+        const t = Math.min(1, (now - t0) / ms);
+        scrollTo(0, from + dist * ease(t));
+        if (t < 1) scrollAnim = requestAnimationFrame(step); else if (done) done();
+    };
+    scrollAnim = requestAnimationFrame(step);
+}
+['wheel', 'touchstart', 'keydown'].forEach((ev) => addEventListener(ev, () => cancelAnimationFrame(scrollAnim), { passive: true }));
+$('scrollCue').addEventListener('click', () => smoothScrollTo(page2.offsetTop));
+$('p2Top').addEventListener('click', () => smoothScrollTo(0));
+$('p3Up').addEventListener('click', () => smoothScrollTo(page2.offsetTop));
+
+/* ============ Interaksi: seret, roda mouse, keyboard ============ */
+const pointers = new Map();
+let dragging = false, justDragged = false, startX = 0, startRot = 0, moved = 0, lastX = 0, lastT = 0, vel = 0, lastMid = 0;
+const midX = () => { let s = 0; pointers.forEach((p) => { s += p.x; }); return s / pointers.size; };
+function dismissHint() { hint.classList.add('hide'); }
+
+window.addEventListener('pointerdown', (e) => {
+    if (modalOpen || menuOpen || chatOpen) return;
+    if ((window.scrollY || 0) > 8) return;                // sedang bergulir ke halaman 2: bukan seretan kartu
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    if (e.target.closest('[data-nodrag], .mini')) return;
+    pointers.set(e.pointerId, { x: e.clientX });
+    justDragged = false;
+    if (pointers.size === 1) {
+        startX = lastX = e.clientX; startRot = targetRotation; moved = 0; vel = 0; lastT = performance.now();
+    } else {
+        lastMid = midX(); moved = 99;
+    }
+});
+window.addEventListener('pointermove', (e) => {
+    if (!pointers.has(e.pointerId)) return;
+    pointers.set(e.pointerId, { x: e.clientX });
+    if (pointers.size >= 2) {            // dua jari: putar lebih cepat
+        const m = midX();
+        targetRotation += (m - lastMid) * 1.8; lastMid = m;
+        dragging = true; document.body.classList.add('is-dragging'); dismissHint();
+        return;
+    }
+    const dx = e.clientX - startX;
+    moved = Math.max(moved, Math.abs(dx));
+    if (moved > 6) { dragging = true; document.body.classList.add('is-dragging'); dismissHint(); }
+    if (!dragging) return;
+    targetRotation = startRot + dx * DRAG_FACTOR;
+    const now = performance.now(), dt = now - lastT;
+    if (dt > 0) vel = 0.8 * vel + 0.2 * ((e.clientX - lastX) * DRAG_FACTOR / dt);
+    lastX = e.clientX; lastT = now;
+});
+function endPointer(e) {
+    if (!pointers.delete(e.pointerId)) return;
+    if (pointers.size === 1) {            // sisa satu jari: mulai ulang titik acuan
+        const p = [...pointers.values()][0];
+        startX = lastX = p.x; startRot = targetRotation; moved = 99; return;
+    }
+    if (pointers.size > 0) return;
+    if (dragging) {
+        const projected = targetRotation + vel * 160;                 // momentum lalu "snap" ke kartu terdekat
+        targetRotation = Math.round(projected / stepAngle) * stepAngle;
+        justDragged = true;
+        pause(4000);
+    }
+    dragging = false; vel = 0;
+    document.body.classList.remove('is-dragging');
+}
+window.addEventListener('pointerup', endPointer);
+window.addEventListener('pointercancel', endPointer);
+window.addEventListener('blur', () => { pointers.clear(); dragging = false; document.body.classList.remove('is-dragging'); });
+
+let wheelLock = 0;
+window.addEventListener('wheel', (e) => {
+    if (modalOpen || menuOpen || chatOpen) return;
+    if (e.target.closest && e.target.closest('.yt-panel')) return;
+    const now = performance.now();
+    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY) || (window.scrollY || 0) > 8) return;   // gulir vertikal = menggulir halaman
+    const d = e.deltaX;
+    if (now < wheelLock || Math.abs(d) < 8) return;
+    wheelLock = now + 280;
+    stepBy(d > 0 ? 1 : -1); dismissHint();
+}, { passive: true });
+
+window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        if (modalOpen) closeModal(); else if (chatOpen) setChat(false); else if (menuOpen) setMenu(false);
+        return;
+    }
+    if (menuOpen && e.key === 'Tab') {              // fokus tetap di dalam menu penyihir
+        const f = [...witchMenu.querySelectorAll('.opt:not(.vol), .vol-range')].filter((x) => !x.hidden);
+        const first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+        else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
+        return;
+    }
+    if (modalOpen || menuOpen || chatOpen) return;
+    const tag = e.target && e.target.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+    if (e.key === 'ArrowRight') { stepBy(1); dismissHint(); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft') { stepBy(-1); dismissHint(); e.preventDefault(); }
+});
+let resizeT;
+window.addEventListener('resize', () => { clearTimeout(resizeT); resizeT = setTimeout(() => { if (total) buildCards(); }, 150); });
+
+/* ============ Aksi kartu ============ */
+function openUrl(url) {
+    const safe = normalizeUrl(url);
+    if (!safe) { showToast('Tautan tidak valid', 'error'); return; }
+    const a = document.createElement('a');
+    a.href = safe; a.target = '_blank'; a.rel = 'noopener noreferrer';
+    document.body.appendChild(a); a.click(); a.remove();
+}
+function openItem(item) {
+    if (!item) return;
+    if (item.action === 'login') handleAdminToggle();
+    else if (item.action === 'add_link') addNewLinkModal();
+    else if (item.action === 'manage_music') openMusicManager();
+    else if (item.action === 'change_password') changePasswordModal();
+    else if (item.url) openUrl(item.url);
+}
+const field = (id, label, type = 'text', extra = '') =>
+    `<label class="field"><span>${label}</span><input type="${type}" id="${id}" ${extra}></label>`;
+
+function openEditLinkModal(cardId) {
+    const card = userLinks.find((c) => c.id === cardId);
+    if (!card) return;
+    showModal({
+        title: 'Edit tautan',
+        bodyHtml: field('fName', 'Nama tautan', 'text', 'maxlength="40" autocomplete="off"')
+            + field('fUrl', 'Link tautan (URL)', 'text', 'inputmode="url" autocomplete="off"')
+            + field('fDesc', 'Deskripsi singkat', 'text', 'maxlength="60" autocomplete="off"'),
+        onOpen: () => { $('fName').value = card.title; $('fUrl').value = card.url; $('fDesc').value = card.desc; },
+        buttons: [
+            { text: 'Batal' },
+            { text: 'Simpan', kind: 'btn-primary', onClick: () => {
+                const name = $('fName').value.trim(), url = normalizeUrl($('fUrl').value);
+                if (!name || !url) { showToast(!name ? 'Nama tautan wajib diisi' : 'Link tautan tidak valid', 'error'); return false; }
+                card.title = name; card.url = url; card.desc = $('fDesc').value.trim();
+                refresh(card.id); saveState();
+            } }
+        ]
+    });
+}
+function addNewLinkModal() {
+    showModal({
+        title: 'Tambah tautan baru',
+        bodyHtml: field('fName', 'Nama tautan', 'text', 'maxlength="40" placeholder="Contoh: Web Portal" autocomplete="off"')
+            + field('fUrl', 'Link tautan (URL)', 'text', 'inputmode="url" placeholder="https://" autocomplete="off"')
+            + field('fDesc', 'Deskripsi singkat', 'text', 'maxlength="60" placeholder="Akses cepat ke portal" autocomplete="off"'),
+        buttons: [
+            { text: 'Batal' },
+            { text: 'Tambah', kind: 'btn-primary', onClick: () => {
+                const name = $('fName').value.trim(), url = normalizeUrl($('fUrl').value);
+                if (!name || !url) { showToast(!name ? 'Nama tautan wajib diisi' : 'Link tautan tidak valid', 'error'); return false; }
+                const card = { id: 'card_' + Date.now(), title: name, desc: $('fDesc').value.trim() || 'Portal informasi', url, icon: 'fas fa-link' };
+                userLinks.push(card);
+                refresh(card.id); saveState();
+            } }
+        ]
+    });
+}
+function confirmDeleteCard(cardId) {
+    const card = userLinks.find((c) => c.id === cardId);
+    if (!card) return;
+    showModal({
+        title: 'Hapus tautan',
+        bodyHtml: `<p>Hapus kartu tautan <strong>"${esc(card.title)}"</strong>? Tindakan ini tidak bisa dibatalkan.</p>`,
+        buttons: [
+            { text: 'Batal' },
+            { text: 'Hapus', kind: 'btn-danger', onClick: () => {
+                userLinks = userLinks.filter((c) => c.id !== cardId);
+                refresh(); saveState();
+            } }
+        ]
+    });
+}
+function changePasswordModal() {
+    showModal({
+        title: 'Ganti sandi admin',
+        bodyHtml: field('fPwOld', 'Sandi saat ini', 'password', 'autocomplete="current-password"')
+            + field('fPwNew', 'Sandi baru (minimal 8 karakter)', 'password', 'autocomplete="new-password"')
+            + field('fPwNew2', 'Ulangi sandi baru', 'password', 'autocomplete="new-password"'),
+        buttons: [
+            { text: 'Batal' },
+            { text: 'Simpan', kind: 'btn-primary', onClick: async () => {
+                const cur = $('fPwOld').value, nw = $('fPwNew').value, nw2 = $('fPwNew2').value;
+                if (!cur) { showToast('Sandi saat ini harus diisi', 'error'); return false; }
+                if (nw.length < 8) { showToast('Sandi baru minimal 8 karakter', 'error'); return false; }
+                if (nw !== nw2) { showToast('Ulangi sandi baru tidak sama', 'error'); return false; }
+                if (nw === cur) { showToast('Sandi baru harus berbeda dari yang lama', 'error'); return false; }
+                try {
+                    const res = await fetch('login.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'change_password', current: cur, new: nw }) });
+                    const r = await res.json().catch(() => null);
+                    if (res.ok && r && r.status === 'success') { showToast('Sandi berhasil diganti', 'success'); return; }
+                    if (r && r.code === 'session') { setAdmin(false); refresh(); showToast(r.message, 'error'); return; }
+                    showToast((r && r.message) || 'Gagal mengganti sandi', 'error');
+                } catch { showToast('Server tidak terjangkau', 'error'); }
+                return false;
+            } }
+        ]
+    });
+}
+async function serverAuth(action) {
+    try {
+        const res = await fetch('login.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action }) });
+        return res.status === 401 || res.status === 403 ? false : true;     // gagal jaringan dianggap masih aktif
+    } catch { return true; }
+}
+async function tryLogin(password) {
+    try {
+        const res = await fetch('login.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password }) });
+        let r = null;
+        try { r = JSON.parse(await res.text()); } catch {}
+        if (r && r.status === 'success') return { ok: true };
+        if (r && r.message) return { ok: false, msg: r.message };          // pesan asli dari server (salah sandi, terkunci, dll.)
+        return { ok: false, msg: 'login.php bermasalah (kode ' + res.status + '). Buka login.php langsung di browser untuk melihat galatnya.' };
+    } catch {
+        return { ok: false, msg: 'login.php tidak terjangkau' };            // tidak ada login cadangan
+    }
+}
+function handleAdminToggle() {
+    if (isAdmin) {
+        showModal({
+            title: 'Konfirmasi logout',
+            bodyHtml: '<p>Keluar dari mode admin?</p>',
+            buttons: [
+                { text: 'Tidak' },
+                { text: 'Ya, logout', kind: 'btn-danger', onClick: () => { serverAuth('logout'); setAdmin(false); refresh(); showToast('Berhasil logout dari admin', 'info'); } }
+            ]
+        });
+        return;
+    }
+    showModal({
+        title: 'Login admin',
+        bodyHtml: field('fPass', 'Kata sandi admin', 'password', 'autocomplete="current-password" placeholder="Masukkan kata sandi"'),
+        buttons: [
+            { text: 'Batal' },
+            { text: 'Masuk', kind: 'btn-primary', onClick: async () => {
+                const pw = $('fPass').value;
+                if (!pw) { showToast('Kata sandi harus diisi', 'error'); return false; }
+                const r = await tryLogin(pw);
+                if (r.ok) { setAdmin(true); refresh(); showToast('Login admin berhasil', 'success'); }
+                else { showToast(r.msg || 'Kata sandi salah', 'error'); $('fPass').select(); return false; }
+            } }
+        ]
+    });
+}
+
+/* ============ Mulai ============ */
+(async function init() {
+    applyTheme(currentTheme());
+    const savedOpen = store.get('ytOpen');                      // ingat panel terbuka/tertutup
+    const compact = innerWidth < 760 || innerHeight < 520;     // HP (tegak maupun mendatar) mulai tertutup
+    ytSetOpen(compact ? false : savedOpen !== '0', false);
+    hint.textContent = matchMedia('(pointer: coarse)').matches
+        ? 'Geser untuk memutar, sentuh kartu depan untuk membuka. Sentuh penyihir untuk memilih menu. Gulir ke bawah untuk semua tautan.'
+        : 'Seret untuk memutar, klik kartu depan untuk membuka. Klik penyihir untuk memilih menu. Gulir ke bawah untuk semua tautan.';
+    setTimeout(dismissHint, 10000);
+    if ('IntersectionObserver' in window) {
+        new IntersectionObserver((en) => { p2Near = en[en.length - 1].isIntersecting; syncWelcome(); }, { rootMargin: '60% 0px' }).observe(page3);
+        new IntersectionObserver((en) => {               // video halaman 1 berhenti saat tidak terlihat
+            if (reduced) return;
+            if (en[en.length - 1].isIntersecting) { const p = video.play(); if (p && p.catch) p.catch(() => {}); } else video.pause();
+        }).observe(page1);
+    } else p2Near = true;
+    loadWitch(currentTheme());
+    setTimeout(startGreets, 1200);
+    if (musicWanted) tryPlay();                      // bisa diblokir browser; sentuhan pertama akan memulainya
+    if (isAdmin && !(await serverAuth('check'))) setAdmin(false);   // sesi server sudah habis
+    await loadData();
+    updateCardsData();
+    buildCards();
+    requestAnimationFrame(() => scene.classList.add('ready'));
+    requestAnimationFrame(tick);
+})();
+})();
+</script>
+<script>
+/* ============ Kabut asap tertiup angin ============ */
+(function () {
+    const root = document.documentElement;
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const Q = .5;                                    // digambar setengah resolusi: kabut memang lembut, jadi lebih hemat tenaga
+    const COLORS = [[139, 92, 246], [167, 139, 250], [192, 132, 252], [250, 204, 21]];   // ungu, lavender, ungu muda, emas
+    const rnd = (a, b) => a + Math.random() * (b - a);
+    const sprites = COLORS.map(([r, g, b]) => {
+        const c = document.createElement('canvas'); c.width = c.height = 128;
+        const x = c.getContext('2d'), gr = x.createRadialGradient(64, 64, 0, 64, 64, 64);
+        gr.addColorStop(0, `rgba(${r},${g},${b},1)`); gr.addColorStop(.35, `rgba(${r},${g},${b},.55)`);
+        gr.addColorStop(.7, `rgba(${r},${g},${b},.15)`); gr.addColorStop(1, `rgba(${r},${g},${b},0)`);
+        x.fillStyle = gr; x.fillRect(0, 0, 128, 128);
+        return c;
+    });
+    function makeLayer(canvas, o) {
+        const ctx = canvas.getContext('2d');
+        let W = 0, H = 0, puffs = [];
+        function spawn(p, anywhere) {
+            const gold = Math.random() < .16, base = Math.max(Math.min(W, H), Math.max(W, H) * .55);
+            p.c = gold ? 3 : (Math.random() * 3 | 0);
+            p.a = (gold ? .14 : .24) * rnd(.75, 1.35);
+            p.r = rnd(.22, .45) * base * o.size;
+            p.st = rnd(1.5, 2.6);                    // memanjang searah angin
+            p.rot = rnd(-.25, .12); p.rs = rnd(-.04, .04);
+            p.d = rnd(.55, 1.5);                     // kedalaman: yang dekat bergerak lebih cepat
+            p.ph = rnd(0, 6.283); p.gf = rnd(.35, .9); p.wf = rnd(.12, .32); p.wa = rnd(8, 26);
+            p.x = anywhere ? rnd(-p.r, W + p.r) : -p.r * p.st;
+            p.y = rnd(-.05 * H, 1.05 * H);
+        }
+        function resize() {
+            W = innerWidth; H = innerHeight;
+            canvas.width = Math.max(1, W * Q | 0); canvas.height = Math.max(1, H * Q | 0);
+            const n = Math.min(o.max, Math.max(o.min, Math.round(W * H / o.density)));
+            puffs = Array.from({ length: n }, () => { const p = {}; spawn(p, true); return p; });
+        }
+        function draw(t, dt, gust) {
+            const light = root.getAttribute('data-theme') !== 'dark';
+            ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (const p of puffs) {
+                if (dt) {
+                    p.x += 46 * gust * p.d * o.speed * dt;                       // hembusan angin
+                    p.y += (-5 + Math.sin(t * p.wf + p.ph) * p.wa) * dt;          // melayang naik-turun
+                    p.rot += p.rs * dt;
+                    if (p.x - p.r * p.st > W) spawn(p, false);
+                }
+                const glow = .5 + .5 * Math.sin(t * p.gf + p.ph);               // berpendar
+                ctx.globalAlpha = Math.min(1, p.a * o.alpha * glow * (light ? 1.15 : 1) * (.85 + .25 * gust));
+                ctx.setTransform(Q, 0, 0, Q, 0, 0);
+                ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.scale(p.st, 1);
+                ctx.drawImage(sprites[p.c], -p.r, -p.r, p.r * 2, p.r * 2);
+            }
+        }
+        resize();
+        return { resize, draw };
+    }
+    const back = document.getElementById('fogBack'), front = document.getElementById('fogFront');
+    if (!back || !front) return;
+    const layers = [
+        makeLayer(back,  { density: 28000, min: 16, max: 56, size: 1.1, alpha: 1.5, speed: 1 }),
+        makeLayer(front, { density: 90000, min: 6, max: 16, size: 1.4, alpha: .9, speed: 1.35 })
+    ];
+    const gustAt = (t) => .55 + .45 * Math.sin(t * .21) + .55 * Math.pow(Math.max(0, Math.sin(t * .47 + 1.3)), 2);
+    const paint = () => layers.forEach((l) => l.draw(20, 0, 1));
+    let rt = 0;
+    addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { layers.forEach((l) => l.resize()); if (still) paint(); }, 150); });
+    if (still) {                                     // kurangi gerak: satu gambar diam saja
+        paint();
+        new MutationObserver(paint).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+        return;
+    }
+    const t0 = performance.now(); let last = t0;
+    (function loop(now) {
+        requestAnimationFrame(loop);
+        if (document.hidden) { last = now; return; }
+        const dt = Math.min(.05, (now - last) / 1000), t = (now - t0) / 1000; last = now;
+        const gust = gustAt(t);
+        layers.forEach((l) => l.draw(t, dt, gust));
+    })(t0);
+})();
+</script>
+<script>
+/* Debu bintang: partikel emas/ungu melayang pelan dengan parallax gulir */
+(() => {
+    const cv = document.getElementById('dust');
+    if (!cv || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const ctx = cv.getContext('2d');
+    let W = 0, H = 0, dpr = 1, ps = [];
+    function resize() {
+        dpr = Math.min(devicePixelRatio || 1, 1.5); W = innerWidth; H = innerHeight;
+        cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+        const n = Math.round(Math.min(70, Math.max(26, W * H / 22000)));
+        ps = Array.from({ length: n }, (_, i) => ({
+            x: Math.random() * W, y: Math.random() * H, z: .25 + Math.random() * .75, r: .6 + Math.random() * 1.5,
+            ph: Math.random() * 6.28, sp: .5 + Math.random() * 1.3, vx: (Math.random() - .5) * 7, vy: -(3 + Math.random() * 8), v: i % 3 === 0
+        }));
+    }
+    resize();
+    let rt = 0;
+    addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(resize, 150); });
+    let last = performance.now(), t0 = last;
+    (function loop(now) {
+        requestAnimationFrame(loop);
+        if (document.hidden) { last = now; return; }
+        const dt = Math.min(.05, (now - last) / 1000), t = (now - t0) / 1000; last = now;
+        const dark = document.documentElement.getAttribute('data-theme') === 'dark', sy = window.scrollY || 0;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, W, H);
+        for (const p of ps) {
+            p.x += p.vx * p.z * dt; p.y += p.vy * p.z * dt;
+            if (p.x < -10) p.x = W + 10; else if (p.x > W + 10) p.x = -10;
+            if (p.y < -10) p.y = H + 10;
+            const y = (((p.y - sy * p.z * .3) % (H + 20)) + H + 20) % (H + 20) - 10;
+            const a = (.12 + .6 * (.5 + .5 * Math.sin(t * p.sp + p.ph))) * p.z;
+            ctx.fillStyle = dark ? 'rgba(253,224,71,' + a.toFixed(3) + ')' : (p.v ? 'rgba(124,58,237,' : 'rgba(202,138,4,') + (a * .9).toFixed(3) + ')';
+            ctx.beginPath(); ctx.arc(p.x, y, p.r * p.z + .3, 0, 6.2832); ctx.fill();
+            if (p.r > 1.6) {                                   // kilau empat sudut untuk partikel terbesar
+                ctx.strokeStyle = ctx.fillStyle; ctx.lineWidth = .6;
+                const l = 3 + p.r * 2 * (.5 + .5 * Math.sin(t * p.sp + p.ph));
+                ctx.beginPath(); ctx.moveTo(p.x - l, y); ctx.lineTo(p.x + l, y); ctx.moveTo(p.x, y - l); ctx.lineTo(p.x, y + l); ctx.stroke();
+            }
+        }
+    })(last);
+})();
+</script>
+</body>
+</html>
