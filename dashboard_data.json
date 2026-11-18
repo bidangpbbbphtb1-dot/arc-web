@@ -69,6 +69,13 @@
             "desc": "Encoder teks ke biner, morse & sandi",
             "url": "https://nanamiarc.netlify.app/sandi.html",
             "icon": "fas fa-code"
+        },
+        {
+            "id": "card_1795017600000",
+            "title": "PEMANGKAS WEB",
+            "desc": "Pemendek link (seperti bit.ly)",
+            "url": "https://arpem.netlify.app/",
+            "icon": "fas fa-scissors"
         }
     ],
     "playlist": [
