@@ -1204,7 +1204,7 @@ let cardsData = [], cardEls = [];
 let total = 0, stepAngle = 90, radius = 260, activeIndex = -1;
 let currentRotation = 0, targetRotation = 0;
 let pauseUntil = 0, lastFrame = 0;
-let isAdmin = store.get('isAdmin', sessionStorage) === 'true';
+let isAdmin = false; // mode admin dinonaktifkan (situs di Netlify, tanpa PHP)
 let modalOpen = false, menuOpen = false, chatOpen = false, lastFocus = null;
 
 function setAdmin(v) {
@@ -2364,14 +2364,6 @@ async function saveState() {
 function updateCardsData() {
     cardsData = [...userLinks];
     ytSync();
-    if (isAdmin) {
-        cardsData.push({ id: 'card_add', title: 'Tambah Tautan', desc: 'Buat kartu menu tautan baru', action: 'add_link', icon: 'fas fa-plus-circle' });
-        cardsData.push({ id: 'card_music', title: 'Kelola Musik', desc: 'Ganti, hapus & volume lagu', action: 'manage_music', icon: 'fab fa-youtube' });
-        cardsData.push({ id: 'card_pass', title: 'Ganti Sandi', desc: 'Ubah kata sandi admin', action: 'change_password', icon: 'fas fa-key' });
-        cardsData.push({ id: 'card_admin', title: 'Admin Logout', desc: 'Keluar dari mode admin', action: 'login', icon: 'fas fa-unlock-keyhole' });
-    } else {
-        cardsData.push({ id: 'card_admin', title: 'Admin Login', desc: 'AKSES ADMIN', action: 'login', icon: 'fas fa-key' });
-    }
 }
 function refresh(focusId) {
     updateCardsData();
