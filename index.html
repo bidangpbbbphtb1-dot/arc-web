@@ -689,7 +689,9 @@ html[data-theme="dark"] .witch-menu, html[data-theme="dark"] .witch-dialog, html
 .p2-top { position: absolute; z-index: 21; top: calc(18px + var(--safe-t)); right: calc(clamp(16px, 4.5vw, 64px) + var(--safe-r)); }
 .p2-body { position: relative; flex: none; }
 /* ruang gulir tambahan: kartu tetap tertahan di layar sementara halaman 3 naik dari bawah */
-.p2-body::after { content: ''; display: block; height: 190vh; height: 190dvh; }
+.p2-body::after { content: ''; display: block; height: 10vh; height: 10dvh; }
+/* Halaman 3 (Tanya Penyihir) dinonaktifkan: butuh PHP yang tidak tersedia di Netlify */
+.page3 { display: none !important; }
 .p2-grid {
     position: sticky; top: 14vh; z-index: 20; min-width: 0;
     display: grid; grid-template-columns: repeat(auto-fill, var(--cw)); gap: var(--gg);
@@ -968,7 +970,6 @@ html[data-theme="dark"] .witch-dialog.ai.err .wd-text { color: #fda4af; }
 <nav class="page-nav" id="pageNav" aria-label="Halaman" data-nodrag>
     <button type="button" data-p="0" aria-label="Halaman 1: Kartu" aria-current="true"><span>KARTU</span></button>
     <button type="button" data-p="1" aria-label="Halaman 2: Daftar tautan" aria-current="false"><span>DAFTAR TAUTAN</span></button>
-    <button type="button" data-p="2" aria-label="Halaman 3: Tanya penyihir" aria-current="false"><span>TANYA PENYIHIR</span></button>
 </nav>
 <div class="page1" id="page1">
     <svg class="moon" aria-hidden="true" viewBox="0 0 100 100">
@@ -1076,7 +1077,7 @@ html[data-theme="dark"] .witch-dialog.ai.err .wd-text { color: #fda4af; }
     <p class="witch-say" id="witchSay" aria-hidden="true"></p>
     <div class="witch-options">
         <button class="opt" id="optLinks" type="button" style="--i:0"><i class="fas fa-link" aria-hidden="true"></i><span>Daftar Tautan</span></button>
-        <button class="opt" id="optChat" type="button" style="--i:1"><i class="fas fa-wand-sparkles" aria-hidden="true"></i><span>Tanya Penyihir</span></button>
+        <button class="opt" id="optChat" type="button" style="--i:1" hidden><i class="fas fa-wand-sparkles" aria-hidden="true"></i><span>Tanya Penyihir</span></button>
         <button class="opt" id="optTheme" type="button" style="--i:2"><i class="fas fa-moon" aria-hidden="true"></i><span>Mode Gelap</span></button>
         <button class="opt" id="optFs" type="button" style="--i:3" hidden><i class="fas fa-expand" aria-hidden="true"></i><span>Layar Penuh</span></button>
         <button class="opt" id="optMusic" type="button" style="--i:4"><i class="fas fa-volume-high" aria-hidden="true"></i><span>Musik: Nyala</span></button>
@@ -2461,7 +2462,7 @@ function buildCards() {
 const pageNavBtns = [...document.querySelectorAll('#pageNav button')];
 let curPage = -1;
 function updatePageNav(sy, vh) {
-    const idx = sy < page2.offsetTop - vh * 0.5 ? 0 : (sy < page3.offsetTop - vh * 0.5 ? 1 : 2);
+    const idx = sy < page2.offsetTop - vh * 0.5 ? 0 : 1;
     if (idx === curPage) return;
     curPage = idx;
     pageNavBtns.forEach((b, i) => b.setAttribute('aria-current', String(i === idx)));
@@ -2597,7 +2598,7 @@ function computeScroll(dt) {
     }
     /* Halaman 3: lingkaran sihir tergambar, sinar memancar, lalu arc muncul */
     /* 0: halaman 3 baru mulai terlihat, 1: ujung halaman. Urutan: lingkaran tergambar > kartu masuk satu per satu > arc muncul */
-    const q = clamp01((sy + vh - page3.offsetTop) / Math.max(1, page3.offsetHeight));
+    const q = 0;   // halaman 3 dinonaktifkan
     if (reduced) P3 = q;
     else { P3 += (q - P3) * (1 - Math.pow(1 - 0.06, dt)); if (Math.abs(q - P3) < 0.0005) P3 = q; }
     /* halaman 3 naik dari bawah (P3 0 sampai ±0.53): lingkaran langsung terlihat & tergambar, kartu turun menyusul, arc muncul setelah kartu mendarat */
